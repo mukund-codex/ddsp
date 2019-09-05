@@ -1,0 +1,23 @@
+.DS_Store
+
+*/config/*
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+#*/images/*
+!*/images/index.html
+!*/images/.htaccess
+
+#codeigniter 3
+!application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+application/logs/
+/vendor/
+application/config/*
+
+uploads/*
+composer.lock
+*.orig

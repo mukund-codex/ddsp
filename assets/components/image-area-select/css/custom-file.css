@@ -1,0 +1,59 @@
+.uploadphoto {
+    display: inline-block;
+    width: 100%;
+    padding: 250px 0 0 0;
+    height: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: url('profile-photo.png') center center no-repeat #e4e4e4;
+    background-color: #E1E1E1;
+    border-radius: 2px;
+    cursor:pointer;
+}
+
+.loadpicture{
+    position: absolute; 
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: url('load-thumbs.gif') no-repeat center;
+    background-size: 25%;
+    background-color: #fff;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";       /* IE 8 */
+    filter: alpha(opacity=40);  /* IE 5-7 */
+    -moz-opacity: 0.7;          /* Netscape */
+    -khtml-opacity: 0.7;        /* Safari 1.x */
+    opacity: 0.7;               /* Good browsers */
+}
+
+.preview{
+    position: absolute;
+    top: 2px;
+    /* left: 206px; */
+    width: 250px;
+    /* height: 250px; */
+}
+
+.previewbutton{
+    width: 100%;
+}
+.cropbutton,.changebutton{display: inline-block;}
+
+
+.responsive{width:100%;vertical-align: middle;}
+
+.error-msgs{
+    display: none;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding:5px;
+}
+.stretch{
+  width: 49%;
+}
+.safe{
+    color:green;
+}
