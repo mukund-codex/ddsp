@@ -23,7 +23,7 @@ class User extends Api_Controller {
 		 * @apiParam {String} username Username
 		 * @apiParam {String} password Password.
 		 * @apiParam {String}  device_id Device ID.
-		 * @apiParam {String}  device_type Device Type.
+		 * @apiParam {String {android, ios}}  device_type Device Type.
 		 * @apiParam {String}  os Operating System.
 		 * @apiParam {String}  device_name Device Name.
 		 * @apiParam {String}  app_version APP version.
@@ -58,7 +58,7 @@ class User extends Api_Controller {
 		$os = trim(isset($this->input_data['os'])?$this->input_data['os']:'');
 		$device_name = trim(isset($this->input_data['device_name'])?$this->input_data['device_name']:'');
 		$app_version = trim(isset($this->input_data['app_version'])?$this->input_data['app_version']:'');
-
+		
 		if(empty($username)) {
 			$this->response['code'] = 400;
 			$this->response['message'] = "Username is Mandatory";
@@ -83,7 +83,7 @@ class User extends Api_Controller {
 			return;
 		}
 
-		if(empty($device_type) || !in_array($device_type,['android','iOS'])) {
+		if(empty($device_type) || !in_array($device_type,['android','ios'])) {
 			$this->response['code'] = 400;
 			$this->response['message'] = "Invalid Request";
 			$this->error = array('message'=>'Invalid Request');
@@ -153,8 +153,8 @@ class User extends Api_Controller {
 				$access_granted_token = $this->mdl_user->_insert($access_data,'access_token'); // User is logged in, Generate the Access Token
 
 				$response_token = $this->mdl_user->get_records(['user_id' => $users_id ],'access_token',['access_token'],'');
-				$android_version = $this->mdl_user->get_records(['os'=>'android'],'version_control',['version_code','store_version_code','version_status'],'');
-				$ios_version = $this->mdl_user->get_records(['os'=>'ios'],'version_control',['version_code','store_version_code','version_status'],'');
+				$android_version = $this->mdl_user->get_records(['os'=>'android'],'version_control',['version_code','store_version_code','version_status'],'','1');
+				$ios_version = $this->mdl_user->get_records(['os'=>'ios'],'version_control',['version_code','store_version_code','version_status'],'','1');
 
 				$data = array();
 				$data['token'] = $token;				
@@ -163,8 +163,8 @@ class User extends Api_Controller {
 				$data['mobile_number'] = $mobile_number;
 				$data['email'] = $email;
 				$data['reporting_manager'] = $reporting_manager;
-				$data['android_version'] = (int)($os == 'android') ? $app_version : '0';
-				$data['ios_version'] = (int)($os == 'iOS') ? $app_version : '0';
+				$data['android_version'] = (int)isset($android_verion[0]->version_code) ? $android_verion[0]->version_code : '0';
+				$data['ios_version'] = (int)isset($ios_version[0]->version_code) ? $ios_version[0]->version_code : '0';
 
 				$this->response['code'] = 200;
 				$this->response['message'] = "Login Successful";
