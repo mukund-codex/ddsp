@@ -15,7 +15,8 @@ class Module extends Api_Controller {
 
 		/**
 		 * @api {post} /api/module/communication Communication
-		 *
+		 * @apiName communication
+         * @apiGroup Module
 		 * @apiSuccess {Number} code HTTP Status Code.
 		 * @apiSuccess {String} message  Associated Message.
 		 * @apiSuccess {Object} data  Communication List Object With Token
@@ -100,6 +101,8 @@ class Module extends Api_Controller {
 
 		/**
 		 * @api {post} /api/module/about about
+         * @apiName about
+         * @apiGroup Module
 		 *
 		 * @apiSuccess {Number} code HTTP Status Code.
 		 * @apiSuccess {String} message  Associated Message.
@@ -145,7 +148,8 @@ class Module extends Api_Controller {
 
 		/**
 		 * @api {post} /api/module/state_molecule State_Molecule
-		 *
+		 * @apiName state_molecule
+         * @apiGroup Module
 		 * @apiSuccess {Number} code HTTP Status Code.
 		 * @apiSuccess {String} message  Associated Message.
 		 * @apiSuccess {Object} data  About Content Object With Token
