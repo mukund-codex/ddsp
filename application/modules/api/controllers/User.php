@@ -83,7 +83,7 @@ class User extends Api_Controller {
 			return;
 		}
 
-		if(empty($device_type) || !in_array($device_type,['android'])) {
+		if(empty($device_type) || !in_array($device_type,['android','iOS'])) {
 			$this->response['code'] = 400;
 			$this->response['message'] = "Invalid Request";
 			$this->error = array('message'=>'Invalid Request');
@@ -154,6 +154,7 @@ class User extends Api_Controller {
 
 				$response_token = $this->mdl_user->get_records(['user_id' => $users_id ],'access_token',['access_token'],'');
 				$android_version = $this->mdl_user->get_records(['os'=>'android'],'version_control',['version_code','store_version_code','version_status'],'');
+				$ios_version = $this->mdl_user->get_records(['os'=>'ios'],'version_control',['version_code','store_version_code','version_status'],'');
 
 				$data = array();
 				$data['token'] = $token;				
@@ -162,7 +163,8 @@ class User extends Api_Controller {
 				$data['mobile_number'] = $mobile_number;
 				$data['email'] = $email;
 				$data['reporting_manager'] = $reporting_manager;
-				$data['android_version'] = (int)isset($android_version[0]->version_code) ? $android_version[0]->version_code : '0';
+				$data['android_version'] = (int)($os == 'android') ? $app_version : '0';
+				$data['ios_version'] = (int)($os == 'iOS') ? $app_version : '0';
 
 				$this->response['code'] = 200;
 				$this->response['message'] = "Login Successful";
