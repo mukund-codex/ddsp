@@ -99,7 +99,7 @@ class Module extends Api_Controller {
 		// Else return the error message to the APP
 
 		/**
-		 * @api {post} /api/module/communication Communication
+		 * @api {post} /api/module/about about
 		 *
 		 * @apiSuccess {Number} code HTTP Status Code.
 		 * @apiSuccess {String} message  Associated Message.
@@ -144,7 +144,7 @@ class Module extends Api_Controller {
 		// Else return the error message to the APP
 
 		/**
-		 * @api {post} /api/module/communication Communication
+		 * @api {post} /api/module/state_molecule State_Molecule
 		 *
 		 * @apiSuccess {Number} code HTTP Status Code.
 		 * @apiSuccess {String} message  Associated Message.
