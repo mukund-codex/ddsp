@@ -141,6 +141,79 @@ class Module extends Api_Controller {
 
     }
 
+    function speciality(){
+
+		// Get Speciality Type for Validating
+		// If records are present, return the Specaility List on the basis of type to the APP
+		// Else return the error message to the APP
+
+		/**
+		 * @api {post} /api/module/speciality Speciality
+		 * @apiName speciality
+		 * @apiGroup User
+		 *
+		 * @apiParam {String {derma, other}}  specialityType Speciality Type.
+		 *
+		 * @apiSuccess {Number} code HTTP Status Code.
+		 * @apiSuccess {String} message  Associated Message.
+		 * @apiSuccess {Object} data  Employee Record Object With Token
+		 * @apiSuccess {Object} error  Error if Any.
+		 *
+		 * @apiSuccessExample Success-Response:
+			*     HTTP/1.1 200 OK
+			*       {
+            *           "message": "Speciality List",
+            *           "error": "",
+            *           "code": 200,
+            *           "data": {
+            *           "speciality": [
+            *               {
+            *                   "speciality_id": "2",
+            *                   "speciality_name": "CP"
+            *               },
+            *               {
+            *                   "speciality_id": "3",
+            *                   "speciality_name": "GP"
+            *               },
+            *               {
+            *                   "speciality_id": "4",
+            *                   "speciality_name": "Gynae"
+            *               }
+            *           ],
+            *           "request_id": 1567834956.298453
+        *           }
+            *   }
+			*/
+
+        $user_id = $this->id;
+        $specialityType = $this->input_data['specialityType'];
+        
+        if($specialityType == 'derma'){
+            $speciality_data = $this->model->get_records(['speciality_name' => 'Derma'], 'speciality');
+        }else{
+            $speciality_data = $this->model->get_records(['speciality_name !=' => 'Derma'], 'speciality');            
+        }
+
+        $data = [];
+
+        if(count($speciality_data) > 0){
+            foreach($speciality_data as $key => $value){
+                $specialitydata['speciality_id'] = $value->speciality_id;
+                $specialitydata['speciality_name'] = $value->speciality_name;
+                array_push($data, $specialitydata);
+            }
+            
+        }
+
+        $this->response['code'] = 200;
+        $this->response['data'] = [
+            "speciality" => $data,
+        ];
+        $this->response['message'] = empty($speciality_data) ? "No Data Found" : "Speciality List";
+        $this->sendResponse();
+
+    }
+
     function state_molecule(){
 
         // If the token is valid, send State, City and Molecule data to APP
@@ -296,6 +369,256 @@ class Module extends Api_Controller {
         $this->response['message'] = empty($data) ? "No Data Found" : "List";
         $this->sendResponse();
 
+    }
+
+    function adddetails(){
+        $user_id = $this->id;
+
+        $chemist = $this->input_data['chemist'];
+
+        $error = [];
+
+        if(empty($chemist)) {
+            $error['error']['chemist'] = 'Empty Chemist Data';
+        }
+
+        $chemist_name = trim($chemist['name']);
+        $chemist_address = trim($chemist['address']);
+        $chemist_state = trim($chemist['state']);
+        $chemist_city = trim($chemist['city']);
+        $chemist_pincode = trim($chemist['pincode']);
+
+        if(empty($chemist_name)) {
+            $error['error']['chemist']['chemist_name'] = "Required";
+        }
+
+        if(empty($chemist_address)){
+            $error['error']['chemist']['chemist_address'] = "Required";
+        }
+
+        if(empty($chemist_state)){
+            $error['error']['chemist']['chemist_state'] = "Required";
+        }
+
+        if(empty($chemist_city)){
+            $error['error']['chemist']['chemist_city'] = "Required";
+        }
+
+        $chemiststate = $this->model->get_records(['id' => $chemist_state], 'state');
+        if(empty($chemistState)){
+            $error['error']['chemist']['chemist_state'] = 'Invalid State';
+        }
+
+        $chemistcity = $this->model->get_records(['city_id' => $chemist_city, 'state_id' => $chemist_state], 'cities');
+        if(empty($chemistcity)){
+            $error['error']['chemist']['chemist_city'] = 'Invalid City';
+        }
+
+        $doctors = $chemist['doctor'];
+        
+        if(count($doctors) <= 0) {
+            $error['error']['chemist']['doctor'] = 'Empty Doctor Data';
+        }
+
+        foreach ($doctors as $k1 => $doctor) {
+            $doctor_name = $doctor['name'];
+            $doctor_speciality = $doctor['speciality'];
+            $doctor_address = $doctor['address'];
+            $doctor_state = $doctor['state'];
+            $doctor_city = $doctor['city'];
+            $doctor_pincode = $doctor['pincode'];
+
+            if(empty($doctor_name)) {
+                $error['error']['chemist']['doctor'][$k1]['doctor_name'] = "Required";
+            }
+
+            if(empty($doctor_speciality)){
+                $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = "Required";
+            }
+
+            $specialityData = $this->model->get_records(['speciality_id' => $doctor_speciality], 'speciality');
+            if(empty($specialityData)){
+                $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = 'Invalid Speciality';
+            }
+
+            $doctorstate = $this->model->get_records(['id' => $doctor_state], 'state');
+            if(empty($chemistState)){
+                $error['error']['chemist']['doctor'][$k1]['doctor_state'] = 'Invalid State';
+            }
+
+            $doctorcity = $this->model->get_records(['city_id' => $doctor_city, 'state_id' => $doctor_state], 'cities');
+            if(empty($chemistcity)){
+                $error['error']['chemist']['doctor'][$k1]['doctor_city'] = 'Invalid City';
+            }
+
+            $potential = $doctor['potential'];
+
+            if(count($potential) <= 0) {
+                $error['error']['chemist']['doctor'][$k1]['potential'] = 'Empty Potential Data';
+
+            }
+
+            foreach ($potential as $k2 => $molecule) {
+                $molecule_id = $molecule['molecule'];
+
+                if(empty($molecule_id)) {
+                    $error['error']['status'] = FALSE;
+                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['molecule'] = "Molecule Required";
+                    continue;
+                }
+
+                $moleculedata = $this->model->get_records(['molecule_id' => $molecule_id], 'molecule');
+                if(empty($moleculedata)){
+                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['molecule'] = 'Invalid Molecule';
+                }
+
+                $brands = $molecule['brand'];
+
+                if(count($brands) <= 0) {
+                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand']['message'] = 'Empty Brand Data';
+                }
+
+                foreach ($brands as $k3 => $brand) {
+                    $brand_id = isset($brand['id']) ? $brand['id'] : '';
+                    $isSKU = $brand['isSKU'];
+                    $other = $brand['other'];
+                    $brand_rxn = isset($brand['rxn']) ? $brand['rxn'] : '';
+                    $brand_name = isset($brand['name']) ? $brand['name'] : '';
+                    $skus = isset($brand['sku']) ? $brand['sku'] : '';;
+
+                    // validate
+
+                    if($isSKU) {
+                        if(empty($brand_id)) {
+                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_id'] = $brand_id;
+                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['message'] = 'Required';
+                        }
+
+                        $branddata = $this->model->get_records(['brand_id' => $brand_id, 'molecule_id' => $molecule_id], 'brand');
+                        if(empty($branddata)){
+                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_id'] = $brand_id;
+                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['message'] = 'Invalid Brand';
+                        }
+
+                        if(count($skus) <= 0) {
+                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'] = 'Empty SKU Data';
+                        }
+
+                        foreach ($skus as $k4 => $sku) {
+                            $sku_id = $sku['id'];
+                            $sku_rxn = $sku['rxn'];
+
+                            if(empty($sku_id)) {
+                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['sku_id'] = 'Required';
+                            }
+
+                            $skudata = $this->model->get_records(['sku_id' => $sku_id, 'brand_id' => $brand_id], 'sku');
+                            if(empty($skudata)){
+                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['sku_id'] = $sku_id;
+                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['message'] = 'Invalid SKU';
+                            }
+
+                        }
+                    } else {
+                        if($other === 'yes') {
+                            if(empty($brand_name) || empty($brand_rxn)) {
+                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_name'] = 'Required';
+                            }
+                        } else if($other === 'no') {
+                            if(empty($brand_id) || empty($brand_rxn)) {
+                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['rxn'] = 'Required';
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        if(count($error) <= 0){
+
+            $chemistdata = [];
+            $doctordata = [];
+            $moleculedata = [];
+            $branddata = [];
+            $skudata = [];
+            $error = [];
+
+            $chemistdata['chemist_name'] = trim($this->input_data['chemist']['name']);
+
+            $chemistdata['address'] = trim($this->input_data['chemist']['address']);
+            $chemistdata['state'] = trim($this->input_data['chemist']['state']);
+            $chemistdata['city'] = trim($this->input_data['chemist']['city']);
+            $chemistdata['pincode'] = trim($this->input_data['chemist']['pincode']);
+            $chemistdata['users_id'] = $user_id;
+            
+            $chemist_id = $this->model->_insert($chemistdata, 'chemist');
+
+            foreach($this->input_data['chemist']['doctor'] as $doctor){
+                $doctordata['chemist_id'] = $chemist_id;
+                $doctordata['users_id'] = $user_id;
+                $doctordata['doctor_name'] = $doctor['name'];
+                $doctordata['speciality'] = $doctor['speciality'];
+                $doctordata['address'] = $doctor['address'];
+                $doctordata['state'] = $doctor['state'];
+                $doctordata['city'] = $doctor['city'];
+                $doctordata['pincode'] = $doctor['pincode'];
+
+                $doctor_id = $this->model->_insert($doctordata, 'doctor');
+                
+                foreach($doctor['potential'] as $molecule){
+                    $moleculedata['chemist_id'] = $chemist_id;
+                    $moleculedata['doctor_id'] = $doctor_id;
+                    $moleculedata['users_id'] = $user_id;
+                    $moleculedata['molecule'] = $molecule['molecule'];
+
+                    $molecule_id = $this->model->_insert($moleculedata, 'users_molecule');
+
+                    foreach($molecule['brand'] as $brand){
+
+                        $branddata['chemist_id'] = $chemist_id;
+                        $branddata['doctor_id'] = $doctor_id;
+                        $branddata['users_id'] = $user_id;
+                        $branddata['molecule_id'] = $molecule_id;
+                        $branddata['brand_id'] = $brand['other'] == 'no' ? $brand['id'] : NULL;
+                        $branddata['brand_name'] = $brand['other'] == 'yes' ? $brand['name'] : NULL;
+                        $branddata['issku'] = $brand['isSKU'];
+                        $branddata['other'] = $brand['other'];
+                        $branddata['rxn'] = $brand['isSKU'] == FALSE ? $brand['rxn'] : '';
+
+                        $brand_id = $this->model->_insert($branddata, 'users_brand');
+
+                        if($brand['isSKU'] == TRUE){
+                            foreach($brand['sku'] as $sku){
+                                $skudata['chemist_id'] = $chemist_id;
+                                $skudata['doctor_id'] = $doctor_id;
+                                $skudata['molecule_id'] = $molecule_id;
+                                $skudata['brand_id'] = $brand_id;
+                                $skudata['users_id'] = $user_id;
+                                $skudata['sku_id'] = $sku['id'];
+                                $skudata['rxn'] = $sku['rxn'];
+        
+                                $sku_id = $this->model->_insert($skudata, 'users_sku');
+        
+                            }
+                        }                    
+
+                    }
+
+                }
+
+            }
+
+            $this->response['code'] = 200;
+            $this->response['message'] = "Added Successfully";
+            $this->sendResponse();
+        }
+
+        $this->response['code'] = 400;
+        $this->response['message'] = $error;
+        $this->sendResponse();
+        //echo json_encode($error);exit;
+        
     }
 
 }
