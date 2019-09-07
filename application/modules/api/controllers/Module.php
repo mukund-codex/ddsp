@@ -150,7 +150,7 @@ class Module extends Api_Controller {
 		/**
 		 * @api {post} /api/module/speciality Speciality
 		 * @apiName speciality
-		 * @apiGroup User
+		 * @apiGroup Module
 		 *
 		 * @apiParam {String {derma, other}}  specialityType Speciality Type.
 		 *
