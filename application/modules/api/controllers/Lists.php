@@ -63,7 +63,7 @@ class Lists extends Api_Controller {
 			$chemistdata = [];
 
 			foreach($chemistrecords as $data){
-				$chemist_data['d'] = $data->chemist_id;
+				$chemist_data['id'] = $data->chemist_id;
 				$chemist_data['name'] = $data->chemist_name;
 				$chemist_data['address'] = $data->address;
 				$state_name = $this->model->get_records(['id' => $data->state] , 'state', ['state']);
