@@ -23,6 +23,7 @@ class Lists extends Api_Controller {
 		* @apiName list
 		* @apiGroup Lists
 		*
+		*@apiParam {String {chemist, doctor}}  cateogry Category.
 		*
 		* @apiSuccess {Number} code HTTP Status Code.
 		* @apiSuccess {String} message  Associated Message.
