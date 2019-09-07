@@ -1,5 +1,5 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_doctor extends MY_Model{
+class Mdl_lists extends MY_Model{
 
 	public function __construct(){
 		parent::__construct();
