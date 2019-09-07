@@ -141,6 +141,117 @@ class Module extends Api_Controller {
 
     }
 
+    function dashboard(){
+
+        // If the token is valid, send Cound of Chemist, doctor, Speciality wises count and About Content to APP
+		// Else return the error message to the APP
+
+		/**
+		 * @api {post} /api/module/dashboard dashboard
+         * @apiName dashboard
+         * @apiGroup Module
+		 *
+		 * @apiSuccess {Number} code HTTP Status Code.
+		 * @apiSuccess {String} message  Associated Message.
+		 * @apiSuccess {Object} data  About Content Object With Token
+		 * @apiSuccess {Object} error  Error if Any.
+		 *
+		 * @apiSuccessExample Success-Response:
+			*     HTTP/1.1 200 OK
+			*     {
+            *       "message": "OK",
+            *       "error": "",
+            *       "code": 200,
+            *       "data": {
+            *       "slider": [
+            *            {
+            *                "title": "Chemist",
+            *                "count": "15",
+            *                "image": "http://aux.iconspalace.com/uploads/file-person-icon-128.png"
+            *            },
+            *            {
+            *                "title": "Doctor",
+            *                "count": "15",
+            *                "image": "http://aux.iconspalace.com/uploads/file-person-icon-128.png"
+            *            }
+            *       ],
+            *       "specialitygrid": [
+            *           {
+            *               "speciality_id": "1",
+            *               "speciality_name": "Derma",
+            *               "count": "0",
+            *               "color": "#DCF4FE",
+            *               "image": "http://aux.iconspalace.com/uploads/file-person-icon-128.png"
+            *           },
+            *       ],
+            *       "about": "asdasdasdasdsadas",
+            *       "request_id": 1567842916.9668
+            *       }
+            *   }
+            */
+
+        $user_id = $this->id;
+        $data = $this->model->get_collection($user_id);
+        
+        $countdata = [];
+        $chemistData = [];
+        $doctorData = [];
+        
+        $ccount['title'] = 'Chemist';
+        $ccount['count'] = ($data) ? $data[0]['chemist_count'] : 0;
+        $ccount['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+        
+
+        $dcount['title'] = 'Doctor';
+        $dcount['count'] = ($data) ? $data[0]['doctor_count'] : 0;            
+        $dcount['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+        
+        array_push($countdata, $ccount, $dcount);
+        
+        $specialtygrid = [];
+        $specialtydata = [];
+
+        $speciality = $this->model->get_records([], 'speciality');
+        if(count($speciality) > 0){
+            foreach($speciality as $value){
+                $speciality_data['speciality_id'] = $value->speciality_id;
+                $speciality_data['speciality_name'] = $value->speciality_name;
+                
+                $speciality = $this->model->get_speciality_count($speciality_data['speciality_id'], $user_id);
+                $speciality_data['count'] = $speciality[0]['doctor_count'];
+
+                if($speciality_data['speciality_name'] == 'Derma'){
+                    $speciality_data['color'] = '#DCF4FE';
+                }elseif($speciality_data['speciality_name'] == 'CP'){
+                    $speciality_data['color'] = '#F9E8E7';
+                }elseif($speciality_data['speciality_name'] == 'GP'){
+                    $speciality_data['color'] = '#FFFBD3';
+                }elseif($speciality_data['speciality_name'] == 'Gynae'){
+                    $speciality_data['color'] = '#FFE2F7';
+                }else{
+                    $speciality_data['color'] = '';
+                }
+                
+                $speciality_data['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+
+                array_push($specialtydata, $speciality_data);
+            }
+            
+        }
+
+        $get_about = $this->model->get_records([], 'about', ['about'], '', 1);
+        $about = count($get_about) > 0 ? $get_about[0]->about : '';
+        
+        $this->response['code'] = 200;
+        $this->response['data'] = [
+            "slider" => $countdata,
+            "specialitygrid" => $specialtydata,
+            "about" => $about,
+        ];
+        $this->sendResponse();
+
+    }
+
     function speciality(){
 
 		// Get Speciality Type for Validating
