@@ -13,14 +13,14 @@ class Lists extends Api_Controller {
 
 	}
 
-	function list()
+	function chemist_doctor_list()
 	{	
 		// Get type (doctor, chemist) for app
 		// If records are present, return the List on the basis of type to the APP
 		// Else return the error message to the APP
 		/**
-		* @api {post} /api/lists/list List
-		* @apiName list
+		* @api {post} /api/lists/chemist_doctor_list List
+		* @apiName chemist_doctor_list
 		* @apiGroup Lists
 		*
 		*@apiParam {String {chemist, doctor}}  cateogry Category.
