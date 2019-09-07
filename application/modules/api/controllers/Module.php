@@ -646,7 +646,7 @@ class Module extends Api_Controller {
 
         }
 
-        if(count($error) <= 0){
+        //if(count($error) <= 0){
 
             $chemistdata = [];
             $doctordata = [];
@@ -723,7 +723,7 @@ class Module extends Api_Controller {
             $this->response['code'] = 200;
             $this->response['message'] = "Added Successfully";
             $this->sendResponse();
-        }
+        //}
 
         $this->response['code'] = 400;
         $this->response['message'] = $error;
