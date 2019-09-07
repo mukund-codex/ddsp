@@ -19,7 +19,7 @@ class Lists extends Api_Controller {
 		// If records are present, return the List on the basis of type to the APP
 		// Else return the error message to the APP
 		/**
-		* @api {post} /api/lists/chemist_doctor_list List
+		* @api {post} /api/lists/chemist_doctor_list Chemist Doctor List
 		* @apiName chemist_doctor_list
 		* @apiGroup Lists
 		*
