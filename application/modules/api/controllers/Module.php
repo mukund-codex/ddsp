@@ -482,6 +482,101 @@ class Module extends Api_Controller {
 
     }
 
+    function imageupload(){
+
+        // Add Images To the System
+		/**
+		* @api {post} /api/module/imageupload Upload Image
+		* @apiName imageupload
+		* @apiGroup Module
+		*
+
+		*
+		* @apiParam {String} id Doctor/Chemist ID
+		* @apiParam {String {chemist, doctor}} category Category
+		* @apiParam {File} images Doctor/Chemist Images(JPEG, JPG, PNG)
+
+		* @apiSuccess {Number} code HTTP Status Code.
+		* @apiSuccess {String} message  Associated Message.
+		* @apiSuccess {Object} data  Doctor Record Object With Token
+		* @apiSuccess {Object} error  Error if Any.
+		*
+		* @apiSuccessExample Success-Response:
+		*     HTTP/1.1 200 OK
+		*     {
+        *           "message": "Images Uploaded",
+        *           "error": "",
+        *           "code": 200,
+        *           "data": {
+        *               "request_id": 1568004052.413862
+        *           }
+        *      }
+		*/
+
+        $user_id = $this->id;
+
+        $category = $this->input->post('category');
+
+        if(sizeof($_FILES['images']['name']) <= 0){
+            $this->response['code'] = 400;
+            $this->response['message'] = 'Atleast upload 1 image.';
+            $this->sendResponse();
+            return;
+        }
+
+        if(sizeof($_FILES['images']['name']) > 3){
+            $this->response['code'] = 400;
+            $this->response['message'] = 'Only upload 3 images.';
+            $this->sendResponse();
+            return;
+        }
+
+        $path = 'uploads/doctorImages/';
+
+        if($category == 'chemist'){
+            $path = 'uploads/chemistImages/';
+        }
+        
+
+        if(!empty($_FILES['images'])) {
+			
+			$this->load->helper('upload_media');
+			$is_file_upload = upload_media('images', $path, ['jpeg', 'png', 'jpg'], 10000000);
+	
+			if(array_key_exists('error', $is_file_upload)) {
+				$this->response['code'] = 400;
+				$this->response['message'] = $is_file_upload['error'];
+				$this->error = array('message'=> $is_file_upload['error']);
+				$this->sendResponse();
+				return;
+            }
+            
+           /*  echo '<pre>';
+            print_r($is_file_upload);exit; */
+
+            foreach($is_file_upload as $upload){
+                
+                if($category == 'chemist'){
+                    $data['chemist_id'] = $this->input->post('id');
+                }else{
+                    $data['doctor_id'] = $this->input->post('id');
+                }
+                $data['category'] = $category;
+                $data['image_name'] = $upload['file_name'];
+                $data['image_path'] = $upload['full_path'];
+
+                $id = $this->model->_insert($data, 'images');
+            }
+
+            $this->response['code'] = 200;
+            $this->response['message'] = 'Images Uploaded';
+            $this->sendResponse();
+            return;
+
+		}
+
+    }
+
     function adddetails(){
         $user_id = $this->id;
 
