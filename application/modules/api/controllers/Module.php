@@ -636,7 +636,7 @@ class Module extends Api_Controller {
        * @apiParam {Number} chemist.pincode Chemist Pincode
        *
        * @apiParam {Object[]} chemist.doctor
-       * @apiParam {String} chemist.doctor.id Doctor ID
+       * @apiParam {Number} chemist.doctor.id Doctor ID
        * @apiParam {String} chemist.doctor.name Doctor Name
        * @apiParam {Number} chemist.doctor.speciality Doctor Speciality
        * @apiParam {String} chemist.doctor.address Doctor Address
