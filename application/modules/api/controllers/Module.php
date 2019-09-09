@@ -578,6 +578,114 @@ class Module extends Api_Controller {
     }
 
     function adddetails(){
+        
+         // Add Chemist & Doctor To the System
+		/**
+		* @api {post} /api/module/adddetails Add Chemist/Doctor
+		* @apiName adddetails
+		* @apiGroup Module
+		*
+
+		* @apiParam {Object} chemist
+        * @apiParam {String} chemist.name Chemist Name
+        * @apiParam {String} chemist.address Chemist Address
+        * @apiParam {Number} chemist.state Chemist State
+        * @apiParam {Number} chemist.city Chemist City
+        * @apiParam {Number} chemist.pincode Chemist Pincode
+        *
+        * @apiParam {Object} chemist.doctor
+        * @apiParam {String} chemist.doctor.name Doctor Name
+        * @apiParam {Number} chemist.doctor.speciality Doctor Speciality
+        * @apiParam {String} chemist.doctor.address Doctor Address
+        * @apiParam {Number} chemist.doctor.state Doctor State
+        * @apiParam {Number} chemist.doctor.city Doctor City
+        * @apiParam {Number} chemist.doctor.pincode Doctor Pincode
+        * @apiParam {String {chemist, doctor}} category Category
+        *
+        * @apiParam {Object[]} chemist.doctor.potential Potential/Molecule List
+        * @apiParam {Object} chemist.doctor.potential.molecule 
+        * @apiParam {Number} chemist.doctor.potential.molecule.molecule Molecule ID
+        * @apiParam {Object[]} chemist.doctor.potential.molecule.brand Brand List
+        * @apiParam {Number} chemist.doctor.potential.molecule.brand.id Brand ID
+        * @apiParam {Boolean} chemist.doctor.potential.molecule.brand.isSKU isSKU
+        * @apiParam {Number} chemist.doctor.potential.molecule.brand.rxn RXN
+        * @apiParam {String} chemist.doctor.potential.molecule.brand.name Name
+        * @apiParam {String {yes, no}} chemist.doctor.potential.molecule.brand.other Other
+        *
+        * @apiParam {Object[]} chemist.doctor.potential.molecule.brand.sku SKU List
+        * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.id SKU ID
+        * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.rxn RXN
+        *
+		* @apiSuccess {Number} code HTTP Status Code.
+		* @apiSuccess {String} message  Associated Message.
+		* @apiSuccess {Object} data  Doctor Record Object With Token
+		* @apiSuccess {Object} error  Error if Any.
+		*
+		* @apiSuccessExample Success-Response:
+		*     HTTP/1.1 200 OK
+		*     {
+        *           "message": "Images Uploaded",
+        *           "error": "",
+        *           "code": 200,
+        *           "data": {
+        *               "request_id": 1568004052.413862
+        *           }
+        *      }
+        *
+        * @apiErrorExample {json} Error-Response:
+        *     HTTP/1.1 400 Bad Request
+        *     {
+        *       "message": {
+        *           "error": {
+        *               "chemist": {
+        *                   "chemist_name": "Required",
+        *                   "chemist_state": "Invalid State",
+        *                   "chemist_city": "Invalid City",
+        *                   "doctor": [
+        *                       {
+        *                           "doctor_state": "Invalid State",
+        *                           "doctor_city": "Invalid City",
+        *                           "potential": [
+        *                               {
+        *                                   "brand_id": 14,
+        *                                   "message": "Invalid Brand",
+        *                                   "sku": [
+        *                                       {
+        *                                           "sku_id": 2,
+        *                                           "message": "Invalid SKU"
+        *                                       }
+        *                                   ]
+        *                               }
+        *                           ]
+        *                       },
+        *                       {
+        *                           "doctor_state": "Invalid State",
+        *                           "doctor_city": "Invalid City",
+        *                           "potential": [
+        *                               {
+        *                                   "brand_id": 14,
+        *                                   "message": "Invalid Brand",
+        *                                   "sku": [
+        *                                       {
+        *                                           "sku_id": 2,
+        *                                           "message": "Invalid SKU"
+        *                                       }
+        *                                   ]
+        *                               }
+        *                           ]
+        *                       }
+        *                   ]
+        *               }
+        *           }
+        *       },
+        *       "error": "",
+        *       "code": 400,
+        *       "data": {
+        *           "request_id": 1568009643.534291
+        *       }
+        *   }
+		*/
+
         $user_id = $this->id;
 
         $chemist = $this->input_data['chemist'];
@@ -667,21 +775,23 @@ class Module extends Api_Controller {
             foreach ($potential as $k2 => $molecule) {
                 $molecule_id = $molecule['molecule'];
 
+                $potential_error = [];
+
                 if(empty($molecule_id)) {
                     $error['error']['status'] = FALSE;
-                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['molecule'] = "Molecule Required";
+                   $potential_error[$k2]['molecule'] = "Molecule Required";
                     continue;
                 }
 
                 $moleculedata = $this->model->get_records(['molecule_id' => $molecule_id], 'molecule');
                 if(empty($moleculedata)){
-                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['molecule'] = 'Invalid Molecule';
+                   $potential_error[$k2]['molecule'] = 'Invalid Molecule';
                 }
 
                 $brands = $molecule['brand'];
 
                 if(count($brands) <= 0) {
-                    $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand']['message'] = 'Empty Brand Data';
+                   $potential_error[$k2]['brand']['message'] = 'Empty Brand Data';
                 }
 
                 foreach ($brands as $k3 => $brand) {
@@ -693,22 +803,22 @@ class Module extends Api_Controller {
                     $skus = isset($brand['sku']) ? $brand['sku'] : '';;
 
                     // validate
-                    $brand_error = $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'];
+                    $brand_error = [];
 
                     if($isSKU) {
                         if(empty($brand_id)) {
-                            $brand_error[$k3]['brand_id'] = $brand_id;
-                            $brand_error[$k3]['message'] = 'Required';
+                            $brand_error['brand_id'] = $brand_id;
+                            $brand_error['message'] = 'Required';
                         }
 
                         $branddata = $this->model->get_records(['brand_id' => $brand_id, 'molecule_id' => $molecule_id], 'brand');
                         if(empty($branddata)){
-                            $brand_error[$k3]['brand_id'] = $brand_id;
-                            $brand_error[$k3]['message'] = 'Invalid Brand';
+                            $brand_error['brand_id'] = $brand_id;
+                            $brand_error['message'] = 'Invalid Brand';
                         }
 
                         if(count($skus) <= 0) {
-                            $brand_error[$k3]['sku'] = 'Empty SKU Data';
+                            $brand_error['sku'] = 'Empty SKU Data';
                         }
 
                         foreach ($skus as $k4 => $sku) {
@@ -716,29 +826,33 @@ class Module extends Api_Controller {
                             $sku_rxn = $sku['rxn'];
 
                             if(empty($sku_id)) {
-                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['sku_id'] = 'Required';
+                                $brand_error['sku'][$k4]['sku_id'] = 'Required';
                             }
 
                             $skudata = $this->model->get_records(['sku_id' => $sku_id, 'brand_id' => $brand_id], 'sku');
                             if(empty($skudata)){
-                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['sku_id'] = $sku_id;
-                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'][$k4]['message'] = 'Invalid SKU';
+                                $brand_error['sku'][$k4]['sku_id'] = $sku_id;
+                                $brand_error['sku'][$k4]['message'] = 'Invalid SKU';
                             }
 
                         }
                     } else {
                         if($other === 'yes') {
                             if(empty($brand_name) || empty($brand_rxn)) {
-                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_name'] = 'Required';
+                                $brand_error[$k3]['brand_name'] = 'Required';
                             }
                         } else if($other === 'no') {
                             if(empty($brand_id) || empty($brand_rxn)) {
-                                $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['rxn'] = 'Required';
+                                $brand_error[$k3]['rxn'] = 'Required';
                             }
                         }
                     }
+
+                    $potential_error[$k2] = $brand_error;
                 }
             }
+
+            $error['error']['chemist']['doctor'][$k1]['potential'] = $potential_error;
 
         }
 
