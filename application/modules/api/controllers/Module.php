@@ -813,12 +813,12 @@ class Module extends Api_Controller {
            }
 
            $doctorstate = $this->model->get_records(['id' => $doctor_state], 'state');
-           if(empty($chemistState)){
+           if(empty($doctorstate)){
                $error['error']['chemist']['doctor'][$k1]['doctor_state'] = 'Invalid State';
            }
 
            $doctorcity = $this->model->get_records(['city_id' => $doctor_city, 'state_id' => $doctor_state], 'cities');
-           if(empty($chemistcity)){
+           if(empty($doctorcity)){
                $error['error']['chemist']['doctor'][$k1]['doctor_city'] = 'Invalid City';
            }
 

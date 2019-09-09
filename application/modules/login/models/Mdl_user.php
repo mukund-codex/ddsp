@@ -46,4 +46,5 @@ class Mdl_user extends MY_Model {
 
 		return FALSE;
 	}
+
 }
