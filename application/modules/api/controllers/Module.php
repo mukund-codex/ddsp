@@ -600,7 +600,6 @@ class Module extends Api_Controller {
         * @apiParam {Number} chemist.doctor.state Doctor State
         * @apiParam {Number} chemist.doctor.city Doctor City
         * @apiParam {Number} chemist.doctor.pincode Doctor Pincode
-        * @apiParam {String {chemist, doctor}} category Category
         *
         * @apiParam {Object[]} chemist.doctor.potential Potential/Molecule List
         * @apiParam {Object} chemist.doctor.potential.molecule 
