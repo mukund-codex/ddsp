@@ -45,9 +45,40 @@ class Lists extends Api_Controller {
 		*            		"state": "Gujarat",
 		*            		"city": "Bobbili",
 		*            		"pincode": "400099",
-		*            		"image": []
+		*            		"image": [
+        *            			{
+        *                			"file_id": "1",
+        *                			"file_path": "http://192.168.0.167/derma_svl/uploads/doctorImages/d103d704ee77e6bc6321ed2540899579.jpg"
+        *            			},
+        *            			{
+        *                			"file_id": "2",
+        *                			"file_path": "http://192.168.0.167/derma_svl/uploads/doctorImages/884b9647211c6d0dbfc4d9c98370733c.jpg"
+        *            			}
+        *        			]
 		*        		},
 		*    		],
+		*			"filterspeciality": [
+        *    			{
+        *        			"speciality_id": "1",
+        *        			"speciality_name": "Derma",
+        *        			"count": "0"
+        *    			},
+        *    			{
+        *        			"speciality_id": "2",
+        *        			"speciality_name": "CP",
+        *        			"count": "0"
+        *    			},
+        *    			{
+        *        			"speciality_id": "3",
+        *        			"speciality_name": "GP",
+        *        			"count": "15"
+        *    			},
+        *    			{
+        *        			"speciality_id": "4",
+        *        			"speciality_name": "Gynae",
+        *        			"count": "0"
+        *    			}
+        *			],
 		*    		"request_id": 1567847910.096092
 		*		}
 		*	}
@@ -61,7 +92,7 @@ class Lists extends Api_Controller {
 
 			$chemistrecords = $this->model->get_records(['users_id' => $user_id], 'chemist');
 			$chemistdata = [];
-
+			$images_data = [];
 			foreach($chemistrecords as $data){
 				$chemist_data['id'] = $data->chemist_id;
 				$chemist_data['name'] = $data->chemist_name;
@@ -71,6 +102,16 @@ class Lists extends Api_Controller {
 				$city_name = $this->model->get_records(['city_id' => $data->city] , 'cities', ['city_name']);
 				$chemist_data['city'] = !empty($city_name[0]->city_name) ? $city_name[0]->city_name : 0;
 				$chemist_data['pincode'] = $data->pincode;
+
+				$imageData = $this->model->get_records(['chemist_id'=>$data->chemist_id], 'images', ['image_id', 'image_name']);
+				foreach($imageData as $image){
+					$image_data['file_id'] = $image->image_id;
+					$image_data['file_path'] = base_url($image->image_name);
+					array_push($images_data, $image_data);
+
+				}
+				$doctor_data['image'] = $images_data;
+
 				$chemist_data['image'] = [];
 				array_push($chemistdata, $chemist_data);
 			}
@@ -89,6 +130,7 @@ class Lists extends Api_Controller {
 			$doctordata = [];
 
 			foreach($doctorrecords as $value){
+				$images_data = [];
 				$doctor_data['id'] = $value->doctor_id;
 				$doctor_data['name'] = $value->doctor_name;
 
@@ -105,15 +147,40 @@ class Lists extends Api_Controller {
 				$doctor_data['city'] = !empty($city_name[0]->city_name) ? $city_name[0]->city_name : 0;
 
 				$doctor_data['pincode'] = $value->pincode;
-				$doctor_data['image'] = [];
+
+				$imageData = $this->model->get_records(['doctor_id'=>$value->doctor_id], 'images', ['image_id', 'image_name']);
+				foreach($imageData as $image){
+					$image_data['file_id'] = $image->image_id;
+					$image_data['file_path'] = base_url($image->image_name);
+					array_push($images_data, $image_data);
+
+				}
+				$doctor_data['image'] = $images_data;
 
 				array_push($doctordata, $doctor_data);
 			}
-		
+
+			$specialtygrid = [];
+			$specialtydata = [];
+
+			$speciality = $this->model->get_records([], 'speciality');
+			if(count($speciality) > 0){
+				foreach($speciality as $value){
+					$speciality_data['speciality_id'] = $value->speciality_id;
+					$speciality_data['speciality_name'] = $value->speciality_name;
+					
+					$speciality = $this->model->get_speciality_count($speciality_data['speciality_id'], $user_id);
+					$speciality_data['count'] = $speciality[0]['doctor_count'];
+					array_push($specialtydata, $speciality_data);
+				}
+				
+			}
+
 			$this->response['message'] = empty($doctorrecords) ? "No Doctor Data Found" : "Doctor List";
 			$this->response['code'] = 200;
 			$this->response['data'] = [
 				"list" => $doctordata,
+				"filterspeciality" => $specialtydata
 			];
 			$this->sendResponse(); // return the response
 		}

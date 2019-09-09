@@ -27,5 +27,18 @@ class Mdl_lists extends MY_Model{
 
 		$collection = $q->get()->result_array();
 		return $collection;
-    }
+	}
+	
+	function get_speciality_count($speciality_id, $user_id){
+		$q = $this->db->select('count(doctor_id) as doctor_count')
+		->from('doctor')
+		->where('speciality', $speciality_id)
+		->where('users_id', $user_id);
+
+		//echo $this->db->get_compiled_select();exit;
+
+		$collection = $q->get()->result_array();
+		return $collection;
+
+	}	
 }

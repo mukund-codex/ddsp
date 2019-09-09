@@ -486,7 +486,7 @@ class Module extends Api_Controller {
 
         // Add Images To the System
 		/**
-		* @api {post} /api/module/imageupload Upload Image
+		* @api {post} /api/module/imageupload Upload Images
 		* @apiName imageupload
 		* @apiGroup Module
 		*
@@ -569,7 +569,7 @@ class Module extends Api_Controller {
             }
 
             $this->response['code'] = 200;
-            $this->response['message'] = 'Images Uploaded';
+            $this->response['message'] = 'Images Uploaded Successfully';
             $this->sendResponse();
             return;
 
@@ -693,21 +693,22 @@ class Module extends Api_Controller {
                     $skus = isset($brand['sku']) ? $brand['sku'] : '';;
 
                     // validate
+                    $brand_error = $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'];
 
                     if($isSKU) {
                         if(empty($brand_id)) {
-                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_id'] = $brand_id;
-                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['message'] = 'Required';
+                            $brand_error[$k3]['brand_id'] = $brand_id;
+                            $brand_error[$k3]['message'] = 'Required';
                         }
 
                         $branddata = $this->model->get_records(['brand_id' => $brand_id, 'molecule_id' => $molecule_id], 'brand');
                         if(empty($branddata)){
-                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['brand_id'] = $brand_id;
-                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['message'] = 'Invalid Brand';
+                            $brand_error[$k3]['brand_id'] = $brand_id;
+                            $brand_error[$k3]['message'] = 'Invalid Brand';
                         }
 
                         if(count($skus) <= 0) {
-                            $error['error']['chemist']['doctor'][$k1]['potential'][$k2]['brand'][$k3]['sku'] = 'Empty SKU Data';
+                            $brand_error[$k3]['sku'] = 'Empty SKU Data';
                         }
 
                         foreach ($skus as $k4 => $sku) {
@@ -741,7 +742,7 @@ class Module extends Api_Controller {
 
         }
 
-        //if(count($error) <= 0){
+        if(count($error) <= 0){
 
             $chemistdata = [];
             $doctordata = [];
@@ -816,14 +817,13 @@ class Module extends Api_Controller {
             }
 
             $this->response['code'] = 200;
-            $this->response['message'] = "Added Successfully";
+            $this->response['message'] = "Data Added Successfully";
             $this->sendResponse();
-        //}
+        }
 
         $this->response['code'] = 400;
         $this->response['message'] = $error;
         $this->sendResponse();
-        //echo json_encode($error);exit;
         
     }
 
