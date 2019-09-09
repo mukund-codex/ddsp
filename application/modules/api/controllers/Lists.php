@@ -92,7 +92,8 @@ class Lists extends Api_Controller {
 				$doctor_data['id'] = $value->doctor_id;
 				$doctor_data['name'] = $value->doctor_name;
 
-				$speciality_name = $this->model->get_records(['speciality_id'=>$value->speciality], 'speciality', ['speciality_name']);
+				$speciality_name = $this->model->get_records(['speciality_id'=>$value->speciality], 'speciality', ['speciality_id', 'speciality_name']);
+				$doctor_data['speciality_id'] = $speciality_name[0]->speciality_id;
 				$doctor_data['speciality_name'] = $speciality_name[0]->speciality_name;
 
 				$doctor_data['address'] = $value->address;
