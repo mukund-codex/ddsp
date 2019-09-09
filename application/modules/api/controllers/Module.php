@@ -636,19 +636,21 @@ class Module extends Api_Controller {
        * @apiParam {Number} chemist.pincode Chemist Pincode
        *
        * @apiParam {Object[]} chemist.doctor
+       * @apiParam {String} chemist.doctor.id Doctor ID
        * @apiParam {String} chemist.doctor.name Doctor Name
        * @apiParam {Number} chemist.doctor.speciality Doctor Speciality
        * @apiParam {String} chemist.doctor.address Doctor Address
        * @apiParam {Number} chemist.doctor.state Doctor State
        * @apiParam {Number} chemist.doctor.city Doctor City
        * @apiParam {Number} chemist.doctor.pincode Doctor Pincode
+       * @apiParam {String {yes, no}} chemist.doctor.other Other Doctor
        *
        * @apiParam {Object[]} chemist.doctor.potential Potential/Molecule List
        * @apiParam {Object} chemist.doctor.potential.molecule 
        * @apiParam {Number} chemist.doctor.potential.molecule.molecule Molecule ID
        * @apiParam {Object[]} chemist.doctor.potential.molecule.brand Brand List
        * @apiParam {Number} chemist.doctor.potential.molecule.brand.id Brand ID
-       * @apiParam {Boolean} chemist.doctor.potential.molecule.brand.isSKU isSKU
+       * @apiParam {Boolean} chemist.doctor.potential.molecule.brand.isSku isSku
        * @apiParam {Number} chemist.doctor.potential.molecule.brand.rxn RXN
        * @apiParam {String} chemist.doctor.potential.molecule.brand.name Name
        * @apiParam {String {yes, no}} chemist.doctor.potential.molecule.brand.other Other
