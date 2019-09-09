@@ -280,7 +280,10 @@ class User extends Api_Controller {
 		}else{
 
 			$this->load->helper('send_sms');
+			$this->load->library('common');
+			$this->load->helper('bitly_url');
 
+			$users_id = $get_user[0]->users_id;
 			$users_mobile = $get_user[0]->users_mobile;
 			$users_name = $get_user[0]->users_name;
 
@@ -290,6 +293,20 @@ class User extends Api_Controller {
 			$msg = "Dear $users_name, ".PHP_EOL."Below is the link to change your password.";
 			
 			$msg_for = "Forget Password";
+
+			$request_token = $this->common->generate_random_string();
+			
+			$url = base_url("login/user/forgot_password?rid=$request_token");
+
+			$short_url = bitly_url($url);
+
+			$request_data['users_id'] = $users_id;
+			$request_data['request_token'] = $request_token;
+			$request_data['url'] = $url;
+			$request_data['short_url'] = $short_url;
+			$request_data['status'] = 1;
+
+			$request_id = $this->mdl_user->_insert($request_data, 'forgot_password_request');
 
 			//send_sms($to, $msg, $msg_for); 
 

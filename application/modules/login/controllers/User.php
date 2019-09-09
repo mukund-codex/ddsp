@@ -15,7 +15,22 @@ class User extends Login_Controller
     }
 
     function forgot_password(){
-        echo "aashdgfsahdgsavdngvsad";exit;
+        
+        $request_token = $_GET['rid'];
+        
+        if(empty($request_token)){
+            show_404();
+        }
+
+        $requestdata = $this->model->get_records(['request_token' => $request_token], 'forgot_password_request');
+
+        if(empty($requestdata)){
+            show_404();
+        }
+        $data['users_id'] = $requestdata[0]->users_id;
+
+        $this->set_view($data, 'user/forgot_password');
+    
     }
 
 }

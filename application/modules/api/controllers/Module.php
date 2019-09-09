@@ -515,66 +515,108 @@ class Module extends Api_Controller {
 
         $user_id = $this->id;
 
-        $category = $this->input->post('category');
+        $category = !empty($this->input->post('category')) ? strtolower($this->input->post('category')) : '';
+        $doctor_chemist_id  = (int) $this->input->post('id');
 
-        if(sizeof($_FILES['images']['name']) <= 0){
+        if(!array_key_exists('images', $_FILES) || ! is_array($_FILES['images']['name']) ) {
             $this->response['code'] = 400;
-            $this->response['message'] = 'Atleast upload 1 image.';
+            $this->response['message'] = 'Invalid key. Expecting Images Array.';
             $this->sendResponse();
             return;
         }
 
-        if(sizeof($_FILES['images']['name']) > 3){
+        if(count($_FILES['images']['name']) <= 0 || count($_FILES['images']['name']) > 3 ) {
             $this->response['code'] = 400;
-            $this->response['message'] = 'Only upload 3 images.';
+            $this->response['message'] = 'Min 1 Image and Max 3 Images Required';
             $this->sendResponse();
             return;
         }
 
-        $path = 'uploads/doctorImages/';
+        if(! in_array($category, ['chemist', 'doctor'])) {
+            $this->response['code'] = 400;
+            $this->response['message'] = 'Invalid Category';
+            $this->sendResponse();
+            return;
+        }
 
-        if($category == 'chemist'){
-            $path = 'uploads/chemistImages/';
+        $chemist_doctor = [];
+        $chemist_doctor['users_id'] = $user_id;
+
+        $is_max_fileupload = [];
+        $is_max_fileupload['category'] = $category;
+        $is_max_fileupload['users_id'] = $user_id;
+
+        if($category === 'chemist') {
+            $chemist_doctor['chemist_id'] = $doctor_chemist_id;
+            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'chemist', ['chemist_id']);
+
+            $is_max_fileupload['chemist_id'] = $doctor_chemist_id;    
+    
+        } else if($category === 'doctor') {
+            $chemist_doctor['doctor_id'] = $doctor_chemist_id;
+            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'doctor', ['doctor_id']);
+
+            $is_max_fileupload['doctor_id'] = $doctor_chemist_id;
         }
         
-
-        if(!empty($_FILES['images'])) {
-			
-			$this->load->helper('upload_media');
-			$is_file_upload = upload_media('images', $path, ['jpeg', 'png', 'jpg'], 10000000);
-	
-			if(array_key_exists('error', $is_file_upload)) {
-				$this->response['code'] = 400;
-				$this->response['message'] = $is_file_upload['error'];
-				$this->error = array('message'=> $is_file_upload['error']);
-				$this->sendResponse();
-				return;
-            }
-            
-           /*  echo '<pre>';
-            print_r($is_file_upload);exit; */
-
-            foreach($is_file_upload as $upload){
-                
-                if($category == 'chemist'){
-                    $data['chemist_id'] = $this->input->post('id');
-                }else{
-                    $data['doctor_id'] = $this->input->post('id');
-                }
-                $data['category'] = $category;
-                $data['image_name'] = $upload['file_name'];
-                $data['image_path'] = $upload['full_path'];
-
-                $id = $this->model->_insert($data, 'images');
-            }
-
-            $this->response['code'] = 200;
-            $this->response['message'] = 'Images Uploaded Successfully';
+        if(count($is_doctor_chemist_exist) < 0) {
+            $this->response['code'] = 400;
+            $this->response['message'] = "Invalid $category";
             $this->sendResponse();
             return;
+        }
 
-		}
 
+        $is_chemist_max_uploaded = $this->model->get_records($is_max_fileupload, 'images', ['image_id']);
+
+        $total_count = count($_FILES['images']['name']) + count($is_chemist_max_uploaded);
+
+        if($total_count > 3) {
+            $this->response['code'] = 400;
+            $this->response['message'] = "Maximum 3 Images Uploaded";
+            $this->sendResponse();
+            return;
+        }
+
+        
+        $path = ($category == 'doctor') ? 'uploads/doctorImages' : 'uploads/chemistImages';
+
+        $this->load->helper('upload_media');
+        $is_file_upload = upload_media('images', $path, ['jpeg', 'png', 'jpg'], 10000000);
+
+        if(array_key_exists('error', $is_file_upload)) {
+            $this->response['code'] = 400;
+            $this->response['message'] = $is_file_upload['error'];
+            $this->error = array('message'=> $is_file_upload['error']);
+            $this->sendResponse();
+            return;
+        }
+
+        $data = [];
+
+        foreach($is_file_upload as $upload){
+            $file_upload = [];
+                
+            if($category == 'chemist'){
+                $file_upload['chemist_id'] = $doctor_chemist_id;
+            }else{
+                $file_upload['doctor_id'] = $doctor_chemist_id;
+            }
+            $file_upload['users_id'] = $user_id;
+            $file_upload['category'] = $category;
+            $file_upload['image_name'] = $upload['file_name'];
+            $file_upload['image_path'] = $upload['full_path'];
+            array_push($data, $file_upload);            
+        }
+
+        if(count($data)) {
+            $is_files = $this->model->_insert_batch($data, 'images');
+        }
+
+        $this->response['code'] = 200;
+        $this->response['message'] = 'Images Uploaded Successfully';
+        $this->sendResponse();
+        return;
     }
 
     function adddetails(){
