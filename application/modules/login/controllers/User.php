@@ -16,8 +16,10 @@ class User extends Login_Controller
 
     function forgot_password(){
         
-        $request_token = $_GET['rid'];
+        $request_token = base664_decode($_GET['rid']);
         
+        echo $request_token;exit;
+
         if(empty($request_token)){
             show_404();
         }

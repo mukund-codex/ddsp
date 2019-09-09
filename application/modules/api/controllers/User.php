@@ -259,7 +259,7 @@ class User extends Api_Controller {
 		 *  	}
 		 */
 		
-		$users_emp_id = trim(isset($this->input_data['users_emp_id'])?$this->input_data['users_emp_id']:'');
+		$users_emp_id = (int) trim(isset($this->input_data['users_emp_id'])?$this->input_data['users_emp_id']:'');
 
 		if(empty($users_emp_id)){
 			$this->response['code'] = 400;
@@ -277,46 +277,46 @@ class User extends Api_Controller {
 			$this->error = array('message'=>'Invalid Employee Id. Please Try Again');
 			$this->sendResponse();
 			return;
-		}else{
-
-			$this->load->helper('send_sms');
-			$this->load->library('common');
-			$this->load->helper('bitly_url');
-
-			$users_id = $get_user[0]->users_id;
-			$users_mobile = $get_user[0]->users_mobile;
-			$users_name = $get_user[0]->users_name;
-
-			$to = $users_mobile;
-			$msg = "Dear ".$users_name.",";
-
-			$msg = "Dear $users_name, ".PHP_EOL."Below is the link to change your password.";
-			
-			$msg_for = "Forget Password";
-
-			$request_token = $this->common->generate_random_string();
-			
-			$url = base_url("login/user/forgot_password?rid=$request_token");
-
-			$short_url = bitly_url($url);
-
-			$request_data['users_id'] = $users_id;
-			$request_data['request_token'] = $request_token;
-			$request_data['url'] = $url;
-			$request_data['short_url'] = $short_url;
-			$request_data['status'] = 1;
-
-			$request_id = $this->mdl_user->_insert($request_data, 'forgot_password_request');
-
-			//send_sms($to, $msg, $msg_for); 
-
-			$this->response['code'] = 200;
-			$this->response['message'] = "SMS Sent";
-			$this->error = array('message'=>'SMS Sent');
-			$this->sendResponse();
-			return;
 		}
 
+		$this->load->helper(['send_sms', 'bitly_url']);
+		$this->load->library('common');
+
+		$users_id = $get_user[0]->users_id;
+		$users_mobile = $get_user[0]->users_mobile;
+		$users_name = $get_user[0]->users_name;
+		
+		$request_token = $this->common->generate_random_string();
+		$r_token = base64_encode($request_token);
+		
+		$url = base_url("login/user/forgot_password?rid=$r_token");
+
+		$short_url = bitly_url($url);
+
+		$msg = "Dear $users_name, ".PHP_EOL."Below is the link to change your password.".PHP_EQL."$short_url";
+		
+		$msg_for = "Forgot Password";
+
+		$request_data['users_id'] = $users_id;
+		$request_data['request_token'] = $request_token;
+		$request_data['url'] = $url;
+		$request_data['short_url'] = $short_url;
+		$request_data['status'] = 1;
+
+		$request_id = $this->mdl_user->_insert($request_data, 'forgot_password_request');
+
+		if($request_id){
+			$this->response['code'] = 200;
+			$this->response['message'] = "SMS Sent";
+			$this->sendResponse();
+			return;	
+		}
+		
+		$this->response['code'] = 400;
+		$this->response['message'] = "Something went wrong, Please try again.";
+		$this->sendResponse();
+		return;	
+		
 	}
 
 	function feedback(){

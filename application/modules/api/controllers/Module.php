@@ -621,365 +621,387 @@ class Module extends Api_Controller {
 
     function adddetails(){
         
-         // Add Chemist & Doctor To the System
-		/**
-		* @api {post} /api/module/adddetails Add Chemist/Doctor
-		* @apiName adddetails
-		* @apiGroup Module
-		*
+        // Add Chemist & Doctor To the System
+       /**
+       * @api {post} /api/module/adddetails Add Chemist/Doctor
+       * @apiName adddetails
+       * @apiGroup Module
+       *
 
-		* @apiParam {Object} chemist
-        * @apiParam {String} chemist.name Chemist Name
-        * @apiParam {String} chemist.address Chemist Address
-        * @apiParam {Number} chemist.state Chemist State
-        * @apiParam {Number} chemist.city Chemist City
-        * @apiParam {Number} chemist.pincode Chemist Pincode
-        *
-        * @apiParam {Object[]} chemist.doctor
-        * @apiParam {String} chemist.doctor.name Doctor Name
-        * @apiParam {Number} chemist.doctor.speciality Doctor Speciality
-        * @apiParam {String} chemist.doctor.address Doctor Address
-        * @apiParam {Number} chemist.doctor.state Doctor State
-        * @apiParam {Number} chemist.doctor.city Doctor City
-        * @apiParam {Number} chemist.doctor.pincode Doctor Pincode
-        *
-        * @apiParam {Object[]} chemist.doctor.potential Potential/Molecule List
-        * @apiParam {Object} chemist.doctor.potential.molecule 
-        * @apiParam {Number} chemist.doctor.potential.molecule.molecule Molecule ID
-        * @apiParam {Object[]} chemist.doctor.potential.molecule.brand Brand List
-        * @apiParam {Number} chemist.doctor.potential.molecule.brand.id Brand ID
-        * @apiParam {Boolean} chemist.doctor.potential.molecule.brand.isSKU isSKU
-        * @apiParam {Number} chemist.doctor.potential.molecule.brand.rxn RXN
-        * @apiParam {String} chemist.doctor.potential.molecule.brand.name Name
-        * @apiParam {String {yes, no}} chemist.doctor.potential.molecule.brand.other Other
-        *
-        * @apiParam {Object[]} chemist.doctor.potential.molecule.brand.sku SKU List
-        * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.id SKU ID
-        * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.rxn RXN
-        *
-		* @apiSuccess {Number} code HTTP Status Code.
-		* @apiSuccess {String} message  Associated Message.
-		* @apiSuccess {Object} data  Doctor Record Object With Token
-		* @apiSuccess {Object} error  Error if Any.
-		*
-		* @apiSuccessExample Success-Response:
-		*     HTTP/1.1 200 OK
-		*     {
-        *           "message": "Images Uploaded",
-        *           "error": "",
-        *           "code": 200,
-        *           "data": {
-        *               "request_id": 1568004052.413862
-        *           }
-        *      }
-        *
-        * @apiErrorExample {json} Error-Response:
-        *     HTTP/1.1 400 Bad Request
-        *     {
-        *       "message": {
-        *           "error": {
-        *               "chemist": {
-        *                   "chemist_name": "Required",
-        *                   "chemist_state": "Invalid State",
-        *                   "chemist_city": "Invalid City",
-        *                   "doctor": [
-        *                       {
-        *                           "doctor_state": "Invalid State",
-        *                           "doctor_city": "Invalid City",
-        *                           "potential": [
-        *                               {
-        *                                   "brand_id": 14,
-        *                                   "message": "Invalid Brand",
-        *                                   "sku": [
-        *                                       {
-        *                                           "sku_id": 2,
-        *                                           "message": "Invalid SKU"
-        *                                       }
-        *                                   ]
-        *                               }
-        *                           ]
-        *                       },
-        *                       {
-        *                           "doctor_state": "Invalid State",
-        *                           "doctor_city": "Invalid City",
-        *                           "potential": [
-        *                               {
-        *                                   "brand_id": 14,
-        *                                   "message": "Invalid Brand",
-        *                                   "sku": [
-        *                                       {
-        *                                           "sku_id": 2,
-        *                                           "message": "Invalid SKU"
-        *                                       }
-        *                                   ]
-        *                               }
-        *                           ]
-        *                       }
-        *                   ]
-        *               }
-        *           }
-        *       },
-        *       "error": "",
-        *       "code": 400,
-        *       "data": {
-        *           "request_id": 1568009643.534291
-        *       }
-        *   }
-		*/
+       * @apiParam {Object} chemist
+       * @apiParam {String} chemist.name Chemist Name
+       * @apiParam {String} chemist.address Chemist Address
+       * @apiParam {Number} chemist.state Chemist State
+       * @apiParam {Number} chemist.city Chemist City
+       * @apiParam {Number} chemist.pincode Chemist Pincode
+       *
+       * @apiParam {Object[]} chemist.doctor
+       * @apiParam {String} chemist.doctor.name Doctor Name
+       * @apiParam {Number} chemist.doctor.speciality Doctor Speciality
+       * @apiParam {String} chemist.doctor.address Doctor Address
+       * @apiParam {Number} chemist.doctor.state Doctor State
+       * @apiParam {Number} chemist.doctor.city Doctor City
+       * @apiParam {Number} chemist.doctor.pincode Doctor Pincode
+       *
+       * @apiParam {Object[]} chemist.doctor.potential Potential/Molecule List
+       * @apiParam {Object} chemist.doctor.potential.molecule 
+       * @apiParam {Number} chemist.doctor.potential.molecule.molecule Molecule ID
+       * @apiParam {Object[]} chemist.doctor.potential.molecule.brand Brand List
+       * @apiParam {Number} chemist.doctor.potential.molecule.brand.id Brand ID
+       * @apiParam {Boolean} chemist.doctor.potential.molecule.brand.isSKU isSKU
+       * @apiParam {Number} chemist.doctor.potential.molecule.brand.rxn RXN
+       * @apiParam {String} chemist.doctor.potential.molecule.brand.name Name
+       * @apiParam {String {yes, no}} chemist.doctor.potential.molecule.brand.other Other
+       *
+       * @apiParam {Object[]} chemist.doctor.potential.molecule.brand.sku SKU List
+       * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.id SKU ID
+       * @apiParam {Number} chemist.doctor.potential.molecule.brand.sku.rxn RXN
+       *
+       * @apiSuccess {Number} code HTTP Status Code.
+       * @apiSuccess {String} message  Associated Message.
+       * @apiSuccess {Object} data  Doctor Record Object With Token
+       * @apiSuccess {Object} error  Error if Any.
+       *
+       * @apiSuccessExample Success-Response:
+       *     HTTP/1.1 200 OK
+       *     {
+       *           "message": "Images Uploaded",
+       *           "error": "",
+       *           "code": 200,
+       *           "data": {
+       *               "request_id": 1568004052.413862
+       *           }
+       *      }
+       *
+       * @apiErrorExample {json} Error-Response:
+       *     HTTP/1.1 400 Bad Request
+       *     {
+       *       "message": {
+       *           "error": {
+       *               "chemist": {
+       *                   "chemist_name": "Required",
+       *                   "chemist_state": "Invalid State",
+       *                   "chemist_city": "Invalid City",
+       *                   "doctor": [
+       *                       {
+       *                           "doctor_state": "Invalid State",
+       *                           "doctor_city": "Invalid City",
+       *                           "potential": [
+       *                               {
+       *                                   "brand_id": 14,
+       *                                   "message": "Invalid Brand",
+       *                                   "sku": [
+       *                                       {
+       *                                           "sku_id": 2,
+       *                                           "message": "Invalid SKU"
+       *                                       }
+       *                                   ]
+       *                               }
+       *                           ]
+       *                       },
+       *                       {
+       *                           "doctor_state": "Invalid State",
+       *                           "doctor_city": "Invalid City",
+       *                           "potential": [
+       *                               {
+       *                                   "brand_id": 14,
+       *                                   "message": "Invalid Brand",
+       *                                   "sku": [
+       *                                       {
+       *                                           "sku_id": 2,
+       *                                           "message": "Invalid SKU"
+       *                                       }
+       *                                   ]
+       *                               }
+       *                           ]
+       *                       }
+       *                   ]
+       *               }
+       *           }
+       *       },
+       *       "error": "",
+       *       "code": 400,
+       *       "data": {
+       *           "request_id": 1568009643.534291
+       *       }
+       *   }
+       */
 
-        $user_id = $this->id;
+       $user_id = $this->id;
 
-        $chemist = $this->input_data['chemist'];
+       $chemist = isset($this->input_data['chemist']) ? $this->input_data['chemist'] : '';
 
-        $error = [];
+       $error = [];
 
-        if(empty($chemist)) {
-            $error['error']['chemist'] = 'Empty Chemist Data';
-        }
+       if(empty($chemist)) {
+           $error['error']['chemist'] = 'Empty Chemist Data';
+       }
 
-        $chemist_name = trim($chemist['name']);
-        $chemist_address = trim($chemist['address']);
-        $chemist_state = trim($chemist['state']);
-        $chemist_city = trim($chemist['city']);
-        $chemist_pincode = trim($chemist['pincode']);
+       $chemist_name = isset($chemist['name']) ? trim($chemist['name']) : '';
+       $chemist_address = isset($chemist['address']) ? trim($chemist['address']) : '';
+       $chemist_state = isset($chemist['state']) ? trim($chemist['state']) : '';
+       $chemist_city = isset($chemist['city']) ? trim($chemist['city']) : '';
+       $chemist_pincode = isset($chemist['pincode']) ? trim($chemist['pincode']) : '';
 
-        if(empty($chemist_name)) {
-            $error['error']['chemist']['chemist_name'] = "Required";
-        }
+       if(empty($chemist_name) || !array_key_exists('name', $chemist)) {
+           $error['error']['chemist']['chemist_name'] = "Required";
+       }
 
-        if(empty($chemist_address)){
-            $error['error']['chemist']['chemist_address'] = "Required";
-        }
+       if(empty($chemist_address)){
+           $error['error']['chemist']['chemist_address'] = "Required";
+       }
 
-        if(empty($chemist_state)){
-            $error['error']['chemist']['chemist_state'] = "Required";
-        }
+       if(empty($chemist_state)){
+           $error['error']['chemist']['chemist_state'] = "Required";
+       }
 
-        if(empty($chemist_city)){
-            $error['error']['chemist']['chemist_city'] = "Required";
-        }
+       if(empty($chemist_city)){
+           $error['error']['chemist']['chemist_city'] = "Required";
+       }
 
-        $chemiststate = $this->model->get_records(['id' => $chemist_state], 'state');
-        if(empty($chemistState)){
-            $error['error']['chemist']['chemist_state'] = 'Invalid State';
-        }
+       $chemistState = $this->model->get_records(['id' => $chemist_state], 'state');
+       if(empty($chemistState)){
+           $error['error']['chemist']['chemist_state'] = 'Invalid State';
+       }
 
-        $chemistcity = $this->model->get_records(['city_id' => $chemist_city, 'state_id' => $chemist_state], 'cities');
-        if(empty($chemistcity)){
-            $error['error']['chemist']['chemist_city'] = 'Invalid City';
-        }
+       $chemistCity = $this->model->get_records(['city_id' => $chemist_city, 'state_id' => $chemist_state], 'cities');
+       if(empty($chemistCity)){
+           $error['error']['chemist']['chemist_city'] = 'Invalid City';
+       }
 
-        $doctors = $chemist['doctor'];
-        
-        if(count($doctors) <= 0) {
-            $error['error']['chemist']['doctor'] = 'Empty Doctor Data';
-        }
+       $doctors = $chemist['doctor'];
+       
+       if(count($doctors) <= 0) {
+           $error['error']['chemist']['doctor'] = 'Empty Doctor Data';
+       }
 
-        foreach ($doctors as $k1 => $doctor) {
-            $doctor_name = $doctor['name'];
-            $doctor_speciality = $doctor['speciality'];
-            $doctor_address = $doctor['address'];
-            $doctor_state = $doctor['state'];
-            $doctor_city = $doctor['city'];
-            $doctor_pincode = $doctor['pincode'];
+       foreach ($doctors as $k1 => $doctor) {
+           
+           $doctor_speciality = isset($doctor['speciality']) ? $doctor['speciality'] : '';
+           $doctor_address = isset($doctor['address']) ? $doctor['address'] : '';
+           $doctor_state = isset($doctor['state']) ? $doctor['state'] : '';
+           $doctor_city = isset($doctor['city']) ? $doctor['city'] : '';
+           $doctor_pincode = isset($doctor['pincode']) ? $doctor['pincode'] : '';
+           $doctor_other = isset($doctor['other']) ? $doctor['other'] : ''; 
+           
+           if(empty($doctor_other)){
+               $error['error']['chemist']['doctor'][$k1]['other'] = "Required";
+           }
 
-            if(empty($doctor_name)) {
-                $error['error']['chemist']['doctor'][$k1]['doctor_name'] = "Required";
-            }
-
-            if(empty($doctor_speciality)){
-                $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = "Required";
-            }
-
-            $specialityData = $this->model->get_records(['speciality_id' => $doctor_speciality], 'speciality');
-            if(empty($specialityData)){
-                $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = 'Invalid Speciality';
-            }
-
-            $doctorstate = $this->model->get_records(['id' => $doctor_state], 'state');
-            if(empty($chemistState)){
-                $error['error']['chemist']['doctor'][$k1]['doctor_state'] = 'Invalid State';
-            }
-
-            $doctorcity = $this->model->get_records(['city_id' => $doctor_city, 'state_id' => $doctor_state], 'cities');
-            if(empty($chemistcity)){
-                $error['error']['chemist']['doctor'][$k1]['doctor_city'] = 'Invalid City';
-            }
-
-            $potential = $doctor['potential'];
-
-            if(count($potential) <= 0) {
-                $error['error']['chemist']['doctor'][$k1]['potential'] = 'Empty Potential Data';
-
-            }
-
-            foreach ($potential as $k2 => $molecule) {
-                $molecule_id = $molecule['molecule'];
-
-                $potential_error = [];
-
-                if(empty($molecule_id)) {
-                    $error['error']['status'] = FALSE;
-                   $potential_error[$k2]['molecule'] = "Molecule Required";
-                    continue;
+           if($doctor_other == 'yes'){
+                $doctor_name = isset($doctor['name']) ? $doctor['name'] : '';
+                if(empty($doctor_name)) {
+                    $error['error']['chemist']['doctor'][$k1]['doctor_name'] = "Required";
                 }
+           }else{
+               $doctor_id = isset($doctor['id']) ? $doctor['id'] : '';
+               $doctorrecords = $this->model->get_records(['doctor_id' => $doctor_id], 'doctor');
+               if(empty($doctorrecords)){
+                $error['error']['chemist']['doctor'][$k1]['doctor_id'] = "Invalid Doctor";
+               }
+           }
 
-                $moleculedata = $this->model->get_records(['molecule_id' => $molecule_id], 'molecule');
-                if(empty($moleculedata)){
-                   $potential_error[$k2]['molecule'] = 'Invalid Molecule';
-                }
+           if(empty($doctor_speciality)){
+               $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = "Required";
+           }
 
-                $brands = $molecule['brand'];
+           $specialityData = $this->model->get_records(['speciality_id' => $doctor_speciality], 'speciality');
+           if(empty($specialityData)){
+               $error['error']['chemist']['doctor'][$k1]['doctor_speciality'] = 'Invalid Speciality';
+           }
 
-                if(count($brands) <= 0) {
-                   $potential_error[$k2]['brand']['message'] = 'Empty Brand Data';
-                }
+           $doctorstate = $this->model->get_records(['id' => $doctor_state], 'state');
+           if(empty($chemistState)){
+               $error['error']['chemist']['doctor'][$k1]['doctor_state'] = 'Invalid State';
+           }
 
-                foreach ($brands as $k3 => $brand) {
-                    $brand_id = isset($brand['id']) ? $brand['id'] : '';
-                    $isSKU = $brand['isSKU'];
-                    $other = $brand['other'];
-                    $brand_rxn = isset($brand['rxn']) ? $brand['rxn'] : '';
-                    $brand_name = isset($brand['name']) ? $brand['name'] : '';
-                    $skus = isset($brand['sku']) ? $brand['sku'] : '';;
+           $doctorcity = $this->model->get_records(['city_id' => $doctor_city, 'state_id' => $doctor_state], 'cities');
+           if(empty($chemistcity)){
+               $error['error']['chemist']['doctor'][$k1]['doctor_city'] = 'Invalid City';
+           }
 
-                    // validate
-                    $brand_error = [];
+           $potential = $doctor['potential'];
 
-                    if($isSKU) {
-                        if(empty($brand_id)) {
-                            $brand_error['brand_id'] = $brand_id;
-                            $brand_error['message'] = 'Required';
-                        }
+           if(count($potential) <= 0) {
+               $error['error']['chemist']['doctor'][$k1]['potential'] = 'Empty Potential Data';
 
-                        $branddata = $this->model->get_records(['brand_id' => $brand_id, 'molecule_id' => $molecule_id], 'brand');
-                        if(empty($branddata)){
-                            $brand_error['brand_id'] = $brand_id;
-                            $brand_error['message'] = 'Invalid Brand';
-                        }
+           }
 
-                        if(count($skus) <= 0) {
-                            $brand_error['sku'] = 'Empty SKU Data';
-                        }
+           foreach ($potential as $k2 => $molecule) {
+               $molecule_id = isset($molecule['id']) ? $molecule['id'] : '';
 
-                        foreach ($skus as $k4 => $sku) {
-                            $sku_id = $sku['id'];
-                            $sku_rxn = $sku['rxn'];
+               $potential_error = [];
 
-                            if(empty($sku_id)) {
-                                $brand_error['sku'][$k4]['sku_id'] = 'Required';
-                            }
+               if(empty($molecule_id)) {
+                   $error['error']['status'] = FALSE;
+                  $potential_error[$k2]['id'] = "Molecule Required";
+                   continue;
+               }
 
-                            $skudata = $this->model->get_records(['sku_id' => $sku_id, 'brand_id' => $brand_id], 'sku');
-                            if(empty($skudata)){
-                                $brand_error['sku'][$k4]['sku_id'] = $sku_id;
-                                $brand_error['sku'][$k4]['message'] = 'Invalid SKU';
-                            }
+               $moleculedata = $this->model->get_records(['molecule_id' => $molecule_id], 'molecule');
+               if(empty($moleculedata)){
+                  $potential_error[$k2]['id'] = 'Invalid Molecule';
+               }
 
-                        }
-                    } else {
-                        if($other === 'yes') {
-                            if(empty($brand_name) || empty($brand_rxn)) {
-                                $brand_error[$k3]['brand_name'] = 'Required';
-                            }
-                        } else if($other === 'no') {
-                            if(empty($brand_id) || empty($brand_rxn)) {
-                                $brand_error[$k3]['rxn'] = 'Required';
-                            }
-                        }
-                    }
+               $brands = $molecule['brand'];
 
-                    $potential_error[$k2] = $brand_error;
-                }
-            }
+               if(count($brands) <= 0) {
+                  $potential_error[$k2]['brand']['message'] = 'Empty Brand Data';
+               }
 
-            $error['error']['chemist']['doctor'][$k1]['potential'] = $potential_error;
+               foreach ($brands as $k3 => $brand) {
+                   $brand_id = isset($brand['id']) ? $brand['id'] : '';
+                   $isSKU = isset($brand['isSku']) ? $brand['isSku'] : '';
+                   $other = isset($brand['other']) ? $brand['other'] : '';
+                   $brand_rxn = isset($brand['rxn']) ? $brand['rxn'] : '';
+                   $brand_name = isset($brand['name']) ? $brand['name'] : '';
+                   $skus = isset($brand['sku']) ? $brand['sku'] : '';
 
-        }
+                   // validate
+                   $brand_error = [];
 
-        if(count($error) <= 0){
+                   if($isSKU) {
+                       if(empty($brand_id)) {
+                           $brand_error['brand_id'] = $brand_id;
+                           $brand_error['message'] = 'Required';
+                       }
 
-            $chemistdata = [];
-            $doctordata = [];
-            $moleculedata = [];
-            $branddata = [];
-            $skudata = [];
-            $error = [];
+                       $branddata = $this->model->get_records(['brand_id' => $brand_id, 'molecule_id' => $molecule_id], 'brand');
+                       if(empty($branddata)){
+                           $brand_error['brand_id'] = $brand_id;
+                           $brand_error['message'] = 'Invalid Brand';
+                       }
 
-            $chemistdata['chemist_name'] = trim($this->input_data['chemist']['name']);
+                       if(count($skus) <= 0) {
+                           $brand_error['sku'] = 'Empty SKU Data';
+                       }
 
-            $chemistdata['address'] = trim($this->input_data['chemist']['address']);
-            $chemistdata['state'] = trim($this->input_data['chemist']['state']);
-            $chemistdata['city'] = trim($this->input_data['chemist']['city']);
-            $chemistdata['pincode'] = trim($this->input_data['chemist']['pincode']);
-            $chemistdata['users_id'] = $user_id;
-            
-            $chemist_id = $this->model->_insert($chemistdata, 'chemist');
+                       foreach ($skus as $k4 => $sku) {
+                           $sku_id = $sku['id'];
+                           $sku_rxn = $sku['rxn'];
 
-            foreach($this->input_data['chemist']['doctor'] as $doctor){
-                $doctordata['chemist_id'] = $chemist_id;
-                $doctordata['users_id'] = $user_id;
-                $doctordata['doctor_name'] = $doctor['name'];
-                $doctordata['speciality'] = $doctor['speciality'];
-                $doctordata['address'] = $doctor['address'];
-                $doctordata['state'] = $doctor['state'];
-                $doctordata['city'] = $doctor['city'];
-                $doctordata['pincode'] = $doctor['pincode'];
+                           if(empty($sku_id)) {
+                               $brand_error['sku'][$k4]['sku_id'] = 'Required';
+                           }
 
-                $doctor_id = $this->model->_insert($doctordata, 'doctor');
-                
-                foreach($doctor['potential'] as $molecule){
-                    $moleculedata['chemist_id'] = $chemist_id;
-                    $moleculedata['doctor_id'] = $doctor_id;
-                    $moleculedata['users_id'] = $user_id;
-                    $moleculedata['molecule'] = $molecule['molecule'];
+                           $skudata = $this->model->get_records(['sku_id' => $sku_id, 'brand_id' => $brand_id], 'sku');
+                           if(empty($skudata)){
+                               $brand_error['sku'][$k4]['sku_id'] = $sku_id;
+                               $brand_error['sku'][$k4]['message'] = 'Invalid SKU';
+                           }
 
-                    $molecule_id = $this->model->_insert($moleculedata, 'users_molecule');
+                       }
+                   } else {
+                       if($other === 'yes') {
+                           if(empty($brand_name) || empty($brand_rxn)) {
+                               $brand_error[$k3]['brand_name'] = 'Required';
+                           }
+                       } else if($other === 'no') {
+                           if(empty($brand_id) || empty($brand_rxn)) {
+                               $brand_error[$k3]['rxn'] = 'Required';
+                           }
+                       }
+                   }
 
-                    foreach($molecule['brand'] as $brand){
+                   $potential_error[$k2] = $brand_error;
+               }
+           }
 
-                        $branddata['chemist_id'] = $chemist_id;
-                        $branddata['doctor_id'] = $doctor_id;
-                        $branddata['users_id'] = $user_id;
-                        $branddata['molecule_id'] = $molecule_id;
-                        $branddata['brand_id'] = $brand['other'] == 'no' ? $brand['id'] : NULL;
-                        $branddata['brand_name'] = $brand['other'] == 'yes' ? $brand['name'] : NULL;
-                        $branddata['issku'] = $brand['isSKU'];
-                        $branddata['other'] = $brand['other'];
-                        $branddata['rxn'] = $brand['isSKU'] == FALSE ? $brand['rxn'] : '';
+           $error['error']['chemist']['doctor'][$k1]['potential'] = $potential_error;
 
-                        $brand_id = $this->model->_insert($branddata, 'users_brand');
+       }
 
-                        if($brand['isSKU'] == TRUE){
-                            foreach($brand['sku'] as $sku){
-                                $skudata['chemist_id'] = $chemist_id;
-                                $skudata['doctor_id'] = $doctor_id;
-                                $skudata['molecule_id'] = $molecule_id;
-                                $skudata['brand_id'] = $brand_id;
-                                $skudata['users_id'] = $user_id;
-                                $skudata['sku_id'] = $sku['id'];
-                                $skudata['rxn'] = $sku['rxn'];
-        
-                                $sku_id = $this->model->_insert($skudata, 'users_sku');
-        
-                            }
-                        }                    
+       if(count($error) <= 0){
 
-                    }
+           $chemistdata = [];
+           $doctordata = [];
+           $moleculedata = [];
+           $branddata = [];
+           $skudata = [];
+           $error = [];
 
-                }
+           $chemistdata['chemist_name'] = trim($this->input_data['chemist']['name']);
 
-            }
+           $chemistdata['address'] = trim($this->input_data['chemist']['address']);
+           $chemistdata['state'] = trim($this->input_data['chemist']['state']);
+           $chemistdata['city'] = trim($this->input_data['chemist']['city']);
+           $chemistdata['pincode'] = trim($this->input_data['chemist']['pincode']);
+           $chemistdata['users_id'] = $user_id;
+           
+           $chemist_id = $this->model->_insert($chemistdata, 'chemist');
 
-            $this->response['code'] = 200;
-            $this->response['message'] = "Data Added Successfully";
-            $this->sendResponse();
-        }
+           foreach($this->input_data['chemist']['doctor'] as $doctor){
+               $doctordata['chemist_id'] = $chemist_id;
+               $doctordata['users_id'] = $user_id;
+               $doctordata['doctor_name'] = $doctor['name'];
+               $doctordata['speciality'] = $doctor['speciality'];
+               $doctordata['address'] = $doctor['address'];
+               $doctordata['state'] = $doctor['state'];
+               $doctordata['city'] = $doctor['city'];
+               $doctordata['pincode'] = $doctor['pincode'];
 
-        $this->response['code'] = 400;
-        $this->response['message'] = $error;
-        $this->sendResponse();
-        
-    }
+               if($doctor['other'] == 'no'){
+                    $doc_id = $doctor['id'];
+                    $doctorrecords = $this->modal->get_records(['doctor_id' => $doctor_id], 'doctor', ['doctor_id']);
+                    if(!empty($doctorrecords)){
+                        $doctor_id = $doctorrecords[0]->doctor_id;
+                    } 
+               }else{
+                    $doctor_id = $this->model->_insert($doctordata, 'doctor');
+               }
+
+               foreach($doctor['potential'] as $molecule){
+                   $moleculedata['chemist_id'] = $chemist_id;
+                   $moleculedata['doctor_id'] = $doctor_id;
+                   $moleculedata['users_id'] = $user_id;
+                   $moleculedata['molecule'] = $molecule['id'];
+
+                   $molecule_id = $this->model->_insert($moleculedata, 'users_molecule');
+
+                   foreach($molecule['brand'] as $brand){
+
+                       $branddata['chemist_id'] = $chemist_id;
+                       $branddata['doctor_id'] = $doctor_id;
+                       $branddata['users_id'] = $user_id;
+                       $branddata['molecule_id'] = $molecule_id;
+                       $branddata['brand_id'] = $brand['other'] == 'no' ? $brand['id'] : NULL;
+                       $branddata['brand_name'] = $brand['other'] == 'yes' ? $brand['name'] : NULL;
+                       $branddata['issku'] = $brand['isSku'];
+                       $branddata['other'] = $brand['other'];
+                       $branddata['rxn'] = $brand['isSku'] == FALSE ? $brand['rxn'] : '';
+
+                       $brand_id = $this->model->_insert($branddata, 'users_brand');
+
+                       if($brand['isSku'] == TRUE){
+                           foreach($brand['sku'] as $sku){
+                               $skudata['chemist_id'] = $chemist_id;
+                               $skudata['doctor_id'] = $doctor_id;
+                               $skudata['molecule_id'] = $molecule_id;
+                               $skudata['brand_id'] = $brand_id;
+                               $skudata['users_id'] = $user_id;
+                               $skudata['sku_id'] = $sku['id'];
+                               $skudata['rxn'] = $sku['rxn'];
+       
+                               $sku_id = $this->model->_insert($skudata, 'users_sku');
+       
+                           }
+                       }                    
+
+                   }
+
+               }
+
+           }
+
+           $this->response['code'] = 200;
+           $this->response['message'] = "Data Added Successfully";
+           $this->sendResponse();
+       }
+
+       $this->response['code'] = 400;
+       $this->response['message'] = $error;
+       $this->sendResponse();
+       
+   }
 
 }
