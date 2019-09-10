@@ -83,6 +83,33 @@
                     </ul>
                 </li>
 
+                <li <?php echo (in_array($menu, ['communication','speciality', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">person_add</i>
+                        <span>Masters</span>
+                    </a>
+                    <ul class="ml-menu">       
+                        <li <?php echo (isset($menu) && $menu == 'communication') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Communication</span></a>
+                        </li>                 
+                        <li <?php echo (isset($menu) && $menu == 'speciality') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>"><i class="material-icons">language</i><span>Speciality</span></a>
+                        </li>                            
+                        <li <?php echo (isset($menu) && $menu == 'molecule') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("molecule/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Molecules</span></a>
+                        </li>                            
+                        <li <?php echo (isset($menu) && $menu == 'brand') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("brand/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Brands</span></a>
+                        </li>                            
+                        <li <?php echo (isset($menu) && $menu == 'sku') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("sku/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>SKU</span></a>
+                        </li>   
+                        <li <?php echo (isset($menu) && $menu == 'about') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("about/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>About</span></a>
+                        </li>                          
+                    </ul>
+                </li>
+
                 <!-- <li <?php echo ($mainmenu == 'doctor') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("doctor/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
@@ -90,35 +117,35 @@
                     </a>
                 </li> -->
 
-                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Communication</span>
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'speciality') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'speciality') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>">
                         <i class="material-icons">language</i>
                         <span>Speciality</span>
                     </a>
                 </li>
                 
-                <li <?php echo ($mainmenu == 'molecule') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'molecule') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("molecule/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Molecules</span>
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'brand') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'brand') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("brand/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Brands</span>
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'sku') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'sku') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("sku/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>SKU</span>
@@ -132,7 +159,7 @@
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'about') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'about') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("about/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>About</span>
