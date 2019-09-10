@@ -416,6 +416,7 @@ class Module extends Api_Controller {
        
         if(count($get_state) > 0){
             foreach($get_state as $key => $value){
+                $input_data = [];
                 $citydata = [];
                 $input_data['id'] = $value->id;
                 $input_data['name'] = $value->state;
