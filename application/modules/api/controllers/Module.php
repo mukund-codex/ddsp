@@ -688,55 +688,15 @@ class Module extends Api_Controller {
        * @apiErrorExample {json} Error-Response:
        *     HTTP/1.1 400 Bad Request
        *     {
-       *       "message": {
-       *           "error": {
-       *               "chemist": {
-       *                   "chemist_name": "Required",
-       *                   "chemist_state": "Invalid State",
-       *                   "chemist_city": "Invalid City",
-       *                   "doctor": [
-       *                       {
-       *                           "doctor_state": "Invalid State",
-       *                           "doctor_city": "Invalid City",
-       *                           "potential": [
-       *                               {
-       *                                   "brand_id": 14,
-       *                                   "message": "Invalid Brand",
-       *                                   "sku": [
-       *                                       {
-       *                                           "sku_id": 2,
-       *                                           "message": "Invalid SKU"
-       *                                       }
-       *                                   ]
-       *                               }
-       *                           ]
-       *                       },
-       *                       {
-       *                           "doctor_state": "Invalid State",
-       *                           "doctor_city": "Invalid City",
-       *                           "potential": [
-       *                               {
-       *                                   "brand_id": 14,
-       *                                   "message": "Invalid Brand",
-       *                                   "sku": [
-       *                                       {
-       *                                           "sku_id": 2,
-       *                                           "message": "Invalid SKU"
-       *                                       }
-       *                                   ]
-       *                               }
-       *                           ]
-       *                       }
-       *                   ]
-       *               }
-       *           }
-       *       },
-       *       "error": "",
-       *       "code": 400,
-       *       "data": {
-       *           "request_id": 1568009643.534291
-       *       }
-       *   }
+       *       {
+       *            "message": "Please enter the chemist name.",
+       *            "error": "",
+       *            "code": 400,
+       *            "data": {
+       *                "request_id": 1568111057.487055
+       *            }
+       *        }
+       *    }
        */
 
         $user_id = $this->id;
