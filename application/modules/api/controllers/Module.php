@@ -199,12 +199,12 @@ class Module extends Api_Controller {
         
         $ccount['title'] = 'Chemist';
         $ccount['count'] = ($data) ? $data[0]['chemist_count'] : 0;
-        $ccount['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+        $ccount['image'] = base_url('assets/images/dashboardImages/chemist.png');
         
 
         $dcount['title'] = 'Doctor';
         $dcount['count'] = ($data) ? $data[0]['doctor_count'] : 0;            
-        $dcount['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+        $dcount['image'] = base_url('assets/images/dashboardImages/doctor.png');
         
         array_push($countdata, $ccount, $dcount);
         
@@ -222,17 +222,22 @@ class Module extends Api_Controller {
 
                 if($speciality_data['speciality_name'] == 'Derma'){
                     $speciality_data['color'] = '#DCF4FE';
+                    $speciality_data['image'] = base_url('assets/images/dashboardImages/derma.png');
                 }elseif($speciality_data['speciality_name'] == 'CP'){
                     $speciality_data['color'] = '#F9E8E7';
+                    $speciality_data['image'] = base_url('assets/images/dashboardImages/cp.png');
                 }elseif($speciality_data['speciality_name'] == 'GP'){
                     $speciality_data['color'] = '#FFFBD3';
+                    $speciality_data['image'] = base_url('assets/images/dashboardImages/gp.png');
                 }elseif($speciality_data['speciality_name'] == 'Gynae'){
                     $speciality_data['color'] = '#FFE2F7';
+                    $speciality_data['image'] = base_url('assets/images/dashboardImages/gyne.png');
                 }else{
                     $speciality_data['color'] = '';
+                    $speciality_data['image'] = '';
                 }
                 
-                $speciality_data['image'] = 'http://aux.iconspalace.com/uploads/file-person-icon-128.png';
+                
 
                 array_push($specialtydata, $speciality_data);
             }
@@ -913,7 +918,14 @@ class Module extends Api_Controller {
 
        }
 
-       if(count($error) <= 0){
+       if(count($error) > 1){
+           $this->response['code'] = 400;
+           $this->response['errors'] = $error;
+           $this->response['message'] = 'All fields are required';
+           $this->sendResponse();
+       }
+       
+       if(count($error) <= 1){
 
            $chemistdata = [];
            $doctordata = [];
@@ -944,7 +956,7 @@ class Module extends Api_Controller {
 
                if($doctor['other'] == 'no'){
                     $doc_id = $doctor['id'];
-                    $doctorrecords = $this->modal->get_records(['doctor_id' => $doctor_id], 'doctor', ['doctor_id']);
+                    $doctorrecords = $this->model->get_records(['doctor_id' => $doctor_id], 'doctor', ['doctor_id']);
                     if(!empty($doctorrecords)){
                         $doctor_id = $doctorrecords[0]->doctor_id;
                     } 
@@ -998,11 +1010,8 @@ class Module extends Api_Controller {
            $this->response['code'] = 200;
            $this->response['message'] = "Data Added Successfully";
            $this->sendResponse();
-       }
 
-       $this->response['code'] = 400;
-       $this->response['message'] = $error;
-       $this->sendResponse();
+       }
        
    }
 

@@ -62,6 +62,11 @@ $route['user/login'] = 'login/user';
 $route['user/login'] = 'login/user';
 $route['user/login/submit'] = 'login/user/submit';
 
+$route['user/forgot_password'] = 'login/user/forgot_password';
+$route['user/change_password'] = 'login/user/change_password';
+
+$route['user/success'] = 'login/user/success';
+
 $route['settings/basic'] = 'settings/basic/add';
 $route['settings/basic/data'] = 'settings/basic/add';
 

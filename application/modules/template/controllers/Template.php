@@ -41,6 +41,7 @@ class Template extends MX_Controller {
 	}
 
 	function _login($data){
+		//echo '<pre>';print_r($data); exit;
 		$this->load->view('login', $data);
     }
     

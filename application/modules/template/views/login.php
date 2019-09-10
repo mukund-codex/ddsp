@@ -13,13 +13,18 @@
     <link href="<?php echo base_url() ?>assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/plugins/node-waves/waves.css" rel="stylesheet" />
     <link href="<?php echo base_url() ?>assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="<?php echo base_url() ?>assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet">
+    <script type="text/javascript">
+        var baseUrl = "<?php echo base_url() ?>";
+    </script>
 </head>
 
 <body class="login-page">
     <div class="login-box">
 		<div class="logo">
-		    <a href="javascript:void(0);"><b><?= $this->config->item('title') ?></b><br><?php echo strtoupper($module) ?></a>
+		    <a href="javascript:void(0);"><b><?= $this->config->item('title') ?></b><br>
+            <?php if($module != 'user'){ echo strtoupper($module); } ?></a>
 		</div>
 		
 		<div class="card">
@@ -45,8 +50,14 @@
 	<script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/bootstrap/js/bootstrap.js"></script>
     <script src='https://www.recaptcha.net/recaptcha/api.js' async defer></script>
+
     <script src="<?php echo base_url() ?>assets/plugins/node-waves/waves.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/sweetalert/sweetalert2.min.js"></script>
+
     <script src="<?php echo base_url() ?>assets/js/admin.js"></script>
     <script src="<?php echo base_url('pwabuilder-sw.js') ?>"></script>
+    <?php if(isset($js) && sizeof($js)): foreach($js as $javascript): ?>
+    <script type="text/javascript" src="<?php echo base_url()?>assets/resources/<?php echo $javascript ?>?ver=<?php echo $timestamp ?>"></script>
+    <?php endforeach; endif; ?>
 </body>
 </html>
