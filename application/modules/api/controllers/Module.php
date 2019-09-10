@@ -837,6 +837,12 @@ class Module extends Api_Controller {
             return $this->response;
         }
 
+        if(empty($chemist_pincode) || strlen($chemist_pincode) != 6){ 
+            $this->response['code'] = 400;
+            $this->response['message'] = 'Please enter correct chemist Pincode.';
+            return $this->response;
+        }
+
         $chemistState = $this->model->get_records(['id' => $chemist_state], 'state');
         if(empty($chemistState)){
             $this->response['code'] = 400;
@@ -903,7 +909,13 @@ class Module extends Api_Controller {
 
             if(empty($doctor_speciality)){
                 $this->response['code'] = 400;
-                $this->response['message'] = "Speciality required for Doctor $doctor_name";
+                $this->response['message'] = "Please enter Speciality for Doctor $doctor_name";
+                return $this->response;
+            }
+
+            if(empty($doctor_pincode) || strlen($doctor_pincode) != 6){
+                $this->response['code'] = 400;
+                $this->response['message'] = "Please enter correct Pincode for Doctor $doctor_name";
                 return $this->response;
             }
 
