@@ -88,10 +88,7 @@
                         <i class="material-icons">person_add</i>
                         <span>Masters</span>
                     </a>
-                    <ul class="ml-menu">       
-                        <li <?php echo (isset($menu) && $menu == 'communication') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Communication</span></a>
-                        </li>                 
+                    <ul class="ml-menu">                 
                         <li <?php echo (isset($menu) && $menu == 'speciality') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>"><i class="material-icons">language</i><span>Speciality</span></a>
                         </li>                            
@@ -117,7 +114,7 @@
                     </a>
                 </li> -->
 
-                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?> style="display:none;">
+                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Communication</span>

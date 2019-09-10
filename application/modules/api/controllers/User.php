@@ -395,7 +395,7 @@ class User extends Api_Controller {
 
 		*
 		* @apiParam {String} message message
-		* @apiParam {String} photo image
+		* @apiParam {file} photo image
 
 		* @apiSuccess {Number} code HTTP Status Code.
 		* @apiSuccess {String} message  Associated Message.
@@ -425,6 +425,8 @@ class User extends Api_Controller {
 			return;
 		}
 
+		$troubleshootData = [];
+
 		if(!empty($_FILES['photo'])) {
 			
 			$this->load->helper('upload_media');
@@ -437,16 +439,14 @@ class User extends Api_Controller {
 				$this->sendResponse();
 				return;
 			}
-		}
+			
+			if(!empty($is_file_upload)) {
+				$troubleshootData['image'] = $is_file_upload[0]['file_name'];
+			}
+		}		
 
-		if(!empty($is_file_upload)) {
-			$image = $is_file_upload[0]['file_name'];
-		}
-
-		$troubleshootData = [];
 		$troubleshootData['users_id'] = $user_id;
 		$troubleshootData['message'] = $message;
-		$troubleshootData['image'] = $image;
 
 		$troubleshoot_id = $this->mdl_user->_insert($troubleshootData, 'troubleshoot');
 
@@ -462,7 +462,5 @@ class User extends Api_Controller {
 		$this->response['message'] = "Troubleshoot submitted successfully.";
 		$this->sendResponse();
 		return;		
-
 	}
-
 }

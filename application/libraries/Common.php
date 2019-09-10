@@ -19,44 +19,44 @@ class Common {
 		$this->_ci = & get_instance();
 	}
 
-  	function time2str($ts) {
-	    if(!ctype_digit($ts)) {
-	        $ts = strtotime($ts);
-	    }
-	    $diff = time() - $ts;
-	    if($diff == 0) {
-	        return 'Updated now';
-	    } elseif($diff > 0) {
-	        $day_diff = floor($diff / 86400);
-	        if($day_diff == 0) {
-	            if($diff < 60) return 'Updated just now';
-	            if($diff < 120) return 'Updated 1 minute ago';
-	            if($diff < 3600) return 'Updated '.floor($diff / 60) . ' minutes ago';
-	            if($diff < 7200) return 'Updated 1 hour ago';
-	            if($diff < 86400) return 'Updated '.floor($diff / 3600) . ' hours ago';
-	        }
-	        if($day_diff == 1) { return 'Updated Yesterday'; }
-	        if($day_diff < 7) { return 'Updated '.$day_diff . ' days ago'; }
-	        if($day_diff < 31) { return 'Updated '.ceil($day_diff / 7) . ' weeks ago'; }
-	        if($day_diff < 60) { return 'Updated last month'; }
-	        return 'Updated '.date('F Y', $ts);
-	    } else {
-	        $diff = abs($diff);
-	        $day_diff = floor($diff / 86400);
-	        if($day_diff == 0) {
-	            if($diff < 120) { return 'Updated in a minute'; }
-	            if($diff < 3600) { return 'Updated in ' . floor($diff / 60) . ' minutes'; }
-	            if($diff < 7200) { return 'Updated  in an hour'; }
-	            if($diff < 86400) { return 'Updated in ' . floor($diff / 3600) . ' hours'; }
-	        }
-	        if($day_diff == 1) { return 'Updated Tomorrow'; }
-	        if($day_diff < 4) { return 'Updated '.date('l', $ts); }
-	        if($day_diff < 7 + (7 - date('w'))) { return 'Updated next week'; }
-	        if(ceil($day_diff / 7) < 4) { return 'Updated  in ' . ceil($day_diff / 7) . ' weeks'; }
-	        if(date('n', $ts) == date('n') + 1) { return 'Updated next month'; }
-	        return 'Updated '.date('F Y', $ts);
-	    }
-	}
+	function time2str($ts,$str='') {
+        if(!ctype_digit($ts)) {
+            $ts = strtotime($ts);
+        }
+        $diff = time() - $ts;
+        if($diff == 0) {
+            return trim($str.' now');
+        } elseif($diff > 0) {
+            $day_diff = floor($diff / 86400);
+            if($day_diff == 0) {
+                if($diff < 60) return trim($str.' just now');
+                if($diff < 120) return trim($str.' 1 minute ago');
+                if($diff < 3600) return trim($str.' '.floor($diff / 60) . ' minutes ago');
+                if($diff < 7200) return trim($str.' 1 hour ago');
+                if($diff < 86400) return trim($str.' '.floor($diff / 3600) . ' hours ago');
+            }
+            if($day_diff == 1) { return trim($str.' Yesterday'); }
+            if($day_diff < 7) { return trim($str.' '.$day_diff . ' days ago'); }
+            if($day_diff < 31) { return trim($str.' '.ceil($day_diff / 7) . ' weeks ago'); }
+            if($day_diff < 60) { return trim($str.' last month'); }
+            return trim($str.' '.date('M j, Y', $ts));
+        } else {
+            $diff = abs($diff);
+            $day_diff = floor($diff / 86400);
+            if($day_diff == 0) {
+                if($diff < 120) { return trim($str.'  a minute'); }
+                if($diff < 3600) { return trim($str.' ' . floor($diff / 60) . ' minutes'); }
+                if($diff < 7200) { return trim($str.' an hour'); }
+                if($diff < 86400) { return trim($str.' ' . floor($diff / 3600) . ' hours ago'); }
+            }
+            if($day_diff == 1) { return trim($str.' Tomorrow'); }
+            if($day_diff < 4) { return trim($str.' '.date('l', $ts)); }
+            if($day_diff < 7 + (7 - date('w'))) { return trim($str.' next week'); }
+            if(ceil($day_diff / 7) < 4) { return trim($str.' in ' . ceil($day_diff / 7) . ' weeks'); }
+            if(date('n', $ts) == date('n') + 1) { return trim($str.' next month'); }
+            return trim($str.' '.date('M j, Y', $ts));
+        }
+    }
 
 	public function array_find($needle, array $haystack, $column = null) {
         $keyArray = array();

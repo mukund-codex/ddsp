@@ -6,7 +6,7 @@ class Mdl_module extends MY_Model{
     }
     
     function get_collection($user_id) {
-        $q = $this->db->select('count(c.chemist_id) as chemist_count, count(d.doctor_id) as doctor_count')
+        $q = $this->db->select('count(distinct c.chemist_id) as chemist_count, count(distinct d.doctor_id) as doctor_count')
 		->from('chemist c')
 		->join('doctor d', 'c.chemist_id = d.chemist_id')        
 		->where('c.users_id', $user_id);

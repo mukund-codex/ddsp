@@ -40,6 +40,12 @@
                 <?php endif; ?>
 
                 <?php if($user_role == 'HO'): ?>
+                    <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
+                        <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
+                            <i class="material-icons">assignment_ind</i>
+                            <span>Communication</span>
+                        </a>
+                    </li>
                     <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">receipt</i>
