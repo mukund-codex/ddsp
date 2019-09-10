@@ -6,12 +6,13 @@ class Mdl_module extends MY_Model{
     }
     
     function get_collection($user_id) {
-        $q = $this->db->select('count(distinct c.chemist_id) as chemist_count, count(distinct d.doctor_id) as doctor_count')
-		->from('chemist c')
-		->join('doctor d', 'c.chemist_id = d.chemist_id')        
-		->where('c.users_id', $user_id);
-
-		//echo $this->db->get_compiled_select(); die();
+        $q = $this->db->select('COUNT(DISTINCT ch.chemist_id) chemist_count, 
+		COUNT(DISTINCT d.doctor_id) doctor_count')
+		->from('manpower m')
+		->join('chemist ch', 'ch.users_id = m.users_id') 
+		->join('doctor d', 'd.users_id = m.users_id')        
+		->where('m.users_id', $user_id)
+		->group_by('m.users_id');
 
 		$collection = $q->get()->result_array();
 		return $collection;

@@ -91,6 +91,7 @@ class Module extends Api_Controller {
             $this->response['data'] = ['posts' => $data];
             $this->response['message'] = empty($data) ? "No Data Found" : "Communication List";
             $this->sendResponse();
+            return;
 
     }
 
@@ -138,6 +139,7 @@ class Module extends Api_Controller {
         
         $this->response['message'] = empty($about) ? "No Data Found" : "About";
         $this->sendResponse();
+        return;
 
     }
 
@@ -254,6 +256,7 @@ class Module extends Api_Controller {
             "about" => $about,
         ];
         $this->sendResponse();
+        return;
 
     }
 
@@ -327,6 +330,7 @@ class Module extends Api_Controller {
         ];
         $this->response['message'] = empty($speciality_data) ? "No Data Found" : "Speciality List";
         $this->sendResponse();
+        return;
 
     }
 
@@ -484,6 +488,7 @@ class Module extends Api_Controller {
         ];
         $this->response['message'] = empty($data) ? "No Data Found" : "List";
         $this->sendResponse();
+        return;
 
     }
 
@@ -918,11 +923,12 @@ class Module extends Api_Controller {
 
        }
 
-       if(count($error) > 1){
+       if(count($error) >= 1){
            $this->response['code'] = 400;
            $this->response['errors'] = $error;
            $this->response['message'] = 'All fields are required';
            $this->sendResponse();
+           return;
        }
        
        if(count($error) <= 1){
@@ -1010,7 +1016,7 @@ class Module extends Api_Controller {
            $this->response['code'] = 200;
            $this->response['message'] = "Data Added Successfully";
            $this->sendResponse();
-
+           return;
        }
        
    }
