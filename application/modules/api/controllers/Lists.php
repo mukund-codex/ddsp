@@ -110,9 +110,9 @@ class Lists extends Api_Controller {
 					array_push($images_data, $image_data);
 
 				}
-				$doctor_data['image'] = $images_data;
+				
+				$chemist_data['image'] = $images_data;
 
-				$chemist_data['image'] = [];
 				array_push($chemistdata, $chemist_data);
 			}
 
