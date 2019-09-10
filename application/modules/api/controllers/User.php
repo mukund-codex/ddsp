@@ -163,7 +163,7 @@ class User extends Api_Controller {
 				$data['mobile_number'] = $mobile_number;
 				$data['email'] = $email;
 				$data['reporting_manager'] = $reporting_manager;
-				$data['android_version'] = (int)isset($android_verion[0]->version_code) ? $android_verion[0]->version_code : '0';
+				$data['android_version'] = (int)isset($android_version[0]->version_code) ? $android_version[0]->version_code : '0';
 				$data['ios_version'] = (int)isset($ios_version[0]->version_code) ? $ios_version[0]->version_code : '0';
 
 				$this->response['code'] = 200;
@@ -463,4 +463,55 @@ class User extends Api_Controller {
 		$this->sendResponse();
 		return;		
 	}
+
+	function version_control() {
+
+		// Get User Id from APP
+		// If User Token id is valid, return APP Version to the APP
+		// Else return the error message to the APP
+
+		/**
+		 * @api {post} /api/user/version_control Version Control
+		 * @apiName version_control
+		 * @apiGroup User
+		 *
+		 * @apiHeader {String} Token User unique Access-Token
+		 *
+		 *
+		 * @apiSuccessExample Success-Response:
+		 *     HTTP/1.1 200 OK
+		 *     {
+		 *	    	{
+		 *			    "code": 200,
+		 *		    	"message": "Logout Successful",
+		 *				 	"data":
+		 *					{
+		 *						"request_id": 1520588899.0994
+		 *				 	},
+		 *				 	"error": "",
+		 *				 	"latest_version":
+		 *				 	{
+		 *						 "android": "6",
+		 *						 "ios": "1.8"
+		 *				 	}
+		 *  		 	}
+		 *  	 }
+		 */
+
+		$access_token = $this->accesstoken;
+
+		$response_token = $this->mdl_user->get_records(['user_id' => $users_id ],'access_token',['access_token'],'');
+		$android_version = $this->mdl_user->get_records(['os'=>'android'],'version_control',['version_code','store_version_code','version_status'],'','1');
+		$ios_version = $this->mdl_user->get_records(['os'=>'ios'],'version_control',['version_code','store_version_code','version_status'],'','1');
+
+		$data['android_version'] = (int)isset($android_version[0]->version_code) ? $android_version[0]->version_code : '0';
+
+		$data['ios_version'] = (int)isset($ios_version[0]->version_code) ? $ios_version[0]->version_code : '0';
+
+		$this->response['code'] = 200;
+		$this->response['message'] = "Version Details";
+		$this->response['data'] = $data;
+		$this->sendResponse();
+	}
+
 }
