@@ -492,9 +492,6 @@ class User extends Api_Controller {
 		 *		}
 		 */
 
-		$access_token = $this->accesstoken;
-
-		$response_token = $this->mdl_user->get_records(['user_id' => $users_id ],'access_token',['access_token'],'');
 		$android_version = $this->mdl_user->get_records(['os'=>'android'],'version_control',['version_code','store_version_code','version_status'],'','1');
 		$ios_version = $this->mdl_user->get_records(['os'=>'ios'],'version_control',['version_code','store_version_code','version_status'],'','1');
 
