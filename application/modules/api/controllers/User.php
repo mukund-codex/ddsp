@@ -480,22 +480,16 @@ class User extends Api_Controller {
 		 *
 		 * @apiSuccessExample Success-Response:
 		 *     HTTP/1.1 200 OK
-		 *     {
-		 *	    	{
-		 *			    "code": 200,
-		 *		    	"message": "Logout Successful",
-		 *				 	"data":
-		 *					{
-		 *						"request_id": 1520588899.0994
-		 *				 	},
-		 *				 	"error": "",
-		 *				 	"latest_version":
-		 *				 	{
-		 *						 "android": "6",
-		 *						 "ios": "1.8"
-		 *				 	}
-		 *  		 	}
-		 *  	 }
+		 *    {
+		 *			"message": "Version Details",
+		 *			"error": "",
+		 *			"code": 200,
+		 *			"data": {
+		 *    			"android_version": "1",
+		 *    			"ios_version": "1",
+		 *    			"request_id": 1568113045.765752
+		 *				}
+		 *		}
 		 */
 
 		$access_token = $this->accesstoken;
