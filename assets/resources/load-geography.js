@@ -1,13 +1,11 @@
 (function ($) {
 
     var zone = $('#zone_id');
-    var region = $('#region_id');
     var area = $('#area_id');
     var city = $('#city_id');
     var users_city_id = $('#users_city_id');
 
     /*counter to reset select2 values on a change event of the element*/
-    var r_load_cnt = 0; //Region: 0 counter stands for when no change event is triggered
     var a_load_cnt = 0; //Area: 0 counter stands for when no change event is triggered
     var c_load_cnt = 0; //City: 0 counter stands for when no change event is triggered
 
@@ -45,7 +43,7 @@
             }
         }
     }
-
+/* 
     if (region.length) {
 
         zone.on('change', function () {
@@ -57,9 +55,9 @@
             }
             load('region_id', 'Region', 'geography/region', true, r_attempt_to, data);
         });
-    }
+    } */
 
-    if (area.length) {
+    /* if (area.length) {
         region.on('change', function () {
             a_load_cnt++;
             var a_attempt_to = (a_load_cnt > 1) ? 'reset' : 'load';
@@ -69,7 +67,7 @@
             }
             load('area_id', 'Area', 'geography/area', true, a_attempt_to, data);
         })
-    }
+    } */
 
     if (city.length) {
         area.on('change', function () {
@@ -84,7 +82,7 @@
     }
 
     load('zone_id', 'Zone', 'geography/zone', true);
+    load('area_id', 'Area', 'geography/area', true);
     load('users_city_id', 'City', 'geography/city', true);
-    load('national_zone_id', 'National_zone', 'geography/national_zone', true);
 
 })(jQuery);

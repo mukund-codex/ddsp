@@ -10,15 +10,6 @@
     </div>
 </div>
 
-<label class="form-label">Region<span class="required">*</span></label>
-<div class="form-group">
-    <div class="form-line">
-        <select name="users_region_id" class="form-control" data-placeholder="Select Region" id="region_id">
-            <option value="<?php echo $info[0]['region_id']; ?>" selected="selected"><?php echo $info[0]['region_name']; ?></option>
-        </select>
-    </div>
-</div>
-
 <label class="form-label">Area<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">

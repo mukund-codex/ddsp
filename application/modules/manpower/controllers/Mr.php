@@ -76,7 +76,7 @@ function options(){
 
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
 
-			if(count($data) !== 8) { continue; }
+			if(count($data) !== 7) { continue; }
 
 			if(! $cnt){
                 $cnt++; continue;
@@ -88,20 +88,18 @@ function options(){
             $password = trim($data[3]);
             $city = trim($data[4]);
             $area = trim($data[5]);
-            $region = trim($data[6]);
-            $zone = trim($data[7]);
+            $zone = trim($data[6]);
 
 			if( empty($mr_name) || empty($emp_id) || 
-				empty($password) || empty($city) || empty($area) || empty($region) || empty($zone) ){
+				empty($password) || empty($city) || empty($area) || empty($zone) ){
                 continue;
             }
-
+            
             if( 
                 ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $mr_name) 
                 || ! preg_match('/^[a-zA-Z0-9]+$/', $emp_id) 
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $city) 
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $area) 
-                || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $region) 
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone) 
             ){
                 continue;
@@ -122,20 +120,14 @@ function options(){
             
 			$zone_id = $zone_record[0]->zone_id;
 			
-			$region_record = $this->model->get_records(['region_name'=> $region, 'zone_id' => $zone_id], 'region', ['region_id'], '', 1);
-            if(!count($region_record)) {
-                continue;
-            }
+            $area_record = $this->model->get_records(['area_name'=> $area, 'zone_id' => $zone_id], 'area', ['area_id'], '', 1);
             
-            $region_id = $region_record[0]->region_id;
-			
-			$area_record = $this->model->get_records(['area_name'=> $area, 'region_id' => $region_id], 'area', ['area_id'], '', 1);
             if(!count($area_record)) {
                 continue;
             }
             
             $area_id = $area_record[0]->area_id;
-			
+            
 			$city_record = $this->model->get_records(['city_name'=> $city, 'area_id' => $area_id], 'city', ['city_id'], '', 1);
             if(!count($city_record)) {
                 continue;
@@ -143,11 +135,11 @@ function options(){
             
             $city_id = $city_record[0]->city_id;
             
-            $record = $this->model->get_collection(TRUE, ['zone_name' => $zone, 'area_name'=> $area, 'region_name' => $region, 'city_name' => $city]);
+            $record = $this->model->get_collection(TRUE, ['zone_name' => $zone, 'area_name'=> $area, 'city_name' => $city]);
             if($record) {
                 continue;
             }
-
+            
             if($mobile) {
                 $emp_record = $this->model->get_or_records(
                     [ 
@@ -171,7 +163,6 @@ function options(){
 			
 			$user_parent_data = $this->model->get_records([
 				'users_zone_id' => $zone_id, 
-				'users_region_id' => $region_id, 
 				'users_area_id' => $area_id, 
 				'users_type' => 'ASM'
 			], 'manpower', ['users_id'], 1);
@@ -191,7 +182,6 @@ function options(){
             $insert['users_emp_id'] = $emp_id;
             $insert['users_password'] = $password;
             $insert['users_zone_id'] = $zone_id;
-			$insert['users_region_id'] = $region_id;
 			$insert['users_area_id'] = $area_id;
 			$insert['users_city_id'] = $city_id;
 			$insert['users_type'] = "MR";

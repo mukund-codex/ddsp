@@ -8,15 +8,6 @@
     </div>
 </div>
 
-<label for="region_id">Region Name <span class="required">*</span></label>
-<div class="form-group">
-    <div class="form-group">
-        <select name="region_id" class="form-control" data-placeholder="Select Region" id="region_id">
-            <option value="">Select Region</option>
-        </select>
-    </div>
-</div>
-
 <label for="area_id">Area Name <span class="required">*</span></label>
 <div class="form-group">
     <div class="form-group">

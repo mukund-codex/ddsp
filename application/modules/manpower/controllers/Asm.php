@@ -87,11 +87,11 @@ class Asm extends Admin_Controller
             $emp_id = trim($data[2]);
             $password = trim($data[3]);
             $area = trim($data[4]);
-            $region = trim($data[5]);
+            $zsm = trim($data[5]);
             $zone = trim($data[6]);
 
 			if( empty($asm_name) || empty($emp_id) || 
-				empty($password) || empty($area) || empty($region) || empty($zone) ){
+				empty($password) || empty($area) || empty($zsm) || empty($zone) ){
                 continue;
             }
 
@@ -99,7 +99,6 @@ class Asm extends Admin_Controller
                 ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $asm_name) 
                 || ! preg_match('/^[a-zA-Z0-9]+$/', $emp_id) 
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $area) 
-                || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $region) 
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone) 
             ){
                 continue;
@@ -119,22 +118,15 @@ class Asm extends Admin_Controller
             }
             
 			$zone_id = $zone_record[0]->zone_id;
-			
-			$region_record = $this->model->get_records(['region_name'=> $region, 'zone_id' => $zone_id], 'region', ['region_id'], '', 1);
-            if(!count($region_record)) {
-                continue;
-            }
-            
-            $region_id = $region_record[0]->region_id;
-			
-			$area_record = $this->model->get_records(['area_name'=> $area, 'region_id' => $region_id], 'area', ['area_id'], '', 1);
+						
+			$area_record = $this->model->get_records(['area_name'=> $area, 'zone_id' => $zone_id], 'area', ['area_id'], '', 1);
             if(!count($area_record)) {
                 continue;
             }
             
             $area_id = $area_record[0]->area_id;
             
-            $record = $this->model->get_collection(TRUE, ['zone_name' => $zone, 'area_name'=> $area, 'region_name' => $region]);
+            $record = $this->model->get_collection(TRUE, ['zone_name' => $zone, 'area_name'=> $area]);
             if($record) {
                 continue;
             }
@@ -162,8 +154,7 @@ class Asm extends Admin_Controller
 			
 			$user_parent_data = $this->model->get_records([
 				'users_zone_id' => $zone_id, 
-				'users_region_id' => $region_id, 
-				'users_type' => 'RSM'
+				'users_type' => 'ZSM'
 			], 'manpower', ['users_id'], 1);
 
 			if(! $user_parent_data) {
@@ -181,7 +172,6 @@ class Asm extends Admin_Controller
             $insert['users_emp_id'] = $emp_id;
             $insert['users_password'] = $password;
             $insert['users_zone_id'] = $zone_id;
-			$insert['users_region_id'] = $region_id;
 			$insert['users_area_id'] = $area_id;
 			$insert['users_parent_id'] = $user_parent_id;
 			$insert['users_type'] = "ASM";

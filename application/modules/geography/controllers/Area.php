@@ -28,7 +28,7 @@ class Area extends Admin_Controller
 		$limit = $this->dropdownlength;
 		$page = intval($_POST['page']) - 1;
 		$page = ($page <= 0) ? 0 : $page;
-
+        $filters = [];
 		$s_term = (isset($_POST['search'])) ? $this->db->escape_like_str($_POST['search']) : '';
 		$id = (isset($_POST['id'])) ? (int) $this->input->post('id') : 0;
 
@@ -70,23 +70,21 @@ class Area extends Admin_Controller
 
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
 
-			if(count($data) !== 3) { continue; }
+			if(count($data) !== 2) { continue; }
 
 			if(! $cnt){
                 $cnt++; continue;
 			}
 
             $zone_name = trim($data[0]);
-            $region_name = trim($data[1]);
-            $area_name = trim($data[2]);
+            $area_name = trim($data[1]);
 
-            if( empty($zone_name) || empty($region_name)){
+            if( empty($zone_name) || empty($area_name)){
                 continue;
             }
 
             if( 
                 !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone_name)  
-                || !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $region_name)
                 || !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $area_name) ){
                 continue;
             }
@@ -98,14 +96,9 @@ class Area extends Admin_Controller
 
             $zone_id = $zone[0]->zone_id;
 
-            $region = $this->model->get_records(['region_name'=> $region_name, 'zone_id'=> $zone_id], 'region');
-            if(! count($region)) {
-                continue;
-            }
-
             $record = $this->model->get_collection(
                 FALSE, 
-                [ 'zone_name'=> $zone_name, 'region_name'=> $region_name, 'area_name'=> $area_name ], 
+                [ 'zone_name'=> $zone_name, 'area_name'=> $area_name ], 
                 [], 
                 1
             );
@@ -114,7 +107,7 @@ class Area extends Admin_Controller
                 continue;
             }
 
-            $insert['region_id'] = $region[0]->region_id;
+            $insert['zone_id'] = $zone_id;
             $insert['area_name'] = $area_name;
 
             $this->model->_insert($insert);

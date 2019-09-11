@@ -3,9 +3,9 @@ class Mdl_area extends MY_Model {
 
 	private $p_key = 'area_id';
 	private $table = 'area';
-    private $fillable = ['area_name', 'region_id'];
-    private $column_list = ['Area Name', 'Region Name', 'Zone Name', 'Created On'];
-    private $csv_columns = ['Zone Name', 'Region Name', 'Area Name'];
+    private $fillable = ['area_name', 'zone_id'];
+    private $column_list = ['Area Name', 'Zone Name', 'Created On'];
+    private $csv_columns = ['Zone Name', 'Area Name'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key);
@@ -56,12 +56,10 @@ class Mdl_area extends MY_Model {
 
     	$q = $this->db->select('
             zone.zone_id, zone.zone_name, 
-            region.region_id, region.region_name,
             area.area_id, area.area_name, area.insert_dt
     	')
         ->from('area')
-        ->join('region', 'region.region_id = area.region_id')
-        ->join('zone', 'region.zone_id = zone.zone_id');
+        ->join('zone', 'area.zone_id = zone.zone_id');
 				
 		if(sizeof($sfilters)) { 
 			foreach ($sfilters as $key=>$value) { $q->where("$key", $value); }
@@ -106,17 +104,12 @@ class Mdl_area extends MY_Model {
                 [
 					'field' => 'zone_id',
 					'label' => 'Zone Name',
-					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
-                ],
-                [
-					'field' => 'region_id',
-					'label' => 'Region Name',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
+					'rules' => 'trim|required|check_record[zone.zone_id]|unique_record[add.table.area.area_name.' . $this->input->post('area_name') . '.zone_id.'. (int) $this->input->post('zone_id') .']|xss_clean'
                 ],
 				[
 					'field' => 'area_name',
 					'label' => 'Area Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.area.area_name.' . $this->input->post('area_name') . '.region_id.'. (int) $this->input->post('region_id') .']|xss_clean'
+					'rules' => 'trim|required|valid_name|max_length[150]|xss_clean'
                 ]
 			];
 		}
@@ -128,25 +121,21 @@ class Mdl_area extends MY_Model {
 					'label' => 'Zone Name',
 					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
                 ],
-                [
-					'field' => 'region_id',
-					'label' => 'Region Name',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
-                ],
 				[
 					'field' => 'area_name',
 					'label' => 'Area Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.area.area_name.' . $this->input->post('area_name') . '.region_id.'. (int) $this->input->post('region_id') .'.area_id.'. (int) $this->input->post('area_id') .']|xss_clean'
+					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.area.area_name.' . $this->input->post('area_name') . '.zone_id.'. (int) $this->input->post('zone_id') .'.area_id.'. (int) $this->input->post('area_id') .']|xss_clean'
 				],
 			];
 		}
     }
 
 	function save(){
+        
 		/*Load the form validation Library*/
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules($this->validate('save'));
-		
+        
 		if(! $this->form_validation->run()){
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
@@ -156,9 +145,10 @@ class Mdl_area extends MY_Model {
             $response['status'] = FALSE;
             
             return $response;
-		}
-		
+        }
+        
         $data = $this->process_data($this->fillable, $_POST);
+
         $id = $this->_insert($data);
         
         if(! $id){
@@ -218,7 +208,6 @@ class Mdl_area extends MY_Model {
 		
 		foreach ($data as $rows) {
 			$records['Area Name'] = $rows['area_name'];
-			$records['Region Name'] = $rows['region_name'];
 			$records['Zone Name'] = $rows['zone_name'];
 			array_push($resultant_array, $records);
 		}

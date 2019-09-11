@@ -4,8 +4,8 @@ class Mdl_city extends MY_Model {
 	private $p_key = 'city_id';
     private $table = 'city';
     private $fillable  = ['city_name', 'area_id'];
-    private $column_list =  ['City Name', 'Area Name', 'Region Name', 'Zone Name', 'Created On'];
-    private $csv_columns = ['Zone Name', 'Region Name', 'Area Name', 'City Name'];
+    private $column_list =  ['City Name', 'Area Name', 'Zone Name', 'Created On'];
+    private $csv_columns = ['Zone Name', 'Area Name', 'City Name'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key);
@@ -32,10 +32,6 @@ class Mdl_city extends MY_Model {
                 'field_label'=> 'Area',
             ], 
             [
-                'field_name'=>'region_name',
-                'field_label'=> 'Region',
-            ], 
-            [
                 'field_name'=>'zone_name',
                 'field_label'=> 'Zone',
             ], 
@@ -60,14 +56,12 @@ class Mdl_city extends MY_Model {
 
         $q = $this->db->select('
             zone.zone_id, zone.zone_name, 
-            region.region_id, region.region_name,
             area.area_id, area.area_name,
             city.city_id, city.city_name, city.insert_dt
     	')
         ->from('city')
         ->join('area', 'area.area_id = city.area_id')
-        ->join('region', 'region.region_id = area.region_id')
-        ->join('zone', 'region.zone_id = zone.zone_id');
+        ->join('zone', 'area.zone_id = zone.zone_id');
 				
 		if(sizeof($sfilters)) { 
 			foreach ($sfilters as $key=>$value) { $q->where("$key", $value); }
@@ -116,11 +110,6 @@ class Mdl_city extends MY_Model {
 					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
                 ],
                 [
-					'field' => 'region_id',
-					'label' => 'Region Name',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
-                ],
-                [
 					'field' => 'area_id',
 					'label' => 'Area Name',
 					'rules' => 'trim|required|check_record[area.area_id]|xss_clean'
@@ -139,11 +128,6 @@ class Mdl_city extends MY_Model {
 					'field' => 'zone_id',
 					'label' => 'Zone Name',
 					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
-                ],
-                [
-					'field' => 'region_id',
-					'label' => 'Region Name',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
                 ],
                 [
 					'field' => 'area_id',
@@ -174,7 +158,7 @@ class Mdl_city extends MY_Model {
             
             return $response;
 		}
-		
+        
         $data = $this->process_data($this->fillable, $_POST);
         $id = $this->_insert($data);
         
@@ -236,7 +220,6 @@ class Mdl_city extends MY_Model {
 		foreach ($data as $rows) {
 			$records['City Name'] = $rows['city_name'];
 			$records['Area Name'] = $rows['area_name'];
-			$records['Region Name'] = $rows['region_name'];
 			$records['Zone Name'] = $rows['zone_name'];
 			array_push($resultant_array, $records);
 		}

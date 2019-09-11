@@ -5,8 +5,8 @@ class Mdl_asm extends Manpower_Model {
     private $table = 'manpower';
     private $tb_alias = 'm';
     private $fillable = ['users_name', 'users_mobile', 'users_emp_id', 'users_password', 'users_zone_id', 'users_region_id', 'users_area_id'];
- 	private $column_list = ['ASM Name', 'Mobile', 'Emp ID', 'Password', 'Area Name','RSM Name','Region Name', 'Created On'];
-    private $csv_columns = ['ASM Name', 'Mobile', 'Emp ID', 'Password', 'Area Name' ,'Region Name','Zone Name'];
+ 	private $column_list = ['ASM Name', 'Mobile', 'Emp ID', 'Password', 'Area Name','ZSM Name','Zone Name', 'Created On'];
+    private $csv_columns = ['ASM Name', 'Mobile', 'Emp ID', 'Password', 'Area Name' ,'ZSM Name','Zone Name'];
 
 	function __construct() {
         parent::__construct();
@@ -41,11 +41,11 @@ class Mdl_asm extends Manpower_Model {
             ], 
               [
                 'field_name'=>'us.users_name',
-                'field_label'=> 'RSM',
+                'field_label'=> 'ZSM',
             ], 
             [
-                'field_name'=>'region_name',
-                'field_label'=> 'Region',
+                'field_name'=>'zone_name',
+                'field_label'=> 'Zone',
             ], 
         ];
     }
@@ -68,13 +68,12 @@ class Mdl_asm extends Manpower_Model {
      	$q = $this->db->select('
             m.users_id, m.users_name, m.users_mobile, m.users_emp_id, m.users_parent_id,
             m.users_type, m.users_password, us.users_name as mgr_name,
-            z.zone_id, z.zone_name, r.region_id, r.region_name, a.area_id, a.area_name,
+            z.zone_id, z.zone_name, a.area_id, a.area_name,
             m.insert_dt
     	')
 		->from('manpower m')
         ->join('area a', 'm.users_area_id = a.area_id')
-        ->join('region r', 'a.region_id = r.region_id')
-        ->join('zone z', 'r.zone_id = z.zone_id')
+        ->join('zone z', 'a.zone_id = z.zone_id')
 		->join('manpower us', 'm.users_parent_id = us.users_id')
         ->where('m.users_type', 'ASM');
 				
@@ -130,11 +129,6 @@ class Mdl_asm extends Manpower_Model {
 					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
                 ],
                 [
-					'field' => 'users_region_id',
-					'label' => 'Region',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
-                ],
-                [
 					'field' => 'users_area_id',
 					'label' => 'Area',
 					'rules' => 'trim|required|check_record[area.area_id]|unique_record[add.table.manpower.users_type.'. $role .'.users_area_id.' . $this->input->post('users_area_id') . ']|xss_clean'
@@ -169,11 +163,6 @@ class Mdl_asm extends Manpower_Model {
 					'field' => 'users_zone_id',
 					'label' => 'Zone',
 					'rules' => 'trim|required|check_record[zone.zone_id]|xss_clean'
-				],
-				[
-					'field' => 'users_region_id',
-					'label' => 'Region',
-					'rules' => 'trim|required|check_record[region.region_id]|xss_clean'
 				],
 				[
 					'field' => 'users_area_id',
@@ -219,7 +208,7 @@ class Mdl_asm extends Manpower_Model {
             return $response;
 		}
 		
-		$users_parent_info = $this->user_info($_POST['users_region_id'], 'RSM');
+		$users_parent_info = $this->user_info($_POST['users_zone_id'], 'ZSM');
 		if(! $users_parent_info) {
 			$response['errors'] = ["users_name" => "<label class='error'>Manager Does not Exist</label>"];
 			$response['status'] = FALSE;
@@ -264,7 +253,8 @@ class Mdl_asm extends Manpower_Model {
             return $response;
 		}		
 
-		$users_parent_info = $this->user_info($_POST['users_region_id'], 'RSM');
+		$users_parent_info = $this->user_info($_POST['users_zone_id'], 'ZSM');
+		//$users_parent_info = $this->user_info($_POST['users_region_id'], 'RSM');
 		if(! $users_parent_info) {
 			$response['errors'] = ["users_name" => "<label class='error'>Manager Does not Exist</label>"];
 			$response['status'] = FALSE;
@@ -304,8 +294,8 @@ class Mdl_asm extends Manpower_Model {
 			$records['Mobile'] = $rows['users_mobile'];
 			$records['EMP ID'] = $rows['users_emp_id'];
 			$records['Area'] = $rows['area_name'];
-			$records['RSM Name'] = $rows['mgr_name'];
-			$records['Region'] = $rows['region_name'];
+			$records['ZSM Name'] = $rows['mgr_name'];
+			$records['Zone'] = $rows['zone_name'];
 			array_push($resultant_array, $records);
 		}
 		return $resultant_array;
