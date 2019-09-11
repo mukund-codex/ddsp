@@ -448,7 +448,6 @@ class Module extends Api_Controller {
                 $get_brand = $this->model->get_records(['molecule_id' => $molecule->molecule_id], 'brand');
                 if(count($get_brand) > 0){
                     foreach($get_brand as $key => $brand){
-                        $skuData = [];
                         $brand_data = [];
                         $brand_data['id'] = $brand->brand_id;
                         $brand_data['name'] = $brand->brand_name;                        
@@ -456,6 +455,7 @@ class Module extends Api_Controller {
 
                         $get_sku = $this->model->get_records(['brand_id' => $brand->brand_id], 'sku');
                         if(count($get_sku) > 0){
+                            $skuData = [];
                             foreach($get_sku as $key => $sku){
                                 $sku_data= [];
                                 $sku_data['id'] = $sku->sku_id;
@@ -472,10 +472,10 @@ class Module extends Api_Controller {
 
                         array_push($brandData, $brand_data);
 
-                        $molecules_data['brand'] = $brandData;
-
                     }
                 }
+
+                $molecules_data['brand'] = $brandData;
 
                 array_push($moleculedata, $molecules_data);
             }
