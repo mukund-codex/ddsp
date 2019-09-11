@@ -13,45 +13,49 @@ class Cron_sms extends Generic_Controller
 	public function index()
 	{
 		$this->load->helper('send_sms');
-		$doctors = $this->model->get_collection();
-		// echo "<pre>";
-		// print_r($doctors);exit;
-		
+		$data = $this->model->get_collection();		
 
-		if(empty($doctors)) {
+		if(empty($data)) {
 			return;
 		}
+		
+		$mr_msg = '';
+		$asm_details = [];
 
-		foreach ($doctors as $doctor) {
-			$doctor_id = $doctor->doctor_id;
-			$division_id = $doctor->division_id;
-			$doctor_name = $doctor->name;
-			$doctor_mobile = $doctor->mobile;
-			$original_url = $doctor->original_url;
-			$tiny_url = $doctor->tiny_url;
-			$division_name = $doctor->division_name;
-			$sender_id = $doctor->sender_id;
+		foreach($data as $details){
+			$asm = [];
+			$total_chemist = $details->total_chemist;
+			$total_doctor = $details->total_doctor;
+			$users_id = $details->users_id;
+			$users_name = $details->users_name;
 
-			if(empty($tiny_url)) {
-				$tiny_url = $original_url;
-			}
+			$asm['zsm_name'] = $details->zsm_name;
+			$asm['zsm_mobile'] = $details->zsm_mobile;
+			$asm['name'] = $details->asm_name;
+			$asm['count'] = $total_chemist;
 
-			if(empty($doctor_name) || empty($doctor_mobile) 
-				|| empty($original_url) || empty($tiny_url) ) 
-			{
-				continue;
-			}
-
-			$sms_r = "Dear $doctor_name, ".PHP_EOL;
-			$sms_r .= "We are eagerly waiting to hear from you on your experience of Daily scientific Therapy realted Messages.".PHP_EOL;
-			$sms_r .= "Click here: $tiny_url ".PHP_EOL;
-			$sms_r .= "To share your feedback. ".PHP_EOL;
-			$sms_r .= "Wish you Happy learning! ".PHP_EOL;
-			$sms_r .= "Regards, ".PHP_EOL;
-			$sms_r .= "Telma AM & Telma AMH".PHP_EOL;
-
-			send_sms($doctor_mobile, $sms_r, 'Invitation', '', '', $sender_id);
+			$mr_msg .= "$users_name - $total_chemist, ";
+			array_push($asm_details, $asm);
 		}
+		
+		echo "<pre>";
+		print_r($asm_details);echo "<br>";
+	
+		$asmmsg = '';
+
+		foreach($asm_details as $details){
+			$asm_name = $details['name'];
+			$asm_count = $details['count'];
+			$asm_msg = "$asm_name - $asm_count";
+			$asmmsg .= "$asm_msg, ";
+			
+		}
+		$asmmsg = rtrim($asmmsg, ", ");
+
+		$sms_r = "Yesterday’s chemist met count of your team ABM wise- $asmmsg";
+		echo $sms_r;exit;
+
+		//send_sms($doctor_mobile, $sms_r, 'Invitation', '', '', $sender_id);
 
 		echo 'Success';
 		exit;

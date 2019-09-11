@@ -11,11 +11,27 @@ class Mdl_sms extends MY_Model {
 
 	function get_collection() {
 
-    	$q = $this->db->select('
-		d.*, div.*
-    	')
-		->from('doctor d')
-		->join('divisions div', 'd.division_id = div.division_id');
+		$yesterday = date('Y/m/d',strtotime("-1 days"));
+
+    	$q = $this->db->select('COUNT(DISTINCT ch.chemist_id) total_chemist, 
+		COUNT(DISTINCT d.doctor_id) total_doctor,
+		m.users_id,m.users_name, m.users_mobile,
+		c.city_name,a.area_name,r.region_name,z.zone_name,nz.national_zone_name, us.users_name as asm_name, zs.users_name as zsm_name,
+		zs.users_mobile as zsm_mobile')
+
+		->from('manpower m')
+		->join('city c', 'c.city_id = m.users_city_id')
+		->join('area a', 'a.area_id = c.area_id')
+		->join('region r','r.region_id = a.region_id')
+		->join('zone z','z.zone_id = r.zone_id')
+		->join('national_zone nz','nz.national_zone_id = z.national_zone_id')
+		->join('manpower us','us.users_id = m.users_parent_id')
+		->join('manpower rs','rs.users_id = us.users_parent_id')
+		->join('manpower zs','zs.users_id = rs.users_parent_id')
+		->join('chemist ch','ch.users_id = m.users_id')
+		->join('doctor d','d.users_id = m.users_id')
+		->where('DATE(ch.insert_dt)', '2019-09-11')
+		->group_by('us.users_id');
 
 		//print_r($this->db->get_compiled_select());exit;
 		$collection = $q->get()->result();

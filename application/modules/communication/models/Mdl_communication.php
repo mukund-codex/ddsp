@@ -151,16 +151,7 @@ class Mdl_communication extends MY_Model {
             return $response;
 		}
 		
-		$data = $this->process_data($this->fillable, $_POST);
-		$id = $this->_insert($data);
-
-		if(! $id){
-            $response['message'] = 'Internal Server Error'; 
-            $response['status'] = FALSE;
-            return $response;
-		}
-
-		$media_files = [];
+		$media_files = $is_image_file_upload = $is_doc_file_upload = [];
 		
 		if(array_sum($_FILES['images']['size']) > 0) {			
 			
@@ -173,18 +164,42 @@ class Mdl_communication extends MY_Model {
 				return $response;
 			}
 
-			$is_file_upload = upload_media('images', 'uploads/communication/images', ['jpeg', 'png', 'jpg'], 10000000);
+			$is_image_file_upload = upload_media('images', 'uploads/communication/images', ['jpeg', 'png', 'jpg'], 10000000);
 	
-			if(array_key_exists('error', $is_file_upload)) {
+			if(array_key_exists('error', $is_image_file_upload)) {
 				$response['errors'] = [
-					"images[]" => $is_file_upload['message']
+					"images[]" => $is_image_file_upload['message']
 				]; 
             	$response['status'] = FALSE;
             	
 				return $response;
 			}
+		}
 
-			foreach ($is_file_upload as $value) {
+		if(($_FILES['document']['size']) > 0) {
+			$is_doc_file_upload = upload_media('document', 'uploads/communication/documents', ['pdf', 'docx', 'doc'], 10000000);
+	
+			if(array_key_exists('error', $is_doc_file_upload)) {
+				$response['errors'] = [
+					"document" => $is_doc_file_upload['message']
+				]; 
+            	$response['status'] = FALSE;
+            	
+				return $response;
+			}
+		}
+
+		$data = $this->process_data($this->fillable, $_POST);
+		$id = $this->_insert($data);
+
+		if(! $id){
+            $response['message'] = 'Internal Server Error'; 
+            $response['status'] = FALSE;
+            return $response;
+		}
+
+		if($is_image_file_upload) {
+			foreach ($is_image_file_upload as $value) {
 				$image_media = [];
 				$image_media['c_id'] = $id;
 				$image_media['media'] = $value['file_name'];
@@ -194,19 +209,8 @@ class Mdl_communication extends MY_Model {
 			}
 		}
 
-		if(($_FILES['document']['size']) > 0) {
-			$is_file_upload = upload_media('document', 'uploads/communication/documents', ['pdf', 'docx', 'doc'], 10000000);
-	
-			if(array_key_exists('error', $is_file_upload)) {
-				$response['errors'] = [
-					"document" => $is_file_upload['message']
-				]; 
-            	$response['status'] = FALSE;
-            	
-				return $response;
-			}
-
-			foreach ($is_file_upload as $value) {
+		if($is_doc_file_upload) {
+			foreach ($is_doc_file_upload as $value) {
 				$document_media = [];
 				$document_media['c_id'] = $id;
 				$document_media['media'] = $value['file_name'];
@@ -214,10 +218,40 @@ class Mdl_communication extends MY_Model {
 				$document_media['insert_dt'] = $document_media['update_dt'] = date('Y-m-d H:i:s');;
 				array_push($media_files, $document_media);
 			}
-		}
+		}		
 		
 		if(count($media_files)) {
 			$last_media_id = $this->_insert_batch($media_files, 'communication_media');
+		}
+
+		$notification_request = [];
+		$notification_request['insert_id'] = $id;
+		$notification_request['title'] = $data['title'];
+		$notification_request['type'] = 'ho_communication';
+		$notification_request['desc'] = (!empty($data['description'])) ? $data['description'] : '';
+
+		$req_id = $this->_insert($notification_request, 'notification_request');
+		
+		$devices_data = $this->get_devices_records();
+		
+		$request_devices = [];
+		foreach ($devices_data as $device){
+
+			if(strlen($device->device_id) < 10) {
+				continue;
+			}
+
+			$requestdevices = [];
+			$requestdevices['request_id'] = $req_id;
+			$requestdevices['user_id'] = $device->user_id;
+			$requestdevices['device_id'] = $device->device_id;
+			$requestdevices['device_type'] = $device->device_type;	
+			$requestdevices['insert_dt'] = $requestdevices['update_dt'] = date('Y-m-d H:i:s');
+			array_push($request_devices, $requestdevices);
+		}
+		
+		if(count($request_devices)) {
+			$this->_insert_batch($request_devices, 'notification_request_devices');
 		}
 
         $response['status'] = TRUE;
@@ -365,4 +399,18 @@ class Mdl_communication extends MY_Model {
 		}
 		return $resultant_array;
 	}
+
+	function get_devices_records(){
+
+		$q = $this->db->select('user_id, device_id, device_type')
+
+		->from('access_token')
+		->where('token_status', 'active')
+		->group_by('device_id, user_id');
+
+		//print_r($this->db->get_compiled_select());exit;
+		$collection = $q->get()->result();
+		return $collection;
+	}
+
 }

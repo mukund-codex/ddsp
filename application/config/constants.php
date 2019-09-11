@@ -94,7 +94,7 @@ define('CORE_PLAN_ACTIVE', 1);
 
 // FCM SERVER KEY
 
-define('API_ACCESS_KEY','AIzaSyDLdCWWVPQ6iGxewm5koloOgFZLWglMEjE');
+define('API_ACCESS_KEY','AIzaSyBSoDWREZNveTcmbYWL1tfA2mKLVyu2Egw');
 
 define('DESC_WORD_LENGTH', 15);
 
