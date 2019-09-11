@@ -429,8 +429,8 @@ class Module extends Api_Controller {
                         $city_data['name'] = $city->city_name;
                         array_push($citydata, $city_data);
                     }
-                    $input_data['city'] = $citydata;
                 }
+                $input_data['city'] = $citydata;
                 
                 array_push($data, $input_data);
             }
