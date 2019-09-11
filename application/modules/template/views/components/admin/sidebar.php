@@ -184,7 +184,7 @@
                     </a>
                 </li> -->
                     
-                <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
+                <!-- <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>
                         <span>Reports</span>
@@ -203,7 +203,7 @@
                             <a href="<?php echo base_url("reports/region_wise?t=$timestamp") ?>">Region Wise Report</a>
                         </li>                         
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
         <!-- #Menu -->
