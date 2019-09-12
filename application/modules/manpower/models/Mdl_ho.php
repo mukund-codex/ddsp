@@ -115,7 +115,7 @@ class Mdl_ho extends MY_Model {
 				[
 					'field' => 'users_mobile',
 					'label' => 'Mobile',
-					'rules' => 'trim|max_length[10]|valid_mobile|unique_key[manpower.users_mobile]|xss_clean'
+					'rules' => 'trim|required|max_length[10]|valid_mobile|unique_key[manpower.users_mobile]|xss_clean'
                 ],
 				[
 					'field' => 'users_emp_id',
@@ -141,7 +141,7 @@ class Mdl_ho extends MY_Model {
 				[
 					'field' => 'users_mobile',
 					'label' => 'Mobile',
-					'rules' => 'trim|max_length[10]|valid_mobile|unique_key[manpower.users_mobile.users_id.'. (int) $this->input->post('users_id') .']|xss_clean'
+					'rules' => 'trim|required|max_length[10]|valid_mobile|unique_key[manpower.users_mobile.users_id.'. (int) $this->input->post('users_id') .']|xss_clean'
                 ],
 				[
 					'field' => 'users_emp_id',

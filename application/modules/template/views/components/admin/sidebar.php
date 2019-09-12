@@ -114,12 +114,12 @@
                     </a>
                 </li> -->
 
-                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
+                <!-- <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Communication</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li <?php echo ($mainmenu == 'speciality') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>">

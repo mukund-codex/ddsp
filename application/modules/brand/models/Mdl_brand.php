@@ -115,7 +115,7 @@ class Mdl_brand extends MY_Model {
                 [
 					'field' => 'brand_name',
 					'label' => 'brand Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.brand.brand_name.' . $this->input->post('brand_name') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[add.table.brand.brand_name.' . $this->input->post('brand_name') .']|xss_clean'
                 ],
 				
 			];
@@ -131,7 +131,7 @@ class Mdl_brand extends MY_Model {
 				[
 					'field' => 'brand_name',
 					'label' => 'brand Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.brand.brand_name.' . $this->input->post('brand_name'). '.brand_id.'. $this->input->post('brand_id') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[edit.table.brand.brand_name.' . $this->input->post('brand_name'). '.brand_id.'. $this->input->post('brand_id') .']|xss_clean'
                 ],
                 
 			];

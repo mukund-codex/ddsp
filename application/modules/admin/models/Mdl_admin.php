@@ -5,7 +5,7 @@ class Mdl_admin extends MY_Model {
 	private $table = 'admin';
     private $fillable = ['full_name', 'username', 'password', 'user_type', 'email', 'mobile'];
     private $column_list = ['Name', 'Username', 'Type', 'Email', 'Mobile', 'Created On'];
-    private $csv_columns = ['Username', 'Type', 'Full Name'];
+    private $csv_columns = ['Username', 'Password' ,'Type', 'Full Name'];
 
 	function __construct() {
 		parent::__construct($this->table, $this->p_key);
