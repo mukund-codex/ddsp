@@ -60,7 +60,7 @@ class Module extends Api_Controller {
             */
                 
             $user_id = $this->id;
-            $get_communication_list = $this->model->get_records([], 'communication');
+            $get_communication_list = $this->model->get_records([], 'communication', [], 'c_id desc');
             $data = [];
             $media_data = [];
     
