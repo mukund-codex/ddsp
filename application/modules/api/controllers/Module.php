@@ -61,11 +61,13 @@ class Module extends Api_Controller {
                 
             $user_id = $this->id;
             $get_communication_list = $this->model->get_records([], 'communication', [], 'c_id desc');
+           
             $data = [];
-            $media_data = [];
+            
     
             if(count($get_communication_list) > 0)  {
                 foreach ($get_communication_list as $key => $value) {
+                    $media_data = [];
                     $input_data['c_id'] = $value->c_id;
                     $input_data['title'] = $value->title;
                     $input_data['description'] = $value->description;
@@ -92,7 +94,6 @@ class Module extends Api_Controller {
                     
                     array_push($data, $input_data); 
                 }
-
                               
             }
 
