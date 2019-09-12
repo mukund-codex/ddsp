@@ -82,9 +82,10 @@ class Module extends Api_Controller {
                             $input_data['media'] = $media_data;
                         }   
                     }
+                    array_push($data, $input_data); 
                 }
 
-                array_push($data, $input_data);                
+                              
             }
 
             $this->response['code'] = 200;
