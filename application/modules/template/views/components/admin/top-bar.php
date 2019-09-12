@@ -7,7 +7,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-            <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
+            <!-- <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li> -->
             <li><a href="<?php echo base_url() ?>dashboard/admin/logout"><i class="material-icons">power_settings_new</i></a></li>
             <li><a style="cursor:default; margin-top:19px"><?php echo ucwords($this->session->get_field_from_session('user_name')); ?></a></li>
             </ul>

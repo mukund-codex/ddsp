@@ -41,15 +41,15 @@
                         <span>Geography</span>
                     </a>
                     <ul class="ml-menu">     
-                        <li <?php echo (isset($menu) && $menu == 'national_zone') ? 'class="active"': ''; ?>>
+                        <!-- <li <?php echo (isset($menu) && $menu == 'national_zone') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/national_zone/lists?t=$timestamp") ?>">National Zone</a>
-                        </li>                     
+                        </li>                      -->
                         <li <?php echo (isset($menu) && $menu == 'zone') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/zone/lists?t=$timestamp") ?>">Zone</a>
                         </li>                            
-                        <li <?php echo (isset($menu) && $menu == 'region') ? 'class="active"': ''; ?>>
+                        <!-- <li <?php echo (isset($menu) && $menu == 'region') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/region/lists?t=$timestamp") ?>">Region</a>
-                        </li>
+                        </li> -->
                         <li <?php echo (isset($menu) && $menu == 'area') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/area/lists?t=$timestamp") ?>">Area</a>
                         </li>
@@ -71,9 +71,9 @@
                         <li <?php echo (isset($menu) && $menu == 'zsm') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("manpower/zsm/lists?t=$timestamp") ?>">ZSM</a>
                         </li>                            
-                        <li <?php echo (isset($menu) && $menu == 'rsm') ? 'class="active"': ''; ?>>
+                        <!-- <li <?php echo (isset($menu) && $menu == 'rsm') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("manpower/rsm/lists?t=$timestamp") ?>">RSM</a>
-                        </li>                            
+                        </li>   -->                          
                         <li <?php echo (isset($menu) && $menu == 'asm') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("manpower/asm/lists?t=$timestamp") ?>">ASM</a>
                         </li>                            
@@ -114,12 +114,12 @@
                     </a>
                 </li> -->
 
-                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
+                <!-- <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Communication</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li <?php echo ($mainmenu == 'speciality') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>">
@@ -184,7 +184,7 @@
                     </a>
                 </li> -->
                     
-                <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
+                <!-- <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>
                         <span>Reports</span>
@@ -203,7 +203,7 @@
                             <a href="<?php echo base_url("reports/region_wise?t=$timestamp") ?>">Region Wise Report</a>
                         </li>                         
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
         <!-- #Menu -->

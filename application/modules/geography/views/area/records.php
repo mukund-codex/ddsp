@@ -5,7 +5,6 @@
         <label for="check_<?= $id ?>"></label>
     </td>
     <td><?php echo $record['area_name'] ?></td>   
-    <td><?php echo $record['region_name'] ?></td>   
     <td><?php echo $record['zone_name'] ?></td>   
     <td><?php echo $record['insert_dt'] ?></td>
     <td><p><a href="<?php echo base_url("$controller/edit/record/$id?c=$timestamp") ?>" class="tooltips" title="Edit <?php ucfirst($module_title) ?>" ><i class="fa fa-edit"></i> Edit <?= ucfirst($module_title) ?></a></p></td>

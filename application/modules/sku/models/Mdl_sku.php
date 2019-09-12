@@ -115,7 +115,7 @@ class Mdl_sku extends MY_Model {
                 [
 					'field' => 'sku',
 					'label' => 'SKU',
-					'rules' => 'trim|required|max_length[150]|alpha_numeric|unique_record[add.table.sku.sku.' . $this->input->post('sku') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[add.table.sku.sku.' . $this->input->post('sku') .']|xss_clean'
                 ],
 				
 			];
@@ -131,7 +131,7 @@ class Mdl_sku extends MY_Model {
 				[
 					'field' => 'sku',
 					'label' => 'SKU',
-					'rules' => 'trim|required|max_length[150]|alpha_numeric|unique_record[edit.table.sku.sku.' . $this->input->post('sku'). '.sku_id.'. $this->input->post('sku_id') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[edit.table.sku.sku.' . $this->input->post('sku'). '.sku_id.'. $this->input->post('sku_id') .']|xss_clean'
                 ],
                 
 			];

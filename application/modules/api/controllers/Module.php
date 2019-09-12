@@ -60,12 +60,14 @@ class Module extends Api_Controller {
             */
                 
             $user_id = $this->id;
-            $get_communication_list = $this->model->get_records([], 'communication');
+            $get_communication_list = $this->model->get_records([], 'communication', [], 'c_id desc');
+           
             $data = [];
-            $media_data = [];
+            
     
             if(count($get_communication_list) > 0)  {
                 foreach ($get_communication_list as $key => $value) {
+                    $media_data = [];
                     $input_data['c_id'] = $value->c_id;
                     $input_data['title'] = $value->title;
                     $input_data['description'] = $value->description;
@@ -78,13 +80,21 @@ class Module extends Api_Controller {
                             $input_media['file_id'] = $media->media_id;
                             $input_media['file_path'] = base_url($media->media);                            
                             
-                            $media_data[$media->media_type][] = (object) $input_media;
-                            $input_data['media'] = $media_data;
+                            $media_data[$media->media_type][] = (object) $input_media;                            
                         }   
                     }
+                    if(empty($media_data)){
+                        $input_data['media'] = [
+                            "image" => [],
+                            "document" => [],
+                        ];
+                    }else{
+                        $input_data['media'] = $media_data;
+                    }
+                    
+                    array_push($data, $input_data); 
                 }
-
-                array_push($data, $input_data);                
+                              
             }
 
             $this->response['code'] = 200;

@@ -71,24 +71,22 @@ function options(){
 
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
 
-			if(count($data) !== 4) { continue; }
+			if(count($data) !== 3) { continue; }
 
 			if(! $cnt){
                 $cnt++; continue;
             }
-
+            
             $zone_name = trim($data[0]);
-            $region_name = trim($data[1]);
-            $area_name = trim($data[2]);
-            $city_name = trim($data[3]);
+            $area_name = trim($data[1]);
+            $city_name  = trim($data[2]);
 
-            if( empty($zone_name) || empty($region_name)){
+            if( empty($zone_name) || empty($area_name)){
                 continue;
             }
 
             if( 
                 !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone_name)  
-                || !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $region_name)
                 || !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $area_name)
                 || !preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $city_name) ){
                 continue;
@@ -101,14 +99,7 @@ function options(){
 
             $zone_id = $zone[0]->zone_id;
 
-            $region = $this->model->get_records(['region_name'=> $region_name, 'zone_id'=> $zone_id], 'region');
-            if(! count($region)) {
-                continue;
-            }
-
-            $region_id = $region[0]->region_id;
-
-            $area = $this->model->get_records(['area_name'=> $area_name, 'region_id'=> $region_id], 'area');
+            $area = $this->model->get_records(['area_name'=> $area_name, 'zone_id'=> $zone_id], 'area');
             if(! count($area)) {
                 continue;
             }
@@ -117,7 +108,6 @@ function options(){
                 FALSE, 
                 [ 
                     'zone_name'=> $zone_name, 
-                    'region_name'=> $region_name, 
                     'area_name'=> $area_name,
                     'city_name'=> $city_name 
                 ], 

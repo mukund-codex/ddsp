@@ -9,32 +9,59 @@ class Mdl_sms extends MY_Model {
 		parent::__construct($this->table);
 	}
 
-	function get_collection() {
+	function get_asm_data($yesterday) {
 
-		$yesterday = date('Y/m/d',strtotime("-1 days"));
-
-    	$q = $this->db->select('COUNT(DISTINCT ch.chemist_id) total_chemist, 
-		COUNT(DISTINCT d.doctor_id) total_doctor,
-		m.users_id,m.users_name, m.users_mobile,
-		c.city_name,a.area_name,r.region_name,z.zone_name,nz.national_zone_name, us.users_name as asm_name, zs.users_name as zsm_name,
-		zs.users_mobile as zsm_mobile')
-
-		->from('manpower m')
-		->join('city c', 'c.city_id = m.users_city_id')
-		->join('area a', 'a.area_id = c.area_id')
-		->join('region r','r.region_id = a.region_id')
-		->join('zone z','z.zone_id = r.zone_id')
-		->join('national_zone nz','nz.national_zone_id = z.national_zone_id')
-		->join('manpower us','us.users_id = m.users_parent_id')
-		->join('manpower rs','rs.users_id = us.users_parent_id')
-		->join('manpower zs','zs.users_id = rs.users_parent_id')
-		->join('chemist ch','ch.users_id = m.users_id')
-		->join('doctor d','d.users_id = m.users_id')
-		->where('DATE(ch.insert_dt)', '2019-09-11')
-		->group_by('us.users_id');
+    	$query = "SELECT 
+		GROUP_CONCAT(temp.asm_name, ' - ', temp.total_chemist) log, temp.* 
+		FROM (
+		SELECT
+		COUNT(ch.chemist_id) total_chemist,
+		asm.users_id as asm_id ,`asm`.`users_name` AS `asm_name`, `asm`.`users_mobile` AS `asm_mobile`,
+		zsm.users_id as zsm_id ,`zsm`.`users_name` AS `zsm_name`, `zsm`.`users_mobile` AS `zsm_mobile`
+		FROM `manpower` `mr`
+		LEFT JOIN `city` `c` ON `c`.`city_id` = `mr`.`users_city_id`
+		LEFT JOIN `area` `a` ON `a`.`area_id` = `c`.`area_id`
+		LEFT JOIN `zone` `z` ON `z`.`zone_id` = `a`.`zone_id`
+		LEFT JOIN `manpower` `asm` ON `asm`.`users_id` = `mr`.`users_parent_id`
+		LEFT JOIN `manpower` `zsm` ON `zsm`.`users_id` = `asm`.`users_parent_id`
+		LEFT JOIN `chemist` `ch` ON `ch`.`users_id` = `mr`.`users_id` AND DATE(ch.insert_dt) = '2019-09-11'
+		WHERE mr.users_type = 'MR'
+		GROUP BY `asm`.`users_id`
+		) as temp
+		GROUP BY `temp`.`zsm_id`";
 
 		//print_r($this->db->get_compiled_select());exit;
-		$collection = $q->get()->result();
+		//$collection = $q->get()->result();
+		$collection = $this->db->query($query)->result();
+		return $collection;
+	}
+
+	function get_mr_data($yesterday){
+
+		$query = "SELECT 
+		GROUP_CONCAT(temp.users_name, ' - ', temp.total_chemist) log, temp.* 
+		FROM (
+		SELECT
+		`mr`.`users_name`,
+		COUNT(ch.chemist_id) total_chemist,
+		`c`.`city_name`, `a`.`area_name`, `z`.`zone_name`,
+		asm.users_id as asm_id ,`asm`.`users_name` AS `asm_name`, `asm`.`users_mobile` AS `asm_mobile`,
+		`zsm`.`users_name` AS `zsm_name`, `zsm`.`users_mobile` AS `zsm_mobile`
+		FROM `manpower` `mr`
+		LEFT JOIN `city` `c` ON `c`.`city_id` = `mr`.`users_city_id`
+		LEFT JOIN `area` `a` ON `a`.`area_id` = `c`.`area_id`
+		LEFT JOIN `zone` `z` ON `z`.`zone_id` = `a`.`zone_id`
+		LEFT JOIN `manpower` `asm` ON `asm`.`users_id` = `mr`.`users_parent_id`
+		LEFT JOIN `manpower` `zsm` ON `zsm`.`users_id` = `asm`.`users_parent_id`
+		LEFT JOIN `chemist` `ch` ON `ch`.`users_id` = `mr`.`users_id` AND DATE(ch.insert_dt) = '$yesterday'
+		WHERE mr.users_type = 'MR'
+		GROUP BY `mr`.`users_id`
+		) as temp
+		GROUP BY `temp`.`asm_id`";
+
+		//print_r($this->db->get_compiled_select());exit;
+		//$collection = $q->get()->result();
+		$collection = $this->db->query($query)->result();
 		return $collection;
 	}
 

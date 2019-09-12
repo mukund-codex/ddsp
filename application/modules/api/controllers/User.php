@@ -293,7 +293,7 @@ class User extends Api_Controller {
 
 		$short_url = bitly_url($url);
 
-		$msg = "Dear $users_name, ".PHP_EOL."Below is the link to change your password.".PHP_EQL."$short_url";
+		$msg = "Dear $users_name, ".PHP_EOL."Below is the link to change your password.".PHP_EOL."$short_url";
 		
 		$msg_for = "Forgot Password";
 

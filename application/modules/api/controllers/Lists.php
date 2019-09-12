@@ -92,8 +92,9 @@ class Lists extends Api_Controller {
 
 			$chemistrecords = $this->model->get_records(['users_id' => $user_id], 'chemist');
 			$chemistdata = [];
-			$images_data = [];
+			
 			foreach($chemistrecords as $data){
+				$images_data = [];
 				$chemist_data['id'] = $data->chemist_id;
 				$chemist_data['name'] = $data->chemist_name;
 				$chemist_data['address'] = $data->address;
@@ -103,8 +104,9 @@ class Lists extends Api_Controller {
 				$chemist_data['city'] = !empty($city_name[0]->city_name) ? $city_name[0]->city_name : 0;
 				$chemist_data['pincode'] = $data->pincode;
 
-				$imageData = $this->model->get_records(['chemist_id'=>$data->chemist_id], 'images', ['image_id', 'image_name']);
+				$imageData = $this->model->get_records(['chemist_id'=>$data->chemist_id, 'category' => 'chemist', 'users_id' => $user_id], 'images', ['image_id', 'image_name']);
 				foreach($imageData as $image){
+					$image_data = [];
 					$image_data['file_id'] = $image->image_id;
 					$image_data['file_path'] = base_url($image->image_name);
 					array_push($images_data, $image_data);
@@ -148,13 +150,15 @@ class Lists extends Api_Controller {
 
 				$doctor_data['pincode'] = $value->pincode;
 
-				$imageData = $this->model->get_records(['doctor_id'=>$value->doctor_id], 'images', ['image_id', 'image_name']);
+				$imageData = $this->model->get_records(['doctor_id'=>$value->doctor_id, 'category' => 'doctor'], 'images', ['image_id', 'image_name']);
 				foreach($imageData as $image){
+					$image_data = [];
 					$image_data['file_id'] = $image->image_id;
 					$image_data['file_path'] = base_url($image->image_name);
 					array_push($images_data, $image_data);
 
 				}
+
 				$doctor_data['image'] = $images_data;
 
 				array_push($doctordata, $doctor_data);
