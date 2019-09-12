@@ -69,6 +69,19 @@
         })
     } */
 
+    if (area.length) {
+        zone.on('change', function () {
+            a_load_cnt++;
+            var a_attempt_to = (a_load_cnt > 1) ? 'reset' : 'load';
+
+            data = {
+                id: $(this).val()
+            }
+
+            load('area_id', 'Area', 'geography/area', true, a_attempt_to, data);
+        })
+    }
+
     if (city.length) {
         area.on('change', function () {
             c_load_cnt++;
@@ -82,7 +95,7 @@
     }
 
     load('zone_id', 'Zone', 'geography/zone', true);
-    load('area_id', 'Area', 'geography/area', true);
+    // load('area_id', 'Area', 'geography/area', true);
     load('users_city_id', 'City', 'geography/city', true);
 
 })(jQuery);

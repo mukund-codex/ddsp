@@ -32,7 +32,7 @@ class Area extends Admin_Controller
 		$s_term = (isset($_POST['search'])) ? $this->db->escape_like_str($_POST['search']) : '';
 		$id = (isset($_POST['id'])) ? (int) $this->input->post('id') : 0;
 
-		if($id){ $filters['region_id'] = $id; }
+		if($id){ $filters['zone_id'] = $id; }
 
 		$new = array(); $json['results'] = array();
 
