@@ -78,10 +78,18 @@ class Module extends Api_Controller {
                             $input_media['file_id'] = $media->media_id;
                             $input_media['file_path'] = base_url($media->media);                            
                             
-                            $media_data[$media->media_type][] = (object) $input_media;
-                            $input_data['media'] = $media_data;
+                            $media_data[$media->media_type][] = (object) $input_media;                            
                         }   
                     }
+                    if(empty($media_data)){
+                        $input_data['media'] = [
+                            "image" => [],
+                            "document" => [],
+                        ];
+                    }else{
+                        $input_data['media'] = $media_data;
+                    }
+                    
                     array_push($data, $input_data); 
                 }
 
