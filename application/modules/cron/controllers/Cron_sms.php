@@ -8,57 +8,70 @@ class Cron_sms extends Generic_Controller
 	{
 		parent::__construct();
 		$this->load->model($this->model_name, 'model');
+		$this->load->helper('send_sms');
 	}
 
-	public function index()
-	{
-		$this->load->helper('send_sms');
-		$data = $this->model->get_collection();		
+	public function asm_wise_count()
+	{	
+		$yesterday = date('Y/m/d',strtotime("-1 days"));
+
+		$data = $this->model->get_asm_data($yesterday);		
 
 		if(empty($data)) {
+			echo "No Records";
 			return;
 		}
 		
-		$mr_msg = '';
-		$asm_details = [];
-
 		foreach($data as $details){
-			$asm = [];
-			$total_chemist = $details->total_chemist;
-			$total_doctor = $details->total_doctor;
-			$users_id = $details->users_id;
-			$users_name = $details->users_name;
+			$asm_msg = '';
+			$zsm_name = $details->zsm_name;
+			$zsm_mobile = $details->zsm_mobile;
+			$log = $details->log;
 
-			$asm['zsm_name'] = $details->zsm_name;
-			$asm['zsm_mobile'] = $details->zsm_mobile;
-			$asm['name'] = $details->asm_name;
-			$asm['count'] = $total_chemist;
+			if(empty($zsm_name)){ continue; }
+			if(empty($zsm_mobile)){ continue; }
+			if(empty($log)){ continue; }
 
-			$mr_msg .= "$users_name - $total_chemist, ";
-			array_push($asm_details, $asm);
+			$asm_msg = "Yesterday’s chemist met count of your team ABM wise- ".$log.".";
+
+			send_sms($zsm_mobile, $asm_msg, 'Chemist Count Reminder');
+
 		}
-		
-		echo "<pre>";
-		print_r($asm_details);echo "<br>";
-	
-		$asmmsg = '';
-
-		foreach($asm_details as $details){
-			$asm_name = $details['name'];
-			$asm_count = $details['count'];
-			$asm_msg = "$asm_name - $asm_count";
-			$asmmsg .= "$asm_msg, ";
-			
-		}
-		$asmmsg = rtrim($asmmsg, ", ");
-
-		$sms_r = "Yesterday’s chemist met count of your team ABM wise- $asmmsg";
-		echo $sms_r;exit;
-
-		//send_sms($doctor_mobile, $sms_r, 'Invitation', '', '', $sender_id);
 
 		echo 'Success';
 		exit;
+		
+	}
+
+	function mr_wise_count(){
+
+		$yesterday = date('Y-m-d',strtotime("-1 days"));
+
+		$mrdata = $this->model->get_mr_data($yesterday);
+
+		if(empty($mrdata)){
+			echo "No Records";
+			return;
+		}
+
+		foreach($mrdata as $details){
+			$mr_msg = '';
+			$asm_name = $details->asm_name;
+			$asm_mobile = $details->asm_mobile;
+			$log = $details->log;
+
+			if(empty($asm_name)){ continue; }
+			if(empty($asm_mobile)){ continue; }
+			if(empty($log)){ continue; }
+
+			$mr_msg = "Yesterday’s chemist met count of your team- ".$log.".";
+
+			send_sms($asm_mobile, $mr_msg, 'Chemist Count Reminder');
+
+		}
+		echo "Success";
+		exit;
+
 	}
 
 }
