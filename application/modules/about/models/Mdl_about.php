@@ -42,9 +42,8 @@ class Mdl_about extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('a.*, m.users_id, m.users_name')
-		->from('about a')
-		->join('manpower m', 'm.users_id = a.users_id');
+        $q = $this->db->select('a.*')
+		->from('about a');
         
 		if(sizeof($sfilters)) { 
             
