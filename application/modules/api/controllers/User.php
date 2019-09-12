@@ -303,6 +303,8 @@ class User extends Api_Controller {
 		$request_data['short_url'] = $short_url;
 		$request_data['status'] = 1;
 
+		send_sms($users_mobile, $msg, $msg_for);
+
 		$request_id = $this->mdl_user->_insert($request_data, 'forgot_password_request');
 
 		if($request_id){
