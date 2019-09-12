@@ -230,7 +230,8 @@ class Mdl_zsm extends Manpower_Model {
             $data['users_mobile'] = NULL;
         }
 
-        $p_key = $this->p_key;
+		$p_key = $this->p_key;
+		$id = (int) $this->input->post($p_key);
 
         $status = (int) $this->_update([$p_key => $id], $data);
 
