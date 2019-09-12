@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<label class="form-label">Mobile</label>
+<label class="form-label">Mobile<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">
         <input type="text" name="users_mobile" class="form-control" maxlength="10"/>
