@@ -741,7 +741,7 @@ class Module extends Api_Controller {
             $doctordata['chemist_id'] = $chemist_id;
             $doctordata['users_id'] = $user_id;
             $doctordata['doctor_name'] = $doctor['name'];
-            $doctordata['speciality'] = $doctor['speciality'];
+            $doctordata['speciality'] = $doctor_speciality = $doctor['speciality'];
             $doctordata['address'] = $doctor['address'];
             $doctordata['state'] = $doctor['state'];
             $doctordata['city'] = $doctor['city'];
@@ -749,9 +749,11 @@ class Module extends Api_Controller {
 
             if($doctor['other'] == 'no'){
                 $doc_id = $doctor['id'];
-                $doctorrecords = $this->model->get_records(['doctor_id' => $doctor_id], 'doctor', ['doctor_id']);
+                $doctorrecords = $this->model->get_records(['doctor_id' => $doctor_id, 'speciality' => $doctor_speciality], 'doctor', ['doctor_id']);
                 if(!empty($doctorrecords)){
                     $doctor_id = $doctorrecords[0]->doctor_id;
+                } else {
+                    $doctor_id = $this->model->_insert($doctordata, 'doctor');
                 } 
             }else{
                 $doctor_id = $this->model->_insert($doctordata, 'doctor');
