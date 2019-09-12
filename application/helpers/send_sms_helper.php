@@ -8,8 +8,8 @@ if (!function_exists('send_sms')) {
 		
 		$ci->load->database();
 
-		$sender_id = "PHARMA";
-		// $sender_id = "USVDRM";
+		//$sender_id = "PHARMA";
+		$sender_id = "USVDRM";
 		$provider = '';
 
 		switch($provider){
