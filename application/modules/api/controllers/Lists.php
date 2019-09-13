@@ -90,7 +90,7 @@ class Lists extends Api_Controller {
 
 		if($category == 'chemist'){
 
-			$chemistrecords = $this->model->get_records(['users_id' => $user_id], 'chemist');
+			$chemistrecords = $this->model->get_records(['users_id' => $user_id], 'chemist', [] , 'chemist_id desc');
 			$chemistdata = [];
 			
 			foreach($chemistrecords as $data){
@@ -128,7 +128,7 @@ class Lists extends Api_Controller {
 
 		if($category == 'doctor'){
 
-			$doctorrecords = $this->model->get_records(['users_id' => $user_id], 'doctor');
+			$doctorrecords = $this->model->get_records(['users_id' => $user_id], 'doctor', [] , 'doctor_id desc');
 			$doctordata = [];
 
 			foreach($doctorrecords as $value){
