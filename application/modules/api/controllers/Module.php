@@ -319,20 +319,44 @@ class Module extends Api_Controller {
         
         if($specialityType == 'derma'){
             $speciality_data = $this->model->get_records(['speciality_name' => 'Derma'], 'speciality');
-        }else{
-            $speciality_data = $this->model->get_records(['speciality_name !=' => 'Derma'], 'speciality');            
-        }
+            $data = [];
 
-        $data = [];
-
-        if(count($speciality_data) > 0){
-            foreach($speciality_data as $key => $value){
-                $specialitydata['speciality_id'] = $value->speciality_id;
-                $specialitydata['speciality_name'] = $value->speciality_name;
-                array_push($data, $specialitydata);
+            if(count($speciality_data) > 0){
+                foreach($speciality_data as $key => $value){
+                    $sub_category = [];
+                    $speciality_id = $value->speciality_id;
+                    $specialitydata['speciality_id'] = $value->speciality_id;
+                    $specialitydata['speciality_name'] = $value->speciality_name;
+                    $category = $this->model->get_records(['speciality_id' => $speciality_id], 'speciality_category');
+                    if(count($category) > 0){
+                        foreach($category as $key => $cat){
+                            $subcat = [];              
+                            $subcat['id'] = $cat->sc_id;
+                            $subcat['name'] = $cat->category_name;
+                            array_push($sub_category, $subcat);
+                        }
+                    }
+                    $specialitydata['category'] = $sub_category;
+                    array_push($data, $specialitydata);
+                }
+                
             }
-            
+        }else{
+            $speciality_data = $this->model->get_records(['speciality_name !=' => 'Derma'], 'speciality');       
+            $data = [];
+
+            if(count($speciality_data) > 0){
+                foreach($speciality_data as $key => $value){
+                    $specialitydata['speciality_id'] = $value->speciality_id;
+                    $specialitydata['speciality_name'] = $value->speciality_name;
+                    $specialitydata['category'] = [];
+                    array_push($data, $specialitydata);
+                }
+                
+            }     
         }
+
+        
 
         $this->response['code'] = 200;
         $this->response['data'] = [
@@ -420,7 +444,7 @@ class Module extends Api_Controller {
         $user_id = $this->id;
 
         $data = [];
-        $moleculedata = [];
+        
 
         $get_state = $this->model->get_records([], 'state');
        
@@ -447,55 +471,71 @@ class Module extends Api_Controller {
             
             
         }
+        $categorydata = [];
+        $get_category = $this->model->get_records([], 'category', [] , 'category_id asc');
+        if(count($get_category > 0)){
+            foreach($get_category as $key => $category){
+                $moleculedata = [];
 
-        $get_molecule = $this->model->get_records([], 'molecule');
-        if(count($get_molecule) > 0){
-            foreach($get_molecule as $key => $molecule){
-                $brandData = [];
-                $molecules_data['id'] = $molecule->molecule_id;
-                $molecules_data['name'] = $molecule->molecule_name;
+                $category_id = $category->category_id;
+                $category_data['category_id'] = $category->category_id;
+                $category_data['category_name'] = $category->category_name;
                 
-                $get_brand = $this->model->get_records(['molecule_id' => $molecule->molecule_id], 'brand');
-                if(count($get_brand) > 0){
-                    foreach($get_brand as $key => $brand){
-                        $brand_data = [];
-                        $brand_data['id'] = $brand->brand_id;
-                        $brand_data['name'] = $brand->brand_name;                        
-                        $brand_data['other'] = 'no';
+                $get_molecule = $this->model->get_records(['category_id' => $category_id], 'molecule');
+                if(count($get_molecule) > 0){
+                    foreach($get_molecule as $key => $molecule){
+                        $brandData = [];
+                        $molecules_data['id'] = $molecule->molecule_id;
+                        $molecules_data['name'] = $molecule->molecule_name;
+                        
+                        $get_brand = $this->model->get_records(['molecule_id' => $molecule->molecule_id], 'brand');
+                        if(count($get_brand) > 0){
+                            foreach($get_brand as $key => $brand){
+                                $brand_data = [];
+                                $brand_data['id'] = $brand->brand_id;
+                                $brand_data['name'] = $brand->brand_name;                        
+                                $brand_data['other'] = 'no';
 
-                        $get_sku = $this->model->get_records(['brand_id' => $brand->brand_id], 'sku');
-                        if(count($get_sku) > 0){
-                            $skuData = [];
-                            foreach($get_sku as $key => $sku){
-                                $sku_data= [];
-                                $sku_data['id'] = $sku->sku_id;
-                                $sku_data['name'] = $sku->sku;
-                                array_push($skuData, $sku_data);
+                                $get_sku = $this->model->get_records(['brand_id' => $brand->brand_id], 'sku');
+                                if(count($get_sku) > 0){
+                                    $skuData = [];
+                                    foreach($get_sku as $key => $sku){
+                                        $sku_data= [];
+                                        $sku_data['id'] = $sku->sku_id;
+                                        $sku_data['name'] = $sku->sku;
+                                        array_push($skuData, $sku_data);
+                                    }
+                                    $brand_data['sku'] = $skuData;
+                                    $brand_data['isSku'] = TRUE;
+                                    
+                                }else{
+                                    $brand_data['sku'] = [];
+                                    $brand_data['isSku'] = FALSE;
+                                }
+
+                                array_push($brandData, $brand_data);
+
                             }
-                            $brand_data['sku'] = $skuData;
-                            $brand_data['isSku'] = TRUE;
-                            
-                        }else{
-                            $brand_data['sku'] = [];
-                            $brand_data['isSku'] = FALSE;
                         }
 
-                        array_push($brandData, $brand_data);
+                        $molecules_data['brand'] = $brandData;
 
+                        array_push($moleculedata, $molecules_data);
                     }
+                
                 }
+                $category_data['molecule'] = $moleculedata;
 
-                $molecules_data['brand'] = $brandData;
+                array_push($categorydata, $category_data);
 
-                array_push($moleculedata, $molecules_data);
             }
-           
         }
+        
 
         $this->response['code'] = 200;
         $this->response['data'] = [
             "state" => $data,
-            "molecule" => $moleculedata,
+            "category" => $categorydata,
         ];
         $this->response['message'] = empty($data) ? "No Data Found" : "List";
         $this->sendResponse();

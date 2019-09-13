@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Speciality extends User_Controller
+class Category extends User_Controller
 {
-	private $module = 'speciality';
-    private $model_name = 'mdl_speciality';
-    private $controller = 'speciality';
+	private $module = 'category';
+    private $model_name = 'mdl_category';
+    private $controller = 'category';
     private $settings = [
         'permissions'=> ['add','edit','remove','download','upload'],
     ];
@@ -31,20 +31,22 @@ class Speciality extends User_Controller
 		$limit = $this->dropdownlength;
 		$page = intval($_POST['page']) - 1;
 		$page = ($page <= 0) ? 0 : $page;
+
 		$filters = [];
+
 		$s_term = (isset($_POST['search'])) ? $this->db->escape_like_str($_POST['search']) : '';
 		$id = (isset($_POST['id'])) ? (int) $this->input->post('id') : 0;
 
-		if($id){ $filters['speciality_id'] = $id; }
+		if($id){ $filters['category_id'] = $id; }
 
 		$new = array(); $json['results'] = array();
 
-		$_options = $this->model->get_options($s_term, 'speciality_name', $filters, $page * $limit, $limit);
-		$_opt_count = count($this->model->get_options($s_term, 'speciality_name', $filters));
+		$_options = $this->model->get_options($s_term, 'category_name', $filters, $page * $limit, $limit);
+		$_opt_count = count($this->model->get_options($s_term, 'category_name', $filters));
 
 		foreach($_options as $option){
-			$new['id'] = $option->speciality_id;
-			$new['text'] = $option->speciality_name;
+			$new['id'] = $option->category_id;
+			$new['text'] = $option->category_name;
 
 			array_push($json['results'], $new);
 		}
@@ -53,13 +55,6 @@ class Speciality extends User_Controller
 		$json['pagination']['more'] = $more;
 
 		echo json_encode($json);
-    }
-
-	function whatsapp(){
-		$this->session->is_Ajax_and_logged_in();
-
-		$response = $this->model->whatsapp();
-		echo json_encode($response);
     }
 
 	function uploadcsv(){
@@ -87,18 +82,18 @@ class Speciality extends User_Controller
 
 			if(count($data) !== 1) { continue; }            
             
-            $speciality_name = trim($data[0]);
+            $category_name = trim($data[0]);
 
-            if( empty($speciality_name)){
+            if( empty($category_name)){
                 continue;
             }
 
-			$record = $this->model->get_or_records(['speciality_name'=> $speciality_name], 'speciality', ['speciality_id'], '', 1);
+			$record = $this->model->get_or_records(['category_name'=> $category_name], 'category', ['category_id'], '', 1);
 			if(count($record)) {
 				continue;
 			}
 
-            $insert['speciality_name'] = $speciality_name;
+            $insert['category_name'] = $category_name;
 
             $this->model->_insert($insert);
 

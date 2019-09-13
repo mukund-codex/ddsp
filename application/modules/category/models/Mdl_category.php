@@ -1,12 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_molecule extends MY_Model {
+class Mdl_category extends MY_Model {
 
-	private $p_key = 'molecule_id';
-	private $table = 'molecule';
-	private $alias = 'm';
-	private $fillable = ['category_id', 'molecule_name'];
-    private $column_list = ['Category Name', 'Molecule Name','Date'];
-    private $csv_columns = ['Category Name', 'Molecule Name'];
+	private $p_key = 'category_id';
+	private $table = 'category';
+	private $alias = 'c';
+	private $fillable = ['category_name'];
+    private $column_list = ['Category Name','Date'];
+    private $csv_columns = ['Category Name'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key,$this->alias);
@@ -23,8 +23,8 @@ class Mdl_molecule extends MY_Model {
     function get_filters() {
         return [
             [
-                'field_name'=>'molecule_name',
-                'field_label'=> 'Name',
+                'field_name'=>'category_name',
+                'field_label'=> 'Category Name',
             ],
         ];
     }
@@ -45,9 +45,8 @@ class Mdl_molecule extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('m.*, c.category_id, c.category_name')
-		->from('molecule m')
-		->join('category c', 'c.category_id = m.category_id');
+        $q = $this->db->select('*')
+        ->from('category c');
         
 		if(sizeof($sfilters)) { 
             
@@ -65,12 +64,12 @@ class Mdl_molecule extends MY_Model {
                 }
                 
                 if($key == 'from_date' && !empty($value)) {
-                    $this->db->where('DATE(m.insert_dt) >=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(c.insert_dt) >=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
                 if($key == 'to_date' && !empty($value)) {
-                    $this->db->where('DATE(m.insert_dt) <=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(c.insert_dt) <=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
@@ -90,7 +89,7 @@ class Mdl_molecule extends MY_Model {
 		}
 
 		if(! $count) {
-			$q->order_by('m.molecule_id desc');
+			$q->order_by('c.category_id desc');
 		}
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
@@ -103,16 +102,11 @@ class Mdl_molecule extends MY_Model {
 	{
 		if($type == 'save') {
 			return [
-				[
-					'field' => 'category_id',
-					'label' => 'Category Name',
-					'rules' => 'trim|required|xss_clean'
-				],
                 [
-					'field' => 'molecule_name',
-					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.molecule.molecule_name.' . $this->input->post('molecule_name') .']|xss_clean'
-				],
+					'field' => 'category_name',
+					'label' => 'Category Name',
+					'rules' => 'trim|required|max_length[150]|unique_record[add.table.category.category_name.' . $this->input->post('category_name') .']|xss_clean'
+                ],
 				
 			];
 		}
@@ -120,14 +114,9 @@ class Mdl_molecule extends MY_Model {
 		if($type == 'modify') {
 			return [
 				[
-					'field' => 'category_id',
+					'field' => 'category_name',
 					'label' => 'Category Name',
-					'rules' => 'trim|required|xss_clean'
-				],
-				[
-					'field' => 'molecule_name',
-					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.molecule.molecule_name.' . $this->input->post('molecule_name'). '.molecule_id.'. $this->input->post('molecule_id') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[edit.table.category.category_name.' . $this->input->post('category_name'). '.category_id.'. $this->input->post('category_id') .']|xss_clean'
                 ],
                 
 			];
@@ -162,8 +151,8 @@ class Mdl_molecule extends MY_Model {
 		}
 
         $response['status'] = TRUE;
-        $response['message'] = 'Congratulations! molecule has been added successfully.';
-        $response['redirectTo'] = 'molecule/lists';
+        $response['message'] = 'Congratulations! Category has been added successfully.';
+        $response['redirectTo'] = 'category/lists';
 
         return $response;
 	}
@@ -218,8 +207,6 @@ class Mdl_molecule extends MY_Model {
 		}		
 		
         $data = $this->process_data($this->fillable, $_POST);
-
-		//echo '<pre>';print_r($data);exit;
 
         $p_key = $this->p_key;
         $id = (int) $this->input->post($p_key);

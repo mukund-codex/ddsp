@@ -1,18 +1,8 @@
-<?php echo form_open("molecule/save",array('class'=>'save-form')); ?>
-
+<?php echo form_open("category/save",array('class'=>'save-form')); ?>
 <label class="form-label">Category Name<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">
-        <select name="category_id" class="form-control" data-placeholder="Select Category" id="category_id">
-            <option></option>
-        </select>
-    </div>
-</div>
-
-<label class="form-label">Molecule Name<span class="required">*</span></label>
-<div class="form-group">
-    <div class="form-line">
-        <input type="text" id="molecule_name" name="molecule_name" class="form-control" autocomplete="off" placeholder="molecule Name">
+        <input type="text" id="category_name" name="category_name" class="form-control" autocomplete="off" placeholder="Category Name">
     </div>
 </div>
 

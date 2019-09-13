@@ -80,9 +80,21 @@ class Molecule extends User_Controller
                 $cnt++; continue;
             }
 
-			if(count($data) !== 1) { continue; }            
-            
-            $molecule_name = trim($data[0]);
+			if(count($data) !== 2) { continue; }            
+			
+			$category_name = trim($data[0]);			
+            $molecule_name = trim($data[1]);
+
+			if( empty($category_name)){
+                continue;
+			}
+			
+			$record = $this->model->get_or_records(['category_name'=> $category_name], 'category', ['category_id'], '', 1);
+			if(empty($record)) {
+				continue;
+			}
+
+			$category_id = $record[0]->category_id;
 
             if( empty($molecule_name)){
                 continue;
@@ -93,6 +105,7 @@ class Molecule extends User_Controller
 				continue;
 			}
 
+			$insert['category_id'] = $category_id;
             $insert['molecule_name'] = $molecule_name;
 
             $this->model->_insert($insert);

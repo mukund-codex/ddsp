@@ -159,8 +159,10 @@
         $('#textarea_feedback').html('<span class="badge">' +text_remaining + '</span>' + ' characters remaining');
     });
 
+    load('category_id', 'Category Name', 'category/options', true);
     load('molecule_id', 'Molecule Name', 'molecule/options', true);
     load('brand_id', 'Brand Name', 'brand/options', true);
+    load('speciality_id', 'Speciality Name', 'speciality/options', true);
 
     $("#brand_id").on('change', function () {
         loadsku();

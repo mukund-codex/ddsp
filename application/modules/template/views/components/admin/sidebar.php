@@ -91,7 +91,19 @@
                     <ul class="ml-menu">                 
                         <li <?php echo (isset($menu) && $menu == 'speciality') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>"><i class="material-icons">language</i><span>Speciality</span></a>
-                        </li>                            
+                        </li>
+                        <li <?php echo ($mainmenu == 'speciality_category') ? 'class="active"': ''; ?> >
+                            <a href="<?php echo base_url("speciality_category/lists?t=$timestamp") ?>">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>Speciality Category</span>
+                            </a>
+                        </li> 
+                        <li <?php echo ($mainmenu == 'category') ? 'class="active"': ''; ?> >
+                            <a href="<?php echo base_url("category/lists?t=$timestamp") ?>">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>Category</span>
+                            </a>
+                        </li>               
                         <li <?php echo (isset($menu) && $menu == 'molecule') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("molecule/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Molecules</span></a>
                         </li>                            
@@ -163,12 +175,19 @@
                     </a>
                 </li>
 
-                <!-- <li <?php echo ($mainmenu == 'language') ? 'class="active"': ''; ?>>
-                    <a href="<?php echo base_url("language/lists?t=$timestamp") ?>">
-                        <i class="material-icons">language</i>
-                        <span>Language</span>
+                <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:none;">
+                    <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
+                        <i class="material-icons">receipt</i>
+                        <span>ASM Lists</span>
                     </a>
-                </li> -->
+                </li>
+
+                <li <?php echo ($mainmenu == 'language') ? 'class="active"': ''; ?> style="display:none;">
+                    <a href="<?php echo base_url("language/lists?t=$timestamp") ?>">
+                        <i class="material-icons">receipt</i>
+                        <span>ZSM Lists</span>
+                    </a>
+                </li>
 
                <!--  <li <?php echo ($mainmenu == 'bunch') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("bunch/lists?t=$timestamp") ?>">
@@ -184,26 +203,42 @@
                     </a>
                 </li> -->
                     
-                <!-- <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['chemist_doctor_count', 'zone_wise_brand_rxn','itra_rxn', 'eber_rxn', 'clind_rxn','golite_rxn'])) ? 'class="active"': ''; ?> style="display:none;">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>
                         <span>Reports</span>
                     </a>
-                    <ul class="ml-menu">                        
-                        <li <?php echo (isset($menu) && $menu == 'livetracker') ? 'class="active"': ''; ?>>
+                    <ul class="ml-menu">         
+                        <!-- <li <?php echo (isset($menu) && $menu == 'chemist_doctor_count') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/chemist_doctor_count?t=$timestamp") ?>">Chemist Doctor Count</a>
+                        </li>  
+                        <li <?php echo (isset($menu) && $menu == 'zone_wise_brand_rxn') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/zone_wise_brand_rxn?t=$timestamp") ?>">Zone wise Brand RXN</a>
+                        </li>   -->
+                       <!--  <li <?php echo (isset($menu) && $menu == 'itra_rxn') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/itra_rxn?t=$timestamp") ?>">ITRA Rxn</a>
+                        </li> 
+                        <li <?php echo (isset($menu) && $menu == 'eber_rxn') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/itra_rxn?t=$timestamp") ?>">EBER Rxn</a>
+                        </li>
+                        <li <?php echo (isset($menu) && $menu == 'clind_rxn') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/itra_rxn?t=$timestamp") ?>">CLIND Rxn</a>
+                        </li>
+                        <li <?php echo (isset($menu) && $menu == 'golite_rxn') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/itra_rxn?t=$timestamp") ?>">GOLITE Rxn</a>
+                        </li>  -->
+                                 
+                       <!--  <li <?php echo (isset($menu) && $menu == 'livetracker') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/livetracker?t=$timestamp") ?>">Livetracker</a>
-                        </li>                            
-                        <li <?php echo (isset($menu) && $menu == 'employee_ds') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/employee_ds?t=$timestamp") ?>">Employee Wise Report</a>
                         </li>                            
                         <li <?php echo (isset($menu) && $menu == 'doctor_generation_status') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/doctor_generation_status?t=$timestamp") ?>">Doctor Wise Report</a>
-                        </li>   
+                        </li>
                         <li <?php echo (isset($menu) && $menu == 'region_wise') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/region_wise?t=$timestamp") ?>">Region Wise Report</a>
-                        </li>                         
+                        </li>     -->                     
                     </ul>
-                </li> -->
+                </li>
             </ul>
         </div>
         <!-- #Menu -->

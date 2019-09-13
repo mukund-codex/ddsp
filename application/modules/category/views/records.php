@@ -1,4 +1,4 @@
-<?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['molecule_id']; ?>
+<?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['category_id']; ?>
 <tr>
     <?php if(! isset($all_action) || $all_action): ?>
         <td>
@@ -6,8 +6,7 @@
             <label for="check_<?= $id ?>"></label>
         </td>
     <?php endif; ?>
-    <td><?php echo $record['category_name'] ?></td>    
-    <td><?php echo $record['molecule_name'] ?></td>         
+    <td><?php echo $record['category_name'] ?></td>         
     <td><?php echo $record['insert_dt'] ?></td>
     <?php if(in_array('edit', $permissions)): ?>
         <td><p><a href="<?php echo base_url("$controller/edit/record/$id?c=$timestamp") ?>" class="tooltips" title="Edit <?php ucfirst($module_title) ?>" ><i class="fa fa-edit"></i> Edit <?= ucfirst($module_title) ?></a></p></td>

@@ -1,12 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_molecule extends MY_Model {
+class Mdl_speciality_category extends MY_Model {
 
-	private $p_key = 'molecule_id';
-	private $table = 'molecule';
-	private $alias = 'm';
-	private $fillable = ['category_id', 'molecule_name'];
-    private $column_list = ['Category Name', 'Molecule Name','Date'];
-    private $csv_columns = ['Category Name', 'Molecule Name'];
+	private $p_key = 'sc_id';
+	private $table = 'speciality_category';
+	private $alias = 'sc';
+	private $fillable = ['speciality_id', 'category_name'];
+    private $column_list = ['Speciality Name', 'Category Name','Date'];
+    private $csv_columns = ['Speciality Name', 'Category Name'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key,$this->alias);
@@ -22,6 +22,10 @@ class Mdl_molecule extends MY_Model {
 
     function get_filters() {
         return [
+			[
+				'field_name'=>'speciality_name',
+                'field_label'=> 'Speciality Name',
+			],
             [
                 'field_name'=>'molecule_name',
                 'field_label'=> 'Name',
@@ -45,9 +49,9 @@ class Mdl_molecule extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('m.*, c.category_id, c.category_name')
-		->from('molecule m')
-		->join('category c', 'c.category_id = m.category_id');
+        $q = $this->db->select('sc.*, s.speciality_id, s.speciality_name')
+		->from('speciality_category sc')
+		->join('speciality s', 's.speciality_id = sc.speciality_id');
         
 		if(sizeof($sfilters)) { 
             
@@ -65,12 +69,12 @@ class Mdl_molecule extends MY_Model {
                 }
                 
                 if($key == 'from_date' && !empty($value)) {
-                    $this->db->where('DATE(m.insert_dt) >=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(sc.insert_dt) >=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
                 if($key == 'to_date' && !empty($value)) {
-                    $this->db->where('DATE(m.insert_dt) <=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(sc.insert_dt) <=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
@@ -90,7 +94,7 @@ class Mdl_molecule extends MY_Model {
 		}
 
 		if(! $count) {
-			$q->order_by('m.molecule_id desc');
+			$q->order_by('sc.sc_id desc');
 		}
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
@@ -104,14 +108,14 @@ class Mdl_molecule extends MY_Model {
 		if($type == 'save') {
 			return [
 				[
-					'field' => 'category_id',
-					'label' => 'Category Name',
+					'field' => 'speciality_id',
+					'label' => 'Speciality Name',
 					'rules' => 'trim|required|xss_clean'
 				],
                 [
-					'field' => 'molecule_name',
-					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.molecule.molecule_name.' . $this->input->post('molecule_name') .']|xss_clean'
+					'field' => 'category_name',
+					'label' => 'Category Name',
+					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.speciality_category.category_name.' . $this->input->post('category_name') .']|xss_clean'
 				],
 				
 			];
@@ -120,14 +124,14 @@ class Mdl_molecule extends MY_Model {
 		if($type == 'modify') {
 			return [
 				[
-					'field' => 'category_id',
-					'label' => 'Category Name',
+					'field' => 'speciality_id',
+					'label' => 'Speciality Name',
 					'rules' => 'trim|required|xss_clean'
 				],
 				[
-					'field' => 'molecule_name',
-					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.molecule.molecule_name.' . $this->input->post('molecule_name'). '.molecule_id.'. $this->input->post('molecule_id') .']|xss_clean'
+					'field' => 'category_name',
+					'label' => 'Category Name',
+					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.speciality_category.category_name.' . $this->input->post('category_name'). '.sc_id.'. $this->input->post('sc_id') .']|xss_clean'
                 ],
                 
 			];
@@ -162,8 +166,8 @@ class Mdl_molecule extends MY_Model {
 		}
 
         $response['status'] = TRUE;
-        $response['message'] = 'Congratulations! molecule has been added successfully.';
-        $response['redirectTo'] = 'molecule/lists';
+        $response['message'] = 'Congratulations! Category has been added successfully.';
+        $response['redirectTo'] = 'speciality_category/lists';
 
         return $response;
 	}

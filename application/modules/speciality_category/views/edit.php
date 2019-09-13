@@ -1,18 +1,18 @@
 <?php echo form_open("$controller/modify",array('class'=>'save-form')); ?>
-<input type="hidden" name="molecule_id" value="<?php echo $info[0]['molecule_id']; ?>" />
+<input type="hidden" name="sc_id" value="<?php echo $info[0]['sc_id']; ?>" />
 
 <label class="form-label">Category Name<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">
-        <select name="category_id" class="form-control" data-placeholder="Select Category" id="category_id">
-        <option value="<?php echo $info[0]['category_id']; ?>" selected="selected"><?php echo $info[0]['category_name']; ?></option>
+        <select name="speciality_id" class="form-control" data-placeholder="Select Speciality" id="speciality_id">
+        <option value="<?php echo $info[0]['speciality_id']; ?>" selected="selected"><?php echo $info[0]['speciality_name']; ?></option>
         </select>
     </div>
 </div>
 
 <div class="form-group">
     <div class="form-line">
-        <input type="text" id="molecule_name" name="molecule_name"  value="<?php echo $info[0]['molecule_name']; ?>" class="form-control" autocomplete="off" placeholder="molecule Name">
+        <input type="text" id="category_name" name="category_name"  value="<?php echo $info[0]['category_name']; ?>" class="form-control" autocomplete="off" placeholder="Category Name">
     </div>
 </div>
 
