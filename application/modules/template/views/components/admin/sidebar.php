@@ -175,12 +175,20 @@
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:none;">
+                <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
                     <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
                         <i class="material-icons">receipt</i>
                         <span>ASM Lists</span>
                     </a>
                 </li>
+
+                <li <?php echo ($mainmenu == 'zsm_lists') ? 'class="active"': ''; ?> style="display:block;">
+                    <a href="<?php echo base_url("zsm_lists/lists?t=$timestamp") ?>">
+                        <i class="material-icons">receipt</i>
+                        <span>ZSM Lists</span>
+                    </a>
+                </li>
+
 
                 <li <?php echo ($mainmenu == 'language') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("language/lists?t=$timestamp") ?>">

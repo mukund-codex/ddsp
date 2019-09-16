@@ -35,9 +35,9 @@ class Mdl_user extends MY_Model {
 		$record = $this->get_records(['users_mobile' => $username, 'users_password' => $password, 'users_type' => 'HO']);
 		
         if(! count($record)) {
-			$record = $this->get_records(['users_emp_id' => $username, 'users_password' => $password, 'users_type' => ["MR","ASM","RSM"]]);
+			$record = $this->get_records(['users_emp_id' => $username, 'users_password' => $password, 'users_type' => ["ASM","ZSM"]]);
 		}
-
+		
 		if(count($record)){
 			return $this->_authenticate($record);
 			$user = $this->session->userdata($this->session_key);

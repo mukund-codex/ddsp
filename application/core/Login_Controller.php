@@ -53,7 +53,7 @@ abstract class Login_Controller extends Generic_Controller{
 			
 			if (intval($responseKeys["success"]) == 1) {	 */	
 				$status = $this->model->authenticate();
-		
+				
 				if($status){
 					redirect('dashboard/' . $this->module ,'refresh');
 				}

@@ -25,18 +25,34 @@
             <ul class="list">
                 <li class="header">MAIN NAVIGATION</li>
                 <li <?php echo ($menu == 'user') ? 'class="active"': ''; ?>>
-                    <a href="<?php echo base_url('dashboard/user') ?>">
+                    <a href="">
                         <i class="material-icons">home</i>
                         <span>Home</span>
                     </a>
                 </li>
+                <?php if(in_array($user_role, ['ASM'])): ?>
+                    <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
+                        <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
+                            <i class="material-icons">receipt</i>
+                            <span>ASM Lists</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if(in_array($user_role, ['ZSM'])): ?>
+                    <li <?php echo ($mainmenu == 'zsm_lists') ? 'class="active"': ''; ?> style="display:block;">
+                        <a href="<?php echo base_url("zsm_lists/lists?t=$timestamp") ?>">
+                            <i class="material-icons">receipt</i>
+                            <span>ZSM Lists</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <?php if(in_array($user_role, ['RSM','ASM','MR'])): ?>
-                    <li <?php echo ($menu == 'doctor') ? 'class="active"': ''; ?>>
+                    <!-- <li <?php echo ($menu == 'doctor') ? 'class="active"': ''; ?>>
                         <a href="<?php echo base_url("doctor/lists?t=$timestamp") ?>">
                             <i class="material-icons">person_add</i>
                             <span>Doctors</span>
                         </a>
-                    </li>
+                    </li> -->
                 <?php endif; ?>
 
                 <?php if($user_role == 'HO'): ?>

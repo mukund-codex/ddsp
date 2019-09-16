@@ -11,7 +11,7 @@ class User extends Login_Controller
             $this->module, 
             $this->controller, 
             $this->model_name, 
-            ['MR', 'HO', 'ASM', 'RSM'],
+            ['HO', 'ASM', 'ZSM'],
             $this->scripts
         );
     }
