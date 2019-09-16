@@ -80,11 +80,12 @@ class Speciality_category extends Admin_Controller
                 $cnt++; continue;
             }
 
-			if(count($data) !== 2) { continue; }            
+			if(count($data) !== 3) { continue; }            
 			
 			$speciality_name = trim($data[0]);			
             $category_name = trim($data[1]);
-
+			$category_type = trim($data[2]);
+		
 			if( empty($speciality_name)){
                 continue;
 			}
@@ -93,6 +94,14 @@ class Speciality_category extends Admin_Controller
                 continue;
 			}
 
+			if( empty($category_type)){
+                continue;
+			}
+			
+			if($category_type != 'rxn' && $category_type != 'strips'){
+				continue;
+			}
+			
 			$specrecord = $this->model->get_or_records(['speciality_name'=> $speciality_name], 'speciality', ['speciality_id'], '', 1);
 			if(empty($specrecord)) {
 				continue;
@@ -107,6 +116,7 @@ class Speciality_category extends Admin_Controller
 
 			$insert['speciality_id'] = $speciality_id;
             $insert['category_name'] = $category_name;
+			$insert['category_type'] = $category_type;
 
             $this->model->_insert($insert);
 

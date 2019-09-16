@@ -333,6 +333,7 @@ class Module extends Api_Controller {
                             $subcat = [];              
                             $subcat['id'] = $cat->sc_id;
                             $subcat['name'] = $cat->category_name;
+                            $subcat['type'] = $cat->category_type;
                             array_push($sub_category, $subcat);
                         }
                     }

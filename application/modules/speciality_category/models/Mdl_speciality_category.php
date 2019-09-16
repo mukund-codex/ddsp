@@ -4,9 +4,9 @@ class Mdl_speciality_category extends MY_Model {
 	private $p_key = 'sc_id';
 	private $table = 'speciality_category';
 	private $alias = 'sc';
-	private $fillable = ['speciality_id', 'category_name'];
-    private $column_list = ['Speciality Name', 'Category Name','Date'];
-    private $csv_columns = ['Speciality Name', 'Category Name'];
+	private $fillable = ['speciality_id', 'category_name', 'category_type'];
+    private $column_list = ['Speciality Name', 'Category Name', 'Category Type','Date'];
+    private $csv_columns = ['Speciality Name', 'Category Name', 'Category Type'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key,$this->alias);
@@ -27,8 +27,12 @@ class Mdl_speciality_category extends MY_Model {
                 'field_label'=> 'Speciality Name',
 			],
             [
-                'field_name'=>'molecule_name',
-                'field_label'=> 'Name',
+                'field_name'=>'category_name',
+                'field_label'=> 'Category Name',
+			],
+			[
+                'field_name'=>'category_type',
+                'field_label'=> 'Category Type',
             ],
         ];
     }
@@ -117,7 +121,11 @@ class Mdl_speciality_category extends MY_Model {
 					'label' => 'Category Name',
 					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.speciality_category.category_name.' . $this->input->post('category_name') .']|xss_clean'
 				],
-				
+				[
+					'field' => 'category_type',
+					'label' => 'Category Type',
+					'rules' => 'trim|required|xss_clean'
+				],				
 			];
 		}
 
@@ -132,8 +140,12 @@ class Mdl_speciality_category extends MY_Model {
 					'field' => 'category_name',
 					'label' => 'Category Name',
 					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.speciality_category.category_name.' . $this->input->post('category_name'). '.sc_id.'. $this->input->post('sc_id') .']|xss_clean'
-                ],
-                
+				],
+				[
+					'field' => 'category_type',
+					'label' => 'Category Type',
+					'rules' => 'trim|required|xss_clean'
+				],                
 			];
 		}
     }
@@ -213,17 +225,17 @@ class Mdl_speciality_category extends MY_Model {
 		if(! $this->form_validation->run() ){
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
-	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-			print_r($errors);
+				$errors[$key] = form_error($key, '<label class="error">', '</label>');
+				
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             
             return $response;
 		}		
 		
-        $data = $this->process_data($this->fillable, $_POST);
+		//echo '<pre>';print_r($_POST);exit;
 
-		//echo '<pre>';print_r($data);exit;
+        $data = $this->process_data($this->fillable, $_POST);
 
         $p_key = $this->p_key;
         $id = (int) $this->input->post($p_key);

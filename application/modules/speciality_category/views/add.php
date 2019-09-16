@@ -16,6 +16,14 @@
     </div>
 </div>
 
+<label class="form-label">Category Type<span class="required">*</span></label>
+<div class="demo-radio-button">
+    <input name="category_type" type="radio" id="radio_1" checked="" value="rxn">
+    <label for="radio_1" style="min-width: 70px;">RXN</label>
+    <input name="category_type" type="radio" id="radio_2" value="strips">
+    <label for="radio_2">Strips</label>
+</div>
+
 <button type="submit" class="btn btn-primary m-t-15 waves-effect">
     <i class="material-icons">save</i>
     <span>Save</span>

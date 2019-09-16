@@ -7,7 +7,8 @@
         </td>
     <?php endif; ?>
     <td><?php echo $record['speciality_name'] ?></td>    
-    <td><?php echo $record['category_name'] ?></td>         
+    <td><?php echo $record['category_name'] ?></td>     
+    <td><?php echo ucfirst($record['category_type']) ?></td>    
     <td><?php echo $record['insert_dt'] ?></td>
     <?php if(in_array('edit', $permissions)): ?>
         <td><p><a href="<?php echo base_url("$controller/edit/record/$id?c=$timestamp") ?>" class="tooltips" title="Edit <?php ucfirst($module_title) ?>" ><i class="fa fa-edit"></i> Edit <?= ucfirst($module_title) ?></a></p></td>
