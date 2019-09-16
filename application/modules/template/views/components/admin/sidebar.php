@@ -83,7 +83,7 @@
                     </ul>
                 </li>
 
-                <li <?php echo (in_array($menu, ['communication','speciality', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['speciality', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">person_add</i>
                         <span>Masters</span>
@@ -126,12 +126,12 @@
                     </a>
                 </li> -->
 
-                <!-- <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
+                <li <?php echo ($mainmenu == 'communication') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("communication/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Communication</span>
                     </a>
-                </li> -->
+                </li>
 
                 <li <?php echo ($mainmenu == 'speciality') ? 'class="active"': ''; ?> style="display:none;">
                     <a href="<?php echo base_url("speciality/lists?t=$timestamp") ?>">
