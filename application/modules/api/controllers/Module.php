@@ -473,7 +473,7 @@ class Module extends Api_Controller {
         }
         $categorydata = [];
         $get_category = $this->model->get_records([], 'category', [] , 'category_id asc');
-        if(count($get_category > 0)){
+        if(count($get_category) > 0){
             foreach($get_category as $key => $category){
                 $moleculedata = [];
 
