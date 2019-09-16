@@ -82,31 +82,31 @@ class Speciality_category extends Admin_Controller
 
 			if(count($data) !== 2) { continue; }            
 			
-			$category_name = trim($data[0]);			
-            $molecule_name = trim($data[1]);
+			$speciality_name = trim($data[0]);			
+            $category_name = trim($data[1]);
+
+			if( empty($speciality_name)){
+                continue;
+			}
 
 			if( empty($category_name)){
                 continue;
 			}
-			
-			$record = $this->model->get_or_records(['category_name'=> $category_name], 'category', ['category_id'], '', 1);
-			if(empty($record)) {
+
+			$specrecord = $this->model->get_or_records(['speciality_name'=> $speciality_name], 'speciality', ['speciality_id'], '', 1);
+			if(empty($specrecord)) {
 				continue;
 			}
+			
+			$speciality_id = $specrecord[0]->speciality_id;
 
-			$category_id = $record[0]->category_id;
-
-            if( empty($molecule_name)){
-                continue;
-            }
-
-			$record = $this->model->get_or_records(['molecule_name'=> $molecule_name], 'molecule', ['molecule_id'], '', 1);
+			$record = $this->model->get_or_records(['category_name'=> $category_name], 'speciality_category', ['sc_id'], '', 1);
 			if(count($record)) {
 				continue;
 			}
 
-			$insert['category_id'] = $category_id;
-            $insert['molecule_name'] = $molecule_name;
+			$insert['speciality_id'] = $speciality_id;
+            $insert['category_name'] = $category_name;
 
             $this->model->_insert($insert);
 
