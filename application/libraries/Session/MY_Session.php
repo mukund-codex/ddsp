@@ -76,7 +76,8 @@ class MY_Session extends CI_Session {
 	public function is_Ajax_and_logged_in(){
 		if( ! $this->is_Ajax() ){ show_error("Bad Request", 400); }
 
-        $admin_login_status = (int) $this->is_admin_logged_in();
+		$admin_login_status = (int) $this->is_admin_logged_in();
+		
 		$user_login_status = (int) $this->user_logged_in();
 		
 		if( ! $admin_login_status && ! $user_login_status){

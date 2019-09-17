@@ -8,7 +8,7 @@ class Communication extends User_Controller
         'permissions'=> ['add','edit','remove','download'],
     ];
     
-    private $scripts = ['doctor.js'];    
+    private $scripts = ['doctor.js','send-sms.js'];    
 
 	function __construct() {
         $user_role = $this->session->get_field_from_session('role');

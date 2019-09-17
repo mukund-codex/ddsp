@@ -4,7 +4,7 @@ class Mdl_communication extends MY_Model {
 	private $p_key = 'c_id';
 	private $table = 'communication';
 	private $alias = 'c';
-	private $fillable = ['title','description', 'images, document'];
+	private $fillable = ['title','description', 'images, document, selected_roles[], group_id'];
     private $column_list = ['Title', 'Description', 'Media','Date'];
     private $csv_columns = [];
 
@@ -188,7 +188,7 @@ class Mdl_communication extends MY_Model {
 				return $response;
 			}
 		}
-
+		
 		$data = $this->process_data($this->fillable, $_POST);
 		$id = $this->_insert($data);
 
@@ -232,24 +232,34 @@ class Mdl_communication extends MY_Model {
 
 		$req_id = $this->_insert($notification_request, 'notification_request');
 		
-		$devices_data = $this->get_devices_records();
+		$role = $_POST['group_id'];
+
+		$selected_roles = array_filter($_POST['selected_roles']);
 		
-		$request_devices = [];
-		foreach ($devices_data as $device){
+		//echo '<pre>';print_r($selected_roles);
+		$users_devices = [];
+		foreach($selected_roles as $key => $users){
+			$request_devices = [];
+			$users;
+			$devices_data = $this->get_devices_records($role, $users);
+				
+			foreach ($devices_data as $device){
 
-			if(strlen($device->device_id) < 10) {
-				continue;
-			}
+				if(strlen($device->device_id) < 10) {
+					continue;
+				}
 
-			$requestdevices = [];
-			$requestdevices['request_id'] = $req_id;
-			$requestdevices['user_id'] = $device->user_id;
-			$requestdevices['device_id'] = $device->device_id;
-			$requestdevices['device_type'] = $device->device_type;	
-			$requestdevices['insert_dt'] = $requestdevices['update_dt'] = date('Y-m-d H:i:s');
-			array_push($request_devices, $requestdevices);
+				$requestdevices = [];
+				$requestdevices['request_id'] = $req_id;
+				$requestdevices['user_id'] = $device->user_id;
+				$requestdevices['device_id'] = $device->device_id;
+				$requestdevices['device_type'] = $device->device_type;	
+				$requestdevices['insert_dt'] = $requestdevices['update_dt'] = date('Y-m-d H:i:s');
+				array_push($request_devices, $requestdevices);
+			}	
+				
 		}
-		
+				 		
 		if(count($request_devices)) {
 			$this->_insert_batch($request_devices, 'notification_request_devices');
 		}
@@ -400,14 +410,36 @@ class Mdl_communication extends MY_Model {
 		return $resultant_array;
 	}
 
-	function get_devices_records(){
+	function get_devices_records($role, $user_id){
+		//echo $role;echo $user_id;
+		$role = strtoupper($role);
 
-		$q = $this->db->select('user_id, device_id, device_type')
+		$q = $this->db->select('a.user_id, a.device_id, a.device_type')
 
-		->from('access_token')
-		->where('token_status', 'active')
-		->group_by('device_id, user_id');
+		->from('access_token a')
+		->join('manpower m', 'm.users_id = a.user_id')
+		->join('manpower asm', 'asm.users_id = m.users_parent_id')
+		->join('manpower zsm', 'zsm.users_id = asm.users_parent_id');
 
+		$q->where('a.token_status', 'active');
+		
+		if(!empty($role) && $role != 'MR'){
+			$alias = ($role == 'ASM') ? 'asm' : 'zsm';
+			$q->where($alias.'.users_type', $role);
+			if(!empty($user_id)){
+				$q->where($alias.'.users_id', $user_id);
+			}
+			
+		}else{
+			$q->where('m.users_type', $role);
+			if(!empty($user_id)){
+				$q->where('m.users_id', $user_id);
+			}
+			//$q->group_by('m.users_id');
+		}
+
+		$q->group_by('a.device_id');
+		
 		//print_r($this->db->get_compiled_select());exit;
 		$collection = $q->get()->result();
 		return $collection;

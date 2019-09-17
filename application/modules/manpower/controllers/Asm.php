@@ -33,8 +33,36 @@ class Asm extends Admin_Controller
 
 		$new = array(); $json['results'] = array();
 
-		$_options = $this->model->get_options($s_term, 'users_name', [], $page * $limit, $limit);
+        $_options = $this->model->get_options($s_term, 'users_name', [], $page * $limit, $limit);
+        echo $this->db->last_query();exit;
 		$_opt_count = count($this->model->get_options($s_term, 'users_name'));
+
+		foreach($_options as $option){
+			$new['id'] = $option->users_id;
+			$new['text'] = $option->users_name;
+
+			array_push($json['results'], $new);
+		}
+		
+		$more = ($_opt_count > count($_options)) ? TRUE : FALSE;
+		$json['pagination']['more'] = $more;
+
+		echo json_encode($json);
+    }
+    
+    function options_data(){
+		$this->session->is_Ajax_and_logged_in();
+
+		$limit = $this->dropdownlength;
+		$page = intval($_POST['page']) - 1;
+		$page = ($page <= 0) ? 0 : $page;
+
+		$s_term = (isset($_POST['search'])) ? $this->db->escape_like_str($_POST['search']) : '';
+
+		$new = array(); $json['results'] = array();
+
+        $_options = $this->model->get_records(['users_type' => 'ASM'], 'manpower', ['DISTINCT(users_id)','users_name']);
+        $_opt_count = count($_options);
 
 		foreach($_options as $option){
 			$new['id'] = $option->users_id;

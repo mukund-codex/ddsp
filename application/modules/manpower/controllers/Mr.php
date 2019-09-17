@@ -22,9 +22,10 @@ class Mr extends Admin_Controller
         $this->set_defaults();
     }
 	    
-function options(){
-		$this->session->is_Ajax_and_logged_in();
-
+    function options(){
+       
+        $this->session->is_Ajax_and_logged_in();
+        
 		$limit = $this->dropdownlength;
 		$page = intval($_POST['page']) - 1;
 		$page = ($page <= 0) ? 0 : $page;
@@ -33,8 +34,51 @@ function options(){
 
 		$new = array(); $json['results'] = array();
 
-		$_options = $this->model->get_options($s_term, 'users_name', [], $page * $limit, $limit);
-		$_opt_count = count($this->model->get_options($s_term, 'users_name'));
+        $role = strtoupper($_POST['role']);
+        
+        // $_options = $this->model->get_options(['users_type' => 'MR'], 'users_name', [], $page * $limit, $limit);
+        // echo $this->db->last_query();exit;
+       
+        
+        $_options = $this->model->get_records(['users_type' => 'MR'], 'manpower', ['DISTINCT(users_id)','users_name']);
+        $_opt_count = count($_options);
+        //echo $_opt_count;exit;
+        //echo $this->db->last_query();exit;
+
+		foreach($_options as $option){
+			$new['id'] = $option->users_id;
+			$new['text'] = $option->users_name;
+
+			array_push($json['results'], $new);
+		}
+		
+		$more = ($_opt_count > count($_options)) ? TRUE : FALSE;
+		$json['pagination']['more'] = $more;
+
+		echo json_encode($json);
+    }
+    function options_data(){
+       
+        $this->session->is_Ajax_and_logged_in();
+        
+		$limit = $this->dropdownlength;
+		$page = intval($_POST['page']) - 1;
+		$page = ($page <= 0) ? 0 : $page;
+
+		$s_term = (isset($_POST['search'])) ? $this->db->escape_like_str($_POST['search']) : '';
+
+		$new = array(); $json['results'] = array();
+
+        $role = strtoupper($_POST['role']);
+        
+        // $_options = $this->model->get_options(['users_type' => 'MR'], 'users_name', [], $page * $limit, $limit);
+        // echo $this->db->last_query();exit;
+       
+        
+        $_options = $this->model->get_records(['users_type' => 'MR'], 'manpower', ['DISTINCT(users_id)','users_name']);
+        $_opt_count = count($_options);
+        //echo $_opt_count;exit;
+        //echo $this->db->last_query();exit;
 
 		foreach($_options as $option){
 			$new['id'] = $option->users_id;

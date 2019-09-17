@@ -110,9 +110,9 @@
                         <li <?php echo (isset($menu) && $menu == 'brand') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("brand/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>Brands</span></a>
                         </li>                            
-                        <li <?php echo (isset($menu) && $menu == 'sku') ? 'class="active"': ''; ?>>
+                        <!-- <li <?php echo (isset($menu) && $menu == 'sku') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("sku/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>SKU</span></a>
-                        </li>   
+                        </li>  -->  
                         <li <?php echo (isset($menu) && $menu == 'about') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("about/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>About</span></a>
                         </li>                          
