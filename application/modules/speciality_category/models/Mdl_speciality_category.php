@@ -318,7 +318,9 @@ class Mdl_speciality_category extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['molecule Name'] = $rows['molecule_name'];
+			$records['Speciality'] = $rows['speciality_name'];
+			$records['Speciality Category'] = $rows['category_name'];
+			$records['Speciality Type'] = ucfirst($rows['category_type']);
 			$records['Date'] = $rows['insert_dt'];
 
 			array_push($resultant_array, $records);
