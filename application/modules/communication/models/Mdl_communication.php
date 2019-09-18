@@ -401,8 +401,8 @@ class Mdl_communication extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['Molecule Name'] = $rows['moleculemolecule_id_name'];
-			$records['Brand Name'] = $rows['brand_name'];
+			$records['Title'] = $rows['title'];
+			$records['Description'] = $rows['description'];
 			$records['Date'] = $rows['insert_dt'];
 
 			array_push($resultant_array, $records);

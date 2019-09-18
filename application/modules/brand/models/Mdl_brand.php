@@ -314,7 +314,7 @@ class Mdl_brand extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['Molecule Name'] = $rows['moleculemolecule_id_name'];
+			$records['Molecule Name'] = $rows['molecule_name'];
 			$records['Brand Name'] = $rows['brand_name'];
 			$records['Date'] = $rows['insert_dt'];
 
