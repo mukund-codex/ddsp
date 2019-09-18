@@ -302,7 +302,8 @@ class Mdl_molecule extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['molecule Name'] = $rows['molecule_name'];
+			$records['Category Name'] = $rows['category_name'];
+			$records['Molecule Name'] = $rows['molecule_name'];
 			$records['Date'] = $rows['insert_dt'];
 
 			array_push($resultant_array, $records);
