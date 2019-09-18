@@ -177,7 +177,7 @@ class Mdl_communication extends MY_Model {
 		}
 
 		if(($_FILES['document']['size']) > 0) {
-			$is_doc_file_upload = upload_media('document', 'uploads/communication/documents', ['pdf', 'docx', 'doc'], 10000000);
+			$is_doc_file_upload = upload_media('document', 'uploads/communication/documents', ['pdf'], 10000000);
 	
 			if(array_key_exists('error', $is_doc_file_upload)) {
 				$response['errors'] = [

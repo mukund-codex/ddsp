@@ -71,6 +71,7 @@
     <div class="form-line">
         <input type="file" name="document" id="document" class="form-control" accept="application/pdf">
     </div>
+    <span class="required">Only Upload PDF.</span>
 </div>
 
 <button type="submit" class="btn btn-primary m-t-15 waves-effect">

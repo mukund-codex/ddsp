@@ -28,6 +28,7 @@
         <input type="file" name="document" id="document" class="form-control" accept="application/pdf" >
         <input type="hidden" name="media_type2" id="media_type2" value="document" >
     </div>
+    <span class="required">Only Upload PDF.</span>
 </div>
 
 <button type="submit" class="btn btn-primary m-t-15 waves-effect">
