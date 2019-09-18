@@ -132,13 +132,13 @@ class Asm extends Admin_Controller
                 continue;
             }
             
-            if(!empty($mobile)) {
+            /* if(!empty($mobile)) {
                 if(! preg_match('/^[1-9][0-9]{9}$/', $mobile)) {
                     continue;
                 }
             } else {
                 $mobile = NULL;
-            }
+            } */
 
 			$zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
             if(!count($zone_record)) {
