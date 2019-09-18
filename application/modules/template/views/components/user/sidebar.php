@@ -62,26 +62,7 @@
                             <span>Communication</span>
                         </a>
                     </li>
-                    <li <?php echo (in_array($menu, ['livetracker','doctor_generation_status', 'employee_ds'])) ? 'class="active"': ''; ?>>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">receipt</i>
-                            <span>Reports</span>
-                        </a>
-                        <ul class="ml-menu">                        
-                            <li <?php echo (isset($menu) && $menu == 'livetracker') ? 'class="active"': ''; ?>>
-                                <a href="<?php echo base_url("reports/livetracker?t=$timestamp") ?>">Livetracker</a>
-                            </li>                            
-                            <li <?php echo (isset($menu) && $menu == 'employee_ds') ? 'class="active"': ''; ?>>
-                                <a href="<?php echo base_url("reports/employee_ds?t=$timestamp") ?>">Employee Wise Report</a>
-                            </li>                            
-                            <li <?php echo (isset($menu) && $menu == 'doctor_generation_status') ? 'class="active"': ''; ?>>
-                                <a href="<?php echo base_url("reports/doctor_generation_status?t=$timestamp") ?>">Doctor Wise Report</a>
-                            </li>                            
-                            <li <?php echo (isset($menu) && $menu == 'region_wise') ? 'class="active"': ''; ?>>
-                                <a href="<?php echo base_url("reports/region_wise?t=$timestamp") ?>">Region Wise Report</a>
-                            </li>                            
-                        </ul>
-                    </li>
+                   
                 <?php endif; ?>
 
             </ul>
