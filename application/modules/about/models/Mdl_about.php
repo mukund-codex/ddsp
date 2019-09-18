@@ -291,7 +291,6 @@ class Mdl_about extends MY_Model {
 		
 		foreach ($data as $rows) {
 			$records['about Name'] = $rows['about'];
-			$records['Date'] = $rows['insert_dt'];
 
 			array_push($resultant_array, $records);
 		}
