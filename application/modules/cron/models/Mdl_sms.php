@@ -24,7 +24,7 @@ class Mdl_sms extends MY_Model {
 		LEFT JOIN `zone` `z` ON `z`.`zone_id` = `a`.`zone_id`
 		LEFT JOIN `manpower` `asm` ON `asm`.`users_id` = `mr`.`users_parent_id`
 		LEFT JOIN `manpower` `zsm` ON `zsm`.`users_id` = `asm`.`users_parent_id`
-		LEFT JOIN `chemist` `ch` ON `ch`.`users_id` = `mr`.`users_id` AND DATE(ch.insert_dt) = '2019-09-11'
+		LEFT JOIN `chemist` `ch` ON `ch`.`users_id` = `mr`.`users_id` AND DATE(ch.insert_dt) = '$yesterday'
 		WHERE mr.users_type = 'MR'
 		GROUP BY `asm`.`users_id`
 		) as temp
