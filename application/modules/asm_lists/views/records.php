@@ -13,6 +13,7 @@
     <td><?php echo $record['chemist_name'] ?></td>
     <td><?php echo $record['doctor_name'] ?></td>
     <td><?php echo ucfirst($record['asm_status']) ?></td>
+    <td><?php echo ucfirst($record['zsm_status']) ?></td>
     <td>
         <?php if($record['asm_status'] == 'pending'){ ?>
             <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" ><i class="fa fa-check"></i>&#x2714;</a> &nbsp;&nbsp;&nbsp;&nbsp;

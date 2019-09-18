@@ -5,7 +5,7 @@ class Mdl_asm_lists extends MY_Model {
 	private $table = 'doctor';
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
-    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name','Status'];
+    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name','ABM Status', 'ZBM Status'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -48,7 +48,11 @@ class Mdl_asm_lists extends MY_Model {
 			],
 			[
                 'field_name'=>'dr|asm_status',
-                'field_label'=> 'Status',
+                'field_label'=> 'ABM Status',
+			],
+			[
+                'field_name'=>'dr|zsm_status',
+                'field_label'=> 'ZBM Status',
 			],
         ];
     }
@@ -76,7 +80,8 @@ class Mdl_asm_lists extends MY_Model {
 		c.city_name as city,
 		ch.chemist_name as chemist_name,
 		dr.doctor_name as doctor_name,
-		dr.doctor_id, dr.asm_status
+		dr.doctor_id, dr.asm_status,
+		dr.zsm_status
 			
 		from manpower mr
 		JOIN manpower asm ON mr.users_parent_id = asm.users_id 
