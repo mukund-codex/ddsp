@@ -83,7 +83,7 @@
                     </ul>
                 </li>
 
-                <li <?php echo (in_array($menu, ['speciality', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['speciality', 'speciality_category', 'category', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">person_add</i>
                         <span>Masters</span>
