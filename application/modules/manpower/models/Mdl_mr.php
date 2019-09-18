@@ -6,7 +6,7 @@ class Mdl_mr extends Manpower_Model {
     private $tb_alias = 'm';
     private $fillable = ['users_name', 'users_mobile', 'users_emp_id', 'users_password', 'users_zone_id', 'users_area_id', 'users_city_id'];
     private $column_list = ['MR Name', 'Mobile', 'Emp ID', 'Password', 'City Name','ASM Name','Area Name', 'Created On'];
-    private $csv_columns = ['MR Name', 'Mobile', 'Emp ID', 'Password', 'City Name','ASM Name', 'Area Name' ,'Zone Name'];
+    private $csv_columns = ['MR Name', 'Mobile', 'Emp ID', 'Password', 'City Name', 'Area Name' ,'Zone Name'];
 
 	function __construct() {
         parent::__construct();
