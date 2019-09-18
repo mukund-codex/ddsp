@@ -23,9 +23,33 @@ class Mdl_asm_lists extends MY_Model {
     function get_filters() {
         return [
             [
-                'field_name'=>'molecule_name',
-                'field_label'=> 'Molecule Name',
-			]
+                'field_name'=>'asm|users_name',
+                'field_label'=> 'ABM Name',
+			],
+			[
+                'field_name'=>'a|area_name',
+                'field_label'=> 'Area Name',
+			],
+			[
+                'field_name'=>'mr|users_name',
+                'field_label'=> 'MR Name',
+			],
+			[
+                'field_name'=>'c|city_name',
+                'field_label'=> 'HQ Name',
+			],
+			[
+                'field_name'=>'ch|chemist_name',
+                'field_label'=> 'Chemist Name',
+			],
+			[
+                'field_name'=>'dr|doctor_name',
+                'field_label'=> 'Doctor Name',
+			],
+			[
+                'field_name'=>'dr|asm_status',
+                'field_label'=> 'Status',
+			],
         ];
     }
 
