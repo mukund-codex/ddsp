@@ -26,13 +26,9 @@ class Mdl_area extends MY_Model {
                 'field_label'=> 'Area',
             ], 
             [
-                'field_name'=>'region_name',
-                'field_label'=> 'Region',
-            ], 
-            [
                 'field_name'=>'zone_name',
                 'field_label'=> 'Zone',
-            ]
+            ], 
         ];
     }
 
