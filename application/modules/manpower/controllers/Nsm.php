@@ -118,13 +118,13 @@ class Nsm extends Admin_Controller
                 continue;
             }
             
-            /* if(!empty($mobile)) {
+            if(!empty($mobile)) {
                 if(! preg_match('/^[1-9][0-9]{9}$/', $mobile)) {
                     continue;
                 }
             } else {
                 $mobile = NULL;
-            } */
+            }
 			
 			$national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
             if(!count($national_zone_record)) {
