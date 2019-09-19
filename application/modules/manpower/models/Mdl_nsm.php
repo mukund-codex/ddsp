@@ -125,7 +125,7 @@ class Mdl_nsm extends Manpower_Model {
 				[
 					'field' => 'users_mobile',
 					'label' => 'Mobile',
-					'rules' => 'trim|required|max_length[10]|unique_key[manpower.users_mobile]|xss_clean'
+					'rules' => 'trim|required|numeric|max_length[10]|unique_key[manpower.users_mobile]|xss_clean'
                 ],
 				[
 					'field' => 'users_emp_id',
