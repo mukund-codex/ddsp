@@ -1,6 +1,15 @@
 <?php echo form_open("$controller/modify",array('class' => 'save-form')); ?>
 <input type="hidden" name="users_id" value="<?php echo $info[0]['users_id']; ?>" />
 
+<label class="form-label">National Zone<span class="required">*</span></label>
+<div class="form-group">
+    <div class="form-line">
+        <select name="users_national_id" class="form-control" data-placeholder="Select National Zone" id="national_zone_id">
+        <option value="<?php echo $info[0]['national_zone_id']; ?>" selected="selected"><?php echo $info[0]['national_zone_name']; ?></option>
+        </select>
+    </div>
+</div>
+
 <label class="form-label">Zone<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">

@@ -3,9 +3,9 @@ class Mdl_zone extends MY_Model {
 
 	private $p_key = 'zone_id';
     private $table = 'zone';
-    private $fillable = ['zone_name'];
-    private $column_list = ['Zone Name', 'Created On'];
-    private $csv_columns = ['Zone Name'];
+    private $fillable = ['zone_name', 'national_zone_id'];
+    private $column_list = ['National Zone Name', 'Zone Name', 'Created On'];
+    private $csv_columns = ['National Zone Name', 'Zone Name'];
     
 
 	function __construct() {
@@ -22,6 +22,10 @@ class Mdl_zone extends MY_Model {
 
     function get_filters() {
         return [
+            [
+                'field_name'=>'national_zone_name',
+                'field_label'=> 'National Zone',
+            ],
             [
                 'field_name'=>'zone_name',
                 'field_label'=> 'Zone',
@@ -46,8 +50,9 @@ class Mdl_zone extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
     	$q = $this->db->select('
-            zone.zone_id, zone.zone_name, zone.insert_dt')
-        ->from('zone ');
+            zone.zone_id, zone.zone_name, zone.insert_dt, n.national_zone_id, n.national_zone_name')
+        ->from('zone ')
+        ->join('national_zone n', 'n.national_zone_id = zone.national_zone_id','left');
 				
 		if(sizeof($sfilters)) { 
 			foreach ($sfilters as $key=>$value) { $q->where("$key", $value); }
@@ -90,6 +95,11 @@ class Mdl_zone extends MY_Model {
 	{
 		if($type == 'save') {
 			return [
+                [
+					'field' => 'national_zone_id',
+					'label' => 'National Zone Name',
+					'rules' => 'trim|required|xss_clean'
+                ],
 				[
 					'field' => 'zone_name',
 					'label' => 'Zone Name',
@@ -100,6 +110,11 @@ class Mdl_zone extends MY_Model {
 
 		if($type == 'modify') {
 			return [
+                [
+					'field' => 'national_zone_id',
+					'label' => 'National Zone Name',
+					'rules' => 'trim|required|xss_clean'
+                ],
 				[
 					'field' => 'zone_name',
 					'label' => 'Zone Name',
@@ -184,6 +199,7 @@ class Mdl_zone extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
+            $records['National Zone Name'] = $rows['national_zone_name'];
 			$records['Zone Name'] = $rows['zone_name'];
 			array_push($resultant_array, $records);
 		}

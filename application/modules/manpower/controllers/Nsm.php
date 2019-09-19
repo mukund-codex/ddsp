@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Zsm extends Admin_Controller
+class Nsm extends Admin_Controller
 {
-	private $module = 'zsm';
-    private $model_name = 'mdl_zsm';
-    private $controller = 'manpower/zsm';
+	private $module = 'nsm';
+    private $model_name = 'mdl_nsm';
+    private $controller = 'manpower/nsm';
     private $settings = [
         'permissions'=> ['add', 'edit', 'download', 'upload', 'remove'],
         'paginate_index' => 4
@@ -60,7 +60,7 @@ class Zsm extends Admin_Controller
 
 		$new = array(); $json['results'] = array();
 
-        $_options = $this->model->get_records(['users_type' => 'ZSM'], 'manpower', ['DISTINCT(users_id)','users_name']);
+        $_options = $this->model->get_records(['users_type' => 'NSM'], 'manpower', ['DISTINCT(users_id)','users_name']);
         $_opt_count = count($_options);
 
 		foreach($_options as $option){
@@ -94,27 +94,25 @@ class Zsm extends Admin_Controller
 
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
 
-			if(count($data) !== 6) { continue; }
+			if(count($data) !== 5) { continue; }
 
 			if(! $cnt){
                 $cnt++; continue;
             }
             
-            $zsm_name = trim($data[0]);
+            $nsm_name = trim($data[0]);
             $mobile = trim($data[1]);
             $emp_id = trim($data[2]);
             $password = trim($data[3]);
-            $zone = trim($data[4]);
-            $national_zone = trim($data[5]);
+            $national_zone = trim($data[4]);
 
-            if( empty($zsm_name) || empty($emp_id) || empty($password) || empty($zone) || empty($national_zone) ){
+            if( empty($nsm_name) || empty($emp_id) || empty($password) || empty($national_zone) ){
                 continue;
             }
 
             if( 
-                ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zsm_name) 
+                ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $nsm_name) 
                 || ! preg_match('/^[a-zA-Z0-9]+$/', $emp_id) 
-                || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone)
                 || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $national_zone) 
             ){
                 continue;
@@ -127,22 +125,15 @@ class Zsm extends Admin_Controller
             } else {
                 $mobile = NULL;
             } */
-
-            $national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
+			
+			$national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
             if(!count($national_zone_record)) {
                 continue;
             }
             
             $national_zone_id = $national_zone_record[0]->national_zone_id;
-			
-			$zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
-            if(!count($zone_record)) {
-                continue;
-            }
             
-            $zone_id = $zone_record[0]->zone_id;
-            
-            $record = $this->model->get_collection(TRUE, ['zone_name'=> $zone]);
+            $record = $this->model->get_collection(TRUE, ['national_zone_name'=> $national_zone]);
             if($record) {
                 continue;
             }
@@ -163,12 +154,12 @@ class Zsm extends Admin_Controller
                     1
                 );
             }
-            
+
             if(count($emp_record)) {
                 continue;
             }
 
-            $insert['users_name'] = $zsm_name;
+            $insert['users_name'] = $nsm_name;
             
             if($mobile) {
                 $insert['users_mobile'] = $mobile;
@@ -176,9 +167,8 @@ class Zsm extends Admin_Controller
 
             $insert['users_emp_id'] = $emp_id;
             $insert['users_password'] = $password;
-            $insert['users_zone_id'] = $zone_id;
             $insert['users_national_id'] = $national_zone_id;
-            $insert['users_type'] = "ZSM";
+            $insert['users_type'] = "NSM";
 
             $this->model->_insert($insert);
 

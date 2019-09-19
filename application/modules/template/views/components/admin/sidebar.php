@@ -41,9 +41,9 @@
                         <span>Geography</span>
                     </a>
                     <ul class="ml-menu">     
-                        <!-- <li <?php echo (isset($menu) && $menu == 'national_zone') ? 'class="active"': ''; ?>>
+                        <li <?php echo (isset($menu) && $menu == 'national_zone') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/national_zone/lists?t=$timestamp") ?>">National Zone</a>
-                        </li>                      -->
+                        </li>                     
                         <li <?php echo (isset($menu) && $menu == 'zone') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("geography/zone/lists?t=$timestamp") ?>">Zone</a>
                         </li>                            
@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 
-                <li <?php echo (in_array($menu, ['ho','zsm', 'rsm', 'asm', 'mr'])) ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['nsm', 'ho','zsm', 'rsm', 'asm', 'mr'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">person_add</i>
                         <span>Manpower</span>
@@ -67,7 +67,10 @@
                     <ul class="ml-menu">       
                         <li <?php echo (isset($menu) && $menu == 'ho') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("manpower/ho/lists?t=$timestamp") ?>">HO</a>
-                        </li>                 
+                        </li>     
+                        <li <?php echo (isset($menu) && $menu == 'nsm') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("manpower/nsm/lists?t=$timestamp") ?>">NSM</a>
+                        </li>              
                         <li <?php echo (isset($menu) && $menu == 'zsm') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("manpower/zsm/lists?t=$timestamp") ?>">ZSM</a>
                         </li>                            

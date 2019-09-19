@@ -67,21 +67,30 @@ class Zone extends Admin_Controller
 
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
 
-			if(count($data) !== 1) { continue; }
+			if(count($data) !== 2) { continue; }
 
 			if(! $cnt){
                 $cnt++; continue;
             }
-            
-            $zone_name = trim($data[0]);
+			
+			$national_zone_name = trim($data[0]);
+            $zone_name = trim($data[1]);
 
             if( empty($zone_name) ){
                 continue;
             }
 
-            if( ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone_name) ){
+            if( ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zone_name) || ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $national_zone_name )){
                 continue;
             }
+
+			$national_zone_records = $this->model->get_records(['national_zone_name' => $national_zone_name], 'national_zone', ['national_zone_id']);
+
+			if(empty($national_zone_records)){
+				continue;
+			}
+
+			$national_zone_id = $national_zone_records[0]->national_zone_id;
 
             $z_records = $this->model->get_records([ 'zone_name'=> $zone_name ], 'zone', ['zone_id', 'zone_name'], 'zone_id', 1);
 
@@ -89,6 +98,7 @@ class Zone extends Admin_Controller
                 continue;
             }
 
+			$insert['national_zone_id'] = $national_zone_id;
             $insert['zone_name'] = $zone_name;
             $this->model->_insert($insert);
 

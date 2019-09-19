@@ -1,12 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_zsm extends Manpower_Model {
+class Mdl_nsm extends Manpower_Model {
 
 	private $p_key = 'users_id';
     private $table = 'manpower';
     private $tb_alias = 'm';
-    private $fillable = ['users_national_id', 'users_name', 'users_mobile', 'users_emp_id', 'users_password', 'users_zone_id'];
- 	private $column_list = ['ZSM Name', 'Mobile', 'Emp ID', 'Password', 'Zone Name', 'National Zone','Created On'];
-    private $csv_columns = ['ZSM Name', 'Mobile', 'Emp ID', 'Password', 'Zone Name','National Zone Name'];
+    private $fillable = ['users_name', 'users_mobile', 'users_emp_id', 'users_password', 'users_national_id'];
+ 	private $column_list = ['NSM Name', 'Mobile', 'Emp ID', 'Password', 'National Zone Name','Created On'];
+    private $csv_columns = ['NSM Name', 'Mobile', 'Emp ID', 'Password', 'National Zone Name',];
 
 	function __construct() {
         parent::__construct();
@@ -24,7 +24,7 @@ class Mdl_zsm extends Manpower_Model {
         return [
         	[
                 'field_name'=>'users_name',
-                'field_label'=> 'ZSM',
+                'field_label'=> 'NSM',
             ], 
             [
                 'field_name'=>'users_mobile',
@@ -36,10 +36,6 @@ class Mdl_zsm extends Manpower_Model {
             ], 
             [],
             [
-                'field_name'=>'zone_name',
-                'field_label'=> 'Zone',
-			], 
-			[
                 'field_name'=>'national_zone_name',
                 'field_label'=> 'National Zone',
             ], 
@@ -64,13 +60,12 @@ class Mdl_zsm extends Manpower_Model {
     	$q = $this->db->select('
             m.users_id, m.users_name, m.users_mobile, m.users_emp_id, 
             m.users_type, m.users_password, 
-            z.zone_id, z.zone_name, n.national_zone_id, n.national_zone_name,
+            n.national_zone_id, n.national_zone_name, 
             m.insert_dt
     	')
         ->from('manpower m')
-		->join('zone z', 'm.users_zone_id = z.zone_id')
-		->join('national_zone n', 'n.national_zone_id = m.users_national_id', 'left')
-        ->where('m.users_type', 'ZSM');
+        ->join('national_zone n', 'm.users_national_id = n.national_zone_id')
+        ->where('m.users_type', 'NSM');
 				
 			if(sizeof($sfilters)) { 
 			foreach ($sfilters as $key=>$value) { $q->where("$key", $value); }
@@ -113,19 +108,14 @@ class Mdl_zsm extends Manpower_Model {
     
     function validate($type)
 	{
-        $role = 'ZSM';
+        $role = 'NSM';
 
 		if($type == 'save') {
 			return [
-				[
+                [
 					'field' => 'users_national_id',
 					'label' => 'National Zone',
 					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|unique_record[add.table.manpower.users_type.'. $role .'.users_national_id.' . $this->input->post('users_national_id') . ']|xss_clean'
-                ],
-                [
-					'field' => 'users_zone_id',
-					'label' => 'Zone',
-					'rules' => 'trim|required|check_record[zone.zone_id]|unique_record[add.table.manpower.users_type.'. $role .'.users_zone_id.' . $this->input->post('users_zone_id') . ']|xss_clean'
                 ],
 				[
 					'field' => 'users_name',
@@ -153,15 +143,10 @@ class Mdl_zsm extends Manpower_Model {
 		if($type == 'modify') {
             
             return [
-				[
+                [
 					'field' => 'users_national_id',
 					'label' => 'National Zone',
 					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|unique_record[edit.table.manpower.users_type.'. $role .'.users_national_id.' . (int) $this->input->post('users_national_id') . '.users_id.'. $this->input->post('users_id') .']|xss_clean'
-                ],
-                [
-					'field' => 'users_zone_id',
-					'label' => 'Zone',
-					'rules' => 'trim|required|check_record[zone.zone_id]|unique_record[edit.table.manpower.users_type.'. $role .'.users_zone_id.' . (int) $this->input->post('users_zone_id') . '.users_id.'. $this->input->post('users_id') .']|xss_clean'
                 ],
 				[
 					'field' => 'users_name',
@@ -189,6 +174,9 @@ class Mdl_zsm extends Manpower_Model {
 
 	function save(){
 		/*Load the form validation Library*/
+
+		//echo '<pre>';print_r($_POST);exit;
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules($this->validate('save'));
 		
@@ -204,7 +192,7 @@ class Mdl_zsm extends Manpower_Model {
 		}
 		
         $data = $this->process_data($this->fillable, $_POST);
-        $data['users_type'] = 'ZSM';
+        $data['users_type'] = 'NSM';
 
         $id = $this->_insert($data);
         
@@ -267,10 +255,9 @@ class Mdl_zsm extends Manpower_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['ZSM Name'] = $rows['users_name'];
+			$records['NSM Name'] = $rows['users_name'];
 			$records['Mobile'] = $rows['users_mobile'];
 			$records['EMP ID'] = $rows['users_emp_id'];
-			$records['Zone'] = $rows['zone_name'];
 			$records['National Zone'] = $rows['national_zone_name'];
 			array_push($resultant_array, $records);
 		}

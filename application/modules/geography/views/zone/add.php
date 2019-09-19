@@ -1,4 +1,13 @@
 <?php echo form_open("$controller/save",array('class'=>'save-form')); ?>
+<label for="national_zone_id">National Zone Name <span class="required">*</span></label>
+<div class="form-group">
+    <div class="form-group">
+        <select name="national_zone_id" class="form-control" data-placeholder="Select National Zone" id="national_zone_id">
+            <option value="">Select National Zone</option>
+        </select>
+    </div>
+</div>
+
 <label for="zone_name">Zone Name <span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">

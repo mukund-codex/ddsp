@@ -94,6 +94,7 @@
         })
     }
 
+    load('national_zone_id', 'National Zone', 'geography/national_zone', true);
     load('zone_id', 'Zone', 'geography/zone', true);
     // load('area_id', 'Area', 'geography/area', true);
     load('users_city_id', 'City', 'geography/city', true);

@@ -8,7 +8,6 @@
     <td><?php echo $record['users_mobile'] ?></td>   
     <td><?php echo $record['users_emp_id'] ?></td>   
     <td><?php echo $record['users_password'] ?></td>   
-    <td><?php echo $record['zone_name'] ?></td>  
     <td><?php echo $record['national_zone_name'] ?></td>   
     <td><?php echo $record['insert_dt'] ?></td>
     <td><p><a href="<?php echo base_url("$controller/edit/record/$id?c=$timestamp") ?>" class="tooltips" title="Edit <?php ucfirst($module_title) ?>" ><i class="fa fa-edit"></i> Edit <?= strtoupper($module_title) ?></a></p></td>
