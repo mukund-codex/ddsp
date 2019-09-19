@@ -23,8 +23,12 @@ class Mdl_molecule extends MY_Model {
     function get_filters() {
         return [
             [
+                'field_name'=>'category_name',
+                'field_label'=> 'Category Name',
+			],
+			[
                 'field_name'=>'molecule_name',
-                'field_label'=> 'Name',
+                'field_label'=> 'Molecule Name',
             ],
         ];
     }
