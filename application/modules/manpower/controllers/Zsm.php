@@ -110,7 +110,7 @@ class Zsm extends Admin_Controller
             if( empty($zsm_name) || empty($emp_id) || empty($password) || empty($zone) || empty($national_zone) ){
                 continue;
             }
-
+            
             if( 
                 ! preg_match('/^[a-zA-Z][a-zA-Z0-9 \.]+$/', $zsm_name) 
                 || ! preg_match('/^[a-zA-Z0-9]+$/', $emp_id) 
@@ -123,13 +123,18 @@ class Zsm extends Admin_Controller
             if(empty($mobile) || !is_numeric($mobile) || strlen($mobile) > 10){
                 continue;
             }
-
+            
             $national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
             if(!count($national_zone_record)) {
                 continue;
             }
             
             $national_zone_id = $national_zone_record[0]->national_zone_id;
+
+            $records= $this->model->get_collection(TRUE, ['national_zone_name'=> $national_zone]);
+            if($records) {
+                continue;
+            }
 			
 			$zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
             if(!count($zone_record)) {

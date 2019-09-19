@@ -36,15 +36,15 @@ class Mdl_mr extends Manpower_Model {
             ], 
             [],
             [
-                'field_name'=>'area_name',
-                'field_label'=> 'Area',
+                'field_name'=>'c|city_name',
+                'field_label'=> 'City',
             ], 
               [
-                'field_name'=>'us.users_name',
+                'field_name'=>'us|users_name',
                 'field_label'=> 'ASM Name',
             ], 
             [
-                'field_name'=>'area_name',
+                'field_name'=>'a|area_name',
                 'field_label'=> 'Area',
             ], 
         ];
