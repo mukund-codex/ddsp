@@ -235,7 +235,6 @@ class Mdl_communication extends MY_Model {
 		$role = isset($_POST['group_id']) ? $_POST['group_id'] : '';
 
 		$selected_roles = isset($_POST['selected_role']) ? array_filter($_POST['selected_roles']) : '';
-		//array_filter($_POST['selected_roles'])
 		
 		if(!empty($selected_roles)){
 			foreach($selected_roles as $key => $users){
@@ -300,11 +299,11 @@ class Mdl_communication extends MY_Model {
 		
 		$this->form_validation->set_rules($this->validate('modify'));
 
-		if(! $this->form_validation->run() ){
+		if(! $this->form_validation->run()){
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
-	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-			print_r($errors);
+				$errors[$key] = form_error($key, '<label class="error">', '</label>');
+				
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             

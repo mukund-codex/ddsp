@@ -28,7 +28,7 @@ abstract class Reports_Controller extends Generic_Controller{
     protected function set_defaults($defaults = []) {
         $this->set_default_data($defaults, $this->module, $this->controller);            
     }
-
+    
     function index(){
 		if( ! $this->session->is_logged_in() ){
 			show_error("Forbidden", 403);
