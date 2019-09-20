@@ -123,7 +123,7 @@ class Zsm extends Admin_Controller
             if(empty($mobile) || !is_numeric($mobile) || strlen($mobile) > 10){
                 continue;
             }
-            
+           
             $national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
             if(!count($national_zone_record)) {
                 continue;
@@ -147,7 +147,7 @@ class Zsm extends Admin_Controller
             if($record) {
                 continue;
             }
-
+            
             if($mobile) {
                 $emp_record = $this->model->get_or_records(
                     [ 
@@ -168,7 +168,7 @@ class Zsm extends Admin_Controller
             if(count($emp_record)) {
                 continue;
             }
-
+            
             $insert['users_name'] = $zsm_name;
             
             if($mobile) {

@@ -200,7 +200,7 @@ class Mdl_about extends MY_Model {
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
 	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-			print_r($errors);
+			
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             
