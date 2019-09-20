@@ -12,7 +12,7 @@ class Molecule_wise_report extends Reports_Controller
             $this->module, 
             $this->controller, 
             $this->model_name, 
-            $this->columns,
+            $this->columns
         );
     }
 
