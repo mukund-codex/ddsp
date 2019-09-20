@@ -115,7 +115,7 @@ class Mdl_molecule extends MY_Model {
                 [
 					'field' => 'molecule_name',
 					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.molecule.molecule_name.' . $this->input->post('molecule_name') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[add.table.molecule.molecule_name.' . $this->input->post('molecule_name') .']|xss_clean'
 				],
 				
 			];
@@ -131,7 +131,7 @@ class Mdl_molecule extends MY_Model {
 				[
 					'field' => 'molecule_name',
 					'label' => 'molecule Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.molecule.molecule_name.' . $this->input->post('molecule_name'). '.molecule_id.'. $this->input->post('molecule_id') .']|xss_clean'
+					'rules' => 'trim|required|max_length[150]|unique_record[edit.table.molecule.molecule_name.' . $this->input->post('molecule_name'). '.molecule_id.'. $this->input->post('molecule_id') .']|xss_clean'
                 ],
                 
 			];
