@@ -58,7 +58,7 @@ abstract class Reports_Controller extends Generic_Controller{
         $this->set_defaults([
             'listing_url'=> $this->controller . '/index', 
             'download_url'=> $this->controller . '/download' ,
-            'module_title'=> $this->module . ''
+            'module_title'=> $this->module . ' Report'
         ]);
         $this->set_view_columns($table_columns);
         /* END columns */
