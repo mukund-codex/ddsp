@@ -1,8 +1,14 @@
 <?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { ?>
 <tr>
-    <td><?php echo $record['mr_name'] ?></td>   
-    <td><?php echo $record['asm_name'] ?></td>  
+    <td><?php echo $record['nsm_name'] ?></td>  
+    <td><?php echo $record['national_zone'] ?></td>  
     <td><?php echo $record['zsm_name'] ?></td>   
+    <td><?php echo $record['zone'] ?></td>  
+    <td><?php echo $record['asm_name'] ?></td>  
+    <td><?php echo $record['area'] ?></td>  
+    <td><?php echo $record['mr_name'] ?></td>  
+    <td><?php echo $record['city'] ?></td>   
+    <td><?php echo $record['mr_mobile'] ?></td>  
     <td><?php echo $record['login_time'] ?></td>   
 </tr>
 <?php $i++;  } ?>

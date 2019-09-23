@@ -8,16 +8,40 @@ class Mdl_login_reports extends MY_Model {
     function get_filters() {
         return [
             [
-                'field_name' => 'm|users_name',
-                'field_label' => 'MR Name'
+                'field_name' => 'nsm|users_name',
+                'field_label' => 'NSM Name'
             ],
             [
-                'field_name' => 'asm|users_name',
-                'field_label' => 'AMS Name'
+                'field_name' => 'nz|national_zone_name',
+                'field_label' => 'National Zone'
             ],
             [
                 'field_name' => 'zsm|users_name',
                 'field_label' => 'ZSM Name'
+            ],
+            [
+                'field_name' => 'z|zone_name',
+                'field_label' => 'Zone'
+            ],
+            [
+                'field_name' => 'asm|users_name',
+                'field_label' => 'ASM Name'
+            ],
+            [
+                'field_name' => 'a|area_name',
+                'field_label' => 'Area'
+            ],
+            [
+                'field_name' => 'm|users_name',
+                'field_label' => 'MR Name'
+            ],
+            [
+                'field_name' => 'c|city_name',
+                'field_label' => 'HQ'
+            ],
+            [
+                'field_name' => 'm|users_mobile',
+                'field_label' => 'MR Mobile'
             ],
         ];
     }
@@ -39,15 +63,22 @@ class Mdl_login_reports extends MY_Model {
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
         $sql = "SELECT 
-        m.users_name as mr_name, asm.users_name as asm_name,
-        zsm.users_name as zsm_name,
-        m.users_mobile, m.users_type, m.users_emp_id,
+        nsm.users_name as nsm_name, nz.national_zone_name as national_zone,
+        zsm.users_name as zsm_name, z.zone_name as zone,
+        asm.users_name as asm_name, a.area_name as area,
+        m.users_name as mr_name, c.city_name as city,
+        m.users_mobile as mr_mobile,
         MAX(at.update_dt) as login_time
         FROM
         manpower m
         LEFT JOIN access_token at ON at.user_id = m.users_id
-        JOIN manpower asm ON asm.users_id = m.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id";
+        LEFT JOIN manpower asm ON asm.users_id = m.users_parent_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN manpower nsm ON nsm.users_id = zsm.users_parent_id
+        LEFT JOIN city c ON c.city_id = m.users_city_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN national_zone nz ON nz.national_zone_id = nsm.users_national_id";
 
         $sql .= " WHERE 1 = 1 AND m.users_type = 'MR' AND at.token_status = 'active' ";
        
