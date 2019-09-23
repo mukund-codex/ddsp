@@ -117,9 +117,15 @@ class Mdl_login_reports extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['MR Name'] = $rows['mr_name'];
+            $records['NSM Name'] = $rows['nsm_name'];
+            $records['National Zone'] = $rows['national_zone'];
+            $records['ZBM Name'] = $rows['zsm_name'];
+            $records['Zone'] = $rows['zone'];
 			$records['ABM Name'] = $rows['asm_name'];
-			$records['ZBM Name'] = $rows['zsm_name'];
+			$records['Area'] = $rows['area'];
+            $records['MR Name'] = $rows['mr_name'];
+            $records['HQ'] = $rows['city'];            
+            $records['MR Mobile'] = $rows['mr_mobile'];            
 			$records['Last Login Time'] = $rows['login_time'];
             
 			array_push($resultant_array, $records);
