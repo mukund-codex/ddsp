@@ -214,12 +214,15 @@
                     </a>
                 </li> -->
                     
-                <li <?php echo (in_array($menu, ['category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report'])) ? 'class="active"': ''; ?> >
+                <li <?php echo (in_array($menu, ['login_reports', 'category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report'])) ? 'class="active"': ''; ?> >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>
                         <span>Reports</span>
                     </a>
-                    <ul class="ml-menu">         
+                    <ul class="ml-menu">    
+                        <li <?php echo (isset($menu) && $menu == 'login_reports') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/login_reports?t=$timestamp") ?>">Login Report</a>
+                        </li>       
                         <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
                         </li>  
