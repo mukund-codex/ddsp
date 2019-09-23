@@ -7,11 +7,18 @@ class Mdl_login_reports extends MY_Model {
     
     function get_filters() {
         return [
-            [],
-            [],
-            [],
-            [],
-            [],
+            [
+                'field_name' => 'm|users_name',
+                'field_label' => 'MR Name'
+            ],
+            [
+                'field_name' => 'asm|users_name',
+                'field_label' => 'AMS Name'
+            ],
+            [
+                'field_name' => 'zsm|users_name',
+                'field_label' => 'ZSM Name'
+            ],
         ];
     }
 
