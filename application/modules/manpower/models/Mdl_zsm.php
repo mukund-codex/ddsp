@@ -120,7 +120,7 @@ class Mdl_zsm extends Manpower_Model {
 				[
 					'field' => 'users_national_id',
 					'label' => 'National Zone',
-					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|unique_record[add.table.manpower.users_type.'. $role .'.users_national_id.' . $this->input->post('users_national_id') . ']|xss_clean'
+					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|xss_clean'
                 ],
                 [
 					'field' => 'users_zone_id',
@@ -156,7 +156,7 @@ class Mdl_zsm extends Manpower_Model {
 				[
 					'field' => 'users_national_id',
 					'label' => 'National Zone',
-					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|unique_record[edit.table.manpower.users_type.'. $role .'.users_national_id.' . (int) $this->input->post('users_national_id') . '.users_id.'. $this->input->post('users_id') .']|xss_clean'
+					'rules' => 'trim|required|check_record[national_zone.national_zone_id]|xss_clean'
                 ],
                 [
 					'field' => 'users_zone_id',

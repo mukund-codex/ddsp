@@ -125,18 +125,21 @@ class Zsm extends Admin_Controller
             }
            
             $national_zone_record = $this->model->get_records(['national_zone_name'=> $national_zone], 'national_zone', ['national_zone_id'], '', 1);
+
+            
             if(!count($national_zone_record)) {
                 continue;
             }
             
             $national_zone_id = $national_zone_record[0]->national_zone_id;
 
-            $records= $this->model->get_collection(TRUE, ['national_zone_name'=> $national_zone]);
-            if($records) {
-                continue;
-            }
-			
-			$zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
+            // $records= $this->model->get_collection(TRUE, ['national_zone_name'=> $national_zone]);
+	    // print_r($records); continue;
+            //if($records) {
+                //continue;
+            //}
+
+	    $zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
             if(!count($zone_record)) {
                 continue;
             }
