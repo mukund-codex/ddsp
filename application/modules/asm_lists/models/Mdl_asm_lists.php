@@ -404,6 +404,7 @@ class Mdl_asm_lists extends MY_Model {
 			$records['Chemist Name'] = $rows['chemist_name'];
 			$records['Doctor Name'] = $rows['doctor_name'];
 			$records['ABM Status'] = ucfirst($rows['asm_status']);
+			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
 
 			array_push($resultant_array, $records);
 		}
