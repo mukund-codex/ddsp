@@ -5,8 +5,8 @@ class Mdl_zsm_lists extends MY_Model {
 	private $table = 'doctor';
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
-    private $column_list = ['ZBM', 'Zone','ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name','ABM Status', 'ZBM Status'];
-    private $csv_columns = ['ZBM', 'Zone','ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
+    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Chemist Address', 'Doctor Name', 'Doctor Address', 'ABM Status', 'ZBM Status', 'Action'];
+    private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
         parent::__construct($this->table, $this->p_key,$this->alias);
@@ -17,19 +17,33 @@ class Mdl_zsm_lists extends MY_Model {
     }
 
     function get_column_list() {
+		$user_role = $this->session->get_field_from_session('role','user');
+		
+		$columns = [];
+		if(empty($user_role)) {            //For Admin Login
+			$admin_column_list = ['ZSM Name', 'Zone'];
+            $this->column_list = array_merge($admin_column_list, $this->column_list);
+		}
+
         return $this->column_list;
     }
 
     function get_filters() {
-        return [
-            [
-                'field_name'=>'zsm|users_name',
-                'field_label'=> 'ZBM Name',
-			],
-			[
-                'field_name'=>'z|zone_name',
-                'field_label'=> 'Zone Name',
-			],
+        $user_role = $this->session->get_field_from_session('role','user');
+		$admin_columns = [];
+		if(empty($user_role)) {
+			$admin_columns = [
+				[
+					'field_name'=>'zsm|users_name',
+					'field_label'=> 'ZSM Name',
+				],
+				[
+					'field_name'=>'z|zone_name',
+					'field_label'=> 'Zone',
+				],
+			];
+		}
+        $user_columns = [
 			[
                 'field_name'=>'asm|users_name',
                 'field_label'=> 'ABM Name',
@@ -51,8 +65,16 @@ class Mdl_zsm_lists extends MY_Model {
                 'field_label'=> 'Chemist Name',
 			],
 			[
+                'field_name'=>'ch|address',
+                'field_label'=> 'Chemist Address',
+			],
+			[
                 'field_name'=>'dr|doctor_name',
                 'field_label'=> 'Doctor Name',
+			],
+			[
+                'field_name'=>'dr|address',
+                'field_label'=> 'Doctor Address',
 			],
 			[
                 'field_name'=>'dr|asm_status',
@@ -62,7 +84,9 @@ class Mdl_zsm_lists extends MY_Model {
                 'field_name'=>'dr|zsm_status',
                 'field_label'=> 'ZBM Status',
 			],
-        ];
+		];
+		
+		return array_merge($admin_columns, $user_columns);
     }
 
     function get_filters_from($filters) {
@@ -89,7 +113,9 @@ class Mdl_zsm_lists extends MY_Model {
 		mr.users_name as mr_name,
 		c.city_name as city,
 		ch.chemist_name as chemist_name,
+		ch.address as chemist_address,
 		dr.doctor_name as doctor_name,
+		dr.address as doctor_address,
 		dr.doctor_id, dr.asm_status, dr.zsm_status
 			
 		from manpower mr
@@ -352,8 +378,12 @@ class Mdl_zsm_lists extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$records['ZBM Name'] = $rows['zsm_name'];
-			$records['Zone'] = $rows['zone'];
+			$user_role = $this->session->get_field_from_session('role','user');		
+			if(empty($user_role)) {  
+				$records['ZBM Name'] = $rows['zsm_name'];
+				$records['Zone'] = $rows['zone'];
+			}
+			
 			$records['ABM Name'] = $rows['asm_name'];
 			$records['Area'] = $rows['area'];
 			$records['MR Name'] = $rows['mr_name'];

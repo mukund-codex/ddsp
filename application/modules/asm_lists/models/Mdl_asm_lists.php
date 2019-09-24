@@ -5,7 +5,8 @@ class Mdl_asm_lists extends MY_Model {
 	private $table = 'doctor';
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
-    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name','ABM Status', 'ZBM Status'];
+	
+    private $column_list = ['MR Name', 'HQ', 'Chemist Name', 'Chemist Address','Doctor Name', 'Doctor Address', 'ABM Status', 'ZBM Status', 'Action'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -17,19 +18,41 @@ class Mdl_asm_lists extends MY_Model {
     }
 
     function get_column_list() {
+		$user_role = $this->session->get_field_from_session('role','user');
+		
+		$columns = [];
+		if(empty($user_role)) {            //For Admin Login
+			$admin_column_list = ['ZSM Name', 'Zone', 'ASM Name', 'Area'];
+            $this->column_list = array_merge($admin_column_list, $this->column_list);
+		}
+		
         return $this->column_list;
     }
 
     function get_filters() {
-        return [
-            [
-                'field_name'=>'asm|users_name',
-                'field_label'=> 'ABM Name',
-			],
-			[
-                'field_name'=>'a|area_name',
-                'field_label'=> 'Area Name',
-			],
+		$user_role = $this->session->get_field_from_session('role','user');
+		$admin_columns = [];
+		if(empty($user_role)) {
+			$admin_columns = [
+				[
+					'field_name'=>'zsm|users_name',
+					'field_label'=> 'ZSM Name',
+				],
+				[
+					'field_name'=>'z|zone_name',
+					'field_label'=> 'Zone',
+				],
+				[
+					'field_name'=>'asm|users_name',
+					'field_label'=> 'ASM Name',
+				],
+				[
+					'field_name'=>'a|area_name',
+					'field_label'=> 'Area',
+				],
+			];
+		}
+        $user_columns = [			
 			[
                 'field_name'=>'mr|users_name',
                 'field_label'=> 'MR Name',
@@ -43,8 +66,16 @@ class Mdl_asm_lists extends MY_Model {
                 'field_label'=> 'Chemist Name',
 			],
 			[
+				'field_name'=>'ch|address',
+                'field_label'=> 'Chemist Address',
+			],
+			[
                 'field_name'=>'dr|doctor_name',
                 'field_label'=> 'Doctor Name',
+			],
+			[
+                'field_name'=>'dr|address',
+                'field_label'=> 'Doctor Address',
 			],
 			[
                 'field_name'=>'dr|asm_status',
@@ -54,7 +85,9 @@ class Mdl_asm_lists extends MY_Model {
                 'field_name'=>'dr|zsm_status',
                 'field_label'=> 'ZBM Status',
 			],
-        ];
+		];
+		
+		return array_merge($admin_columns, $user_columns);
     }
 
     function get_filters_from($filters) {
@@ -74,17 +107,23 @@ class Mdl_asm_lists extends MY_Model {
         
         $sql = "select 
 
+		zsm.users_name as zsm_name,
+		z.zone_name as zone,
 		asm.users_name as asm_name,
 		a.area_name as area,
 		mr.users_name as mr_name,
 		c.city_name as city,
 		ch.chemist_name as chemist_name,
+		ch.address as chemist_address,
 		dr.doctor_name as doctor_name,
+		dr.address as doctor_address,
 		dr.doctor_id, dr.asm_status,
 		dr.zsm_status
 			
 		from manpower mr
 		JOIN manpower asm ON mr.users_parent_id = asm.users_id 
+		JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+		JOIN zone z ON z.zone_id = zsm.users_zone_id
 		JOIN area a ON a.area_id = asm.users_area_id
 		JOIN city c ON c.city_id = mr.users_city_id
 		JOIN chemist ch ON ch.users_id = mr.users_id
@@ -332,73 +371,18 @@ class Mdl_asm_lists extends MY_Model {
         return $response;
 	}
 
-	function sendsms($to, $msg, $msg_for){
-
-		$this->load->helper('send_sms');
-
-		send_sms($to, $msg, $msg_for);
-		//$this->helper->send_sms();
-
-	}
-
-	function download(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-			
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'D'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
-	function whatsapp(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'W'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
 	function _format_data_to_export($data){
 		
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			
-			$records['ABM Name'] = $rows['asm_name'];
-			$records['Area'] = $rows['area'];
+			$user_role = $this->session->get_field_from_session('role','user');		
+			if(empty($user_role)) {  
+				$records['ZSM Name'] = $rows['zsm_name'];
+				$records['Zone'] = $rows['zone'];
+				$records['ASM Name'] = $rows['asm_name'];
+				$records['Area'] = $rows['area'];
+			}
 			$records['MR Name'] = $rows['mr_name'];
 			$records['HQ City'] = $rows['city'];
 			$records['Chemist Name'] = $rows['chemist_name'];
