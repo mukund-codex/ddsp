@@ -488,7 +488,7 @@ class Module extends Api_Controller {
                         $brandData = [];
                         $molecules_data['id'] = $molecule->molecule_id;
                         $molecules_data['name'] = $molecule->molecule_name;
-                        
+                        $molecules_data['other'] = "no";
                         $get_brand = $this->model->get_records(['molecule_id' => $molecule->molecule_id], 'brand');
                         if(count($get_brand) > 0){
                             foreach($get_brand as $key => $brand){
@@ -1147,7 +1147,7 @@ class Module extends Api_Controller {
 
                                 if(empty($sku_rxn)) {
                                     $this->response['code'] = 400;
-                                    $this->response['message'] = "Please enter RXN $sku_name of $brand_name of $molcule_name for Doctor $doctor_name";
+                                    $this->response['message'] = "Please enter RXN/Strips $sku_name of $brand_name of $molcule_name for Doctor $doctor_name";
                                     return $this->response;
                                 }
 
@@ -1162,7 +1162,7 @@ class Module extends Api_Controller {
                                 }
                                 if(empty($brand_rxn)) {
                                     $this->response['code'] = 400;
-                                    $this->response['message'] = "Please enter RXN for $brand_name of $molcule_name for Doctor $doctor_name";
+                                    $this->response['message'] = "Please enter RXN/Strips for $brand_name of $molcule_name for Doctor $doctor_name";
                                     return $this->response;
                                 }
                             } else if($other === 'no') {    
@@ -1183,7 +1183,7 @@ class Module extends Api_Controller {
 
                                 if(empty($brand_rxn)) {
                                     $this->response['code'] = 400;
-                                    $this->response['message'] = "Please enter RXN for $brand_name of $molcule_name for Doctor $doctor_name";
+                                    $this->response['message'] = "Please enter RXN/Strips for $brand_name of $molcule_name for Doctor $doctor_name";
                                     return $this->response;
                                 }
                             }
