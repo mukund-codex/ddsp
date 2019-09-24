@@ -29,6 +29,7 @@
                         query['id'] = data.id;
                     }
                     
+                    console.log(query);
                     return query;
                 },
                 cache: true
@@ -98,5 +99,6 @@
     load('zone_id', 'Zone', 'geography/zone', true);
     // load('area_id', 'Area', 'geography/area', true);
     load('users_city_id', 'City', 'geography/city', true);
+    load('state_id', 'State', 'state', true);
 
 })(jQuery);

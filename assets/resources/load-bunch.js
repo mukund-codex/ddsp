@@ -15,6 +15,7 @@
                 dataType: 'json',
                 type: 'POST',
                 data: function (params) {
+                    
                     var query = {
                         search: params.term,
                         page: params.page || 1,

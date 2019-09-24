@@ -86,7 +86,7 @@
                     </ul>
                 </li>
 
-                <li <?php echo (in_array($menu, ['speciality', 'speciality_category', 'category', 'molecule', 'brand', 'sku','about'])) ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['speciality', 'speciality_category', 'category', 'molecule', 'brand', 'sku','about','state','city'])) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">person_add</i>
                         <span>Masters</span>
@@ -118,7 +118,13 @@
                         </li>  -->  
                         <li <?php echo (isset($menu) && $menu == 'about') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("about/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>About</span></a>
-                        </li>                          
+                        </li> 
+                        <li <?php echo (isset($menu) && $menu == 'state') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("state/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>State Master</span></a>
+                        </li>    
+                        <li <?php echo (isset($menu) && $menu == 'city') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("city/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>City Master</span></a>
+                        </li>                       
                     </ul>
                 </li>
 
