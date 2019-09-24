@@ -133,11 +133,6 @@ class Zsm extends Admin_Controller
             
             $national_zone_id = $national_zone_record[0]->national_zone_id;
 
-            // $records= $this->model->get_collection(TRUE, ['national_zone_name'=> $national_zone]);
-	    // print_r($records); continue;
-            //if($records) {
-                //continue;
-            //}
 
 	    $zone_record = $this->model->get_records(['zone_name'=> $zone], 'zone', ['zone_id'], '', 1);
             if(!count($zone_record)) {
@@ -151,6 +146,18 @@ class Zsm extends Admin_Controller
                 continue;
             }
             
+            $user_parent_data = $this->model->get_records([
+				'users_zone_id' => $zone_id, 
+				'users_national_id' => $national_zone_id, 
+				'users_type' => 'NSM'
+			], 'manpower', ['users_id'], 1);
+
+			if(! $user_parent_data) {
+				continue;
+			}
+
+			$user_parent_id = $user_parent_data[0]->users_id;
+
             if($mobile) {
                 $emp_record = $this->model->get_or_records(
                     [ 
@@ -183,6 +190,7 @@ class Zsm extends Admin_Controller
             $insert['users_zone_id'] = $zone_id;
             $insert['users_national_id'] = $national_zone_id;
             $insert['users_type'] = "ZSM";
+            $insert['users_parent_id'] = $user_parent_id;
 
             $this->model->_insert($insert);
 

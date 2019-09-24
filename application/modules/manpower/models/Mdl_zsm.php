@@ -202,8 +202,16 @@ class Mdl_zsm extends Manpower_Model {
             
             return $response;
 		}
-		
-        $data = $this->process_data($this->fillable, $_POST);
+
+		$users_parent_info = $this->user_info($_POST['users_national_id'], 'NSM');
+		if(! $users_parent_info) {
+			$response['errors'] = ["users_name" => "<label class='error'>Manager Does not Exist</label>"];
+			$response['status'] = FALSE;
+			return $response;
+		}
+
+		$data = $this->process_data($this->fillable, $_POST);
+		$data['users_parent_id'] = $users_parent_info['users_id'];
         $data['users_type'] = 'ZSM';
 
         $id = $this->_insert($data);
@@ -239,8 +247,16 @@ class Mdl_zsm extends Manpower_Model {
             
             return $response;
 		}		
-		
-        $data = $this->process_data($this->fillable, $_POST);
+
+		$users_parent_info = $this->user_info($_POST['users_national_id'], 'NSM');
+		if(! $users_parent_info) {
+			$response['errors'] = ["users_name" => "<label class='error'>Manager Does not Exist</label>"];
+			$response['status'] = FALSE;
+			return $response;
+		}
+
+		$data = $this->process_data($this->fillable, $_POST);
+		$data['users_parent_id'] = $users_parent_info['users_id'];
         if(empty($data['users_mobile'])) {
             $data['users_mobile'] = NULL;
         }

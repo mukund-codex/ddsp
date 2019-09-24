@@ -39,8 +39,9 @@ abstract class Manpower_Model extends MY_Model {
     }
     
     function get_user_info($filters = []){		
-		$q = $this->db->select('u.*, zone_name, area_name')
-		->from('manpower u')
+		$q = $this->db->select('u.*, zone_name, area_name, national_zone_name')
+        ->from('manpower u')
+        ->join('national_zone nz', 'u.users_national_id = nz.national_zone_id', 'LEFT')
 		->join('zone z', 'u.users_zone_id = z.zone_id', 'LEFT')
 		->join('area a', 'u.users_area_id = a.area_id', 'LEFT')
 		->join('city c', 'u.users_city_id = c.city_id', 'LEFT');
