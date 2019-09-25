@@ -65,6 +65,8 @@
             <?php endif; ?>
         <?php endif; ?>
     </td> 
+    <?php $user_role = $this->session->get_field_from_session('role','user');
+     if($user_role != 'HO'){ ?>
     <td>
         <?php if($record['zsm_status'] == 'pending'){ ?>
             <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" >Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -76,6 +78,7 @@
         <?php } ?>
 
     </td>
+    <?php } ?>
    
 </tr>
 <?php $i++;  } ?>

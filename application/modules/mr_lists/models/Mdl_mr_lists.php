@@ -6,7 +6,7 @@ class Mdl_mr_lists extends MY_Model {
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
 	
-    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal', 'ABM Status', 'ZBM Status', 'Images', 'Action'];
+    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal', 'ABM Status', 'Images', 'Action'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -79,10 +79,6 @@ class Mdl_mr_lists extends MY_Model {
 			[
                 'field_name'=>'temp2|asm_status',
                 'field_label'=> 'ABM Status',
-			],
-			[
-                'field_name'=>'temp2|zsm_status',
-                'field_label'=> 'ZBM Status',
 			],
 		];
 		
@@ -390,7 +386,6 @@ class Mdl_mr_lists extends MY_Model {
 			$records['Acne'] = $rows['acne'];
 			$records['AntiFungal'] = $rows['anti'];
 			$records['ABM Status'] = ucfirst($rows['asm_status']);
-			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
         if(! $status){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;

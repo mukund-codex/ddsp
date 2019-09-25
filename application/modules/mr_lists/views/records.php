@@ -44,19 +44,6 @@
             echo $status;
         ?>
     </td>
-    <td style="font-weight:bold;">
-        <?php 
-            if($record['zsm_status'] == 'approve'){
-                $status = "<span style='color:green'>".ucfirst($record['zsm_status'])."</span>";
-            }else if($record['zsm_status'] == 'disapprove'){
-                $status = "<span style='color:red'>".ucfirst($record['zsm_status'])."</span>";
-            }else{
-                $status = "<span style='color:#0394fc'>".ucfirst($record['zsm_status'])."</span>";
-            }
-            
-            echo $status;
-        ?>
-    </td>
     <td><?php if(!empty($record['images'])): ?>
             <?php $rx_files = explode(',', $record['images']); ?>
             <?php if(count($rx_files)): ?>
