@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Zsm_lists extends User_Controller
+class Mr_lists extends User_Controller
 {
-	private $module = 'zsm_lists';
-    private $model_name = 'mdl_zsm_lists';
-    private $controller = 'zsm_lists';
+	private $module = 'mr_lists';
+    private $model_name = 'mdl_mr_lists';
+    private $controller = 'mr_lists';
     private $settings = [
         'permissions'=> ['download'],
     ];
@@ -128,7 +128,7 @@ class Zsm_lists extends User_Controller
 		$response = $this->model->approve_doctor($doctor_id);
 
 		if($response['status']){
-			redirect(base_url("zsm_lists/lists")); 
+			redirect(base_url("asm_lists/lists")); 
 		}
 
 	}
@@ -140,7 +140,7 @@ class Zsm_lists extends User_Controller
 		$response = $this->model->disapprove_doctor($doctor_id);
 
 		if($response['status']){
-			redirect(base_url("zsm_lists/lists")); 
+			redirect(base_url("asm_lists/lists")); 
 		}
 
 	}

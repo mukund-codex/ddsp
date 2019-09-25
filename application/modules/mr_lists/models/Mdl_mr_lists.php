@@ -1,11 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_zsm_lists extends MY_Model {
+class Mdl_mr_lists extends MY_Model {
 
 	private $p_key = 'doctor_id';
 	private $table = 'doctor';
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
-    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Chemist Address', 'Doctor Name', 'Doctor Address', 'ABM Status', 'ZBM Status', 'Action'];
+	
+    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal', 'ABM Status', 'ZBM Status', 'Images', 'Action'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -21,67 +22,66 @@ class Mdl_zsm_lists extends MY_Model {
 		
 		$columns = [];
 		if(empty($user_role)) {            //For Admin Login
-			$admin_column_list = ['ZSM Name', 'Zone'];
+			$admin_column_list = ['ZSM Name', 'Zone', 'ASM Name', 'Area'];
             $this->column_list = array_merge($admin_column_list, $this->column_list);
 		}
-
+		
         return $this->column_list;
     }
 
     function get_filters() {
-        $user_role = $this->session->get_field_from_session('role','user');
+		$user_role = $this->session->get_field_from_session('role','user');
 		$admin_columns = [];
 		if(empty($user_role)) {
 			$admin_columns = [
 				[
-					'field_name'=>'zsm|users_name',
+					'field_name'=>'temp2|zsm_name',
 					'field_label'=> 'ZSM Name',
 				],
 				[
-					'field_name'=>'z|zone_name',
+					'field_name'=>'temp2|zone',
 					'field_label'=> 'Zone',
+				],
+				[
+					'field_name'=>'temp2|asm_name',
+					'field_label'=> 'ASM Name',
+				],
+				[
+					'field_name'=>'temp2|area',
+					'field_label'=> 'Area',
 				],
 			];
 		}
-        $user_columns = [
+        $user_columns = [			
 			[
-                'field_name'=>'asm|users_name',
-                'field_label'=> 'ABM Name',
-			],
-			[
-                'field_name'=>'a|area_name',
-                'field_label'=> 'Area Name',
-			],
-			[
-                'field_name'=>'mr|users_name',
+                'field_name'=>'temp2|mr_name',
                 'field_label'=> 'MR Name',
 			],
 			[
-                'field_name'=>'c|city_name',
+                'field_name'=>'temp2|city',
                 'field_label'=> 'HQ Name',
 			],
 			[
-                'field_name'=>'ch|chemist_name',
-                'field_label'=> 'Chemist Name',
-			],
-			[
-                'field_name'=>'ch|address',
-                'field_label'=> 'Chemist Address',
-			],
-			[
-                'field_name'=>'dr|doctor_name',
+                'field_name'=>'temp2|doctor_name',
                 'field_label'=> 'Doctor Name',
 			],
 			[
-                'field_name'=>'dr|address',
-                'field_label'=> 'Doctor Address',
+                'field_name'=>'temp2|speciality',
+                'field_label'=> 'Doctor Speciality',
 			],
 			[
-                'field_name'=>'dr|asm_status',
+                'field_name'=>'temp2|type',
+                'field_label'=> 'Doctor Type',
+			],
+			[],
+			[],
+			[],
+			[
+                'field_name'=>'temp2|asm_status',
                 'field_label'=> 'ABM Status',
 			],
 			[
-                'field_name'=>'dr|zsm_status',
+                'field_name'=>'temp2|zsm_status',
                 'field_label'=> 'ZBM Status',
 			],
 		];
@@ -104,36 +104,61 @@ class Mdl_zsm_lists extends MY_Model {
     }
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
-        $sql = "select 
-
-		zsm.users_name as zsm_name,
-		z.zone_name as zone,
-		asm.users_name as asm_name,
-		a.area_name as area,
+        $sql = "SELECT 
+		temp2.* ,
+		GROUP_CONCAT(im.image_name) images
+		FROM
+		(
+		SELECT 
+		temp.asm_id, temp.zsm_id,
+		temp.zsm_name,temp.asm_name, temp.mr_name, 
+		temp.zone, temp.area, temp.city,
+		temp.doctor_id, temp.doctor_name, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
+		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti
+		
+		FROM (
+		SELECT
 		mr.users_name as mr_name,
-		c.city_name as city,
-		ch.chemist_name as chemist_name,
-		ch.address as chemist_address,
-		dr.doctor_name as doctor_name,
-		dr.address as doctor_address,
-		dr.doctor_id, dr.asm_status, dr.zsm_status
-			
-		from manpower mr
-		JOIN manpower asm ON mr.users_parent_id = asm.users_id 
+		asm.users_id as asm_id, asm.users_name as asm_name, zsm.users_id as zsm_id, zsm.users_name as zsm_name,
+		z.zone_name as zone, a.area_name as area, c.city_name as city,
+		d.doctor_id, d.doctor_name, d.asm_status as asm_status, d.zsm_status as zsm_status,
+		sp.speciality_name as speciality, spc.category_name as type,
+		cat.category_id,cat.category_name,
+		b.brand_name as other_name, ub.brand_name,
+		IF(cat.category_id = 1,SUM(ub.rxn),0) as hyper,
+		IF(cat.category_id = 2,SUM(ub.rxn),0) as acne,
+		IF(cat.category_id = 3,SUM(ub.rxn),0) as anti
+		FROM
+		doctor d
+		JOIN speciality sp ON sp.speciality_id = d.speciality
+		LEFT JOIN speciality_category spc ON spc.sc_id = d.speciality_category
+		JOIN users_molecule um ON um.doctor_id = d.doctor_id
+		JOIN category cat ON cat.category_id = um.category_id
+		JOIN users_brand ub ON ub.molecule_id = um.molecule_id
+		LEFT JOIN brand b ON b.brand_id = ub.brand_id
+		JOIN manpower mr ON mr.users_id = d.users_id
+		JOIN manpower asm ON asm.users_id = mr.users_parent_id
 		JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-		JOIN zone z ON z.zone_id = zsm.users_zone_id 
+		JOIN zone z ON z.zone_id = zsm.users_zone_id
 		JOIN area a ON a.area_id = asm.users_area_id
 		JOIN city c ON c.city_id = mr.users_city_id
-		JOIN chemist ch ON ch.users_id = mr.users_id
-		JOIN doctor dr ON dr.chemist_id = ch.chemist_id";
+		GROUP BY ub.id
+		)temp
+		GROUP BY temp.doctor_id
+		) temp2
+		JOIN images im ON im.doctor_id = temp2.doctor_id AND im.category = 'doctor'";
 
         $sql .= " WHERE 1 = 1 ";
 		
 		$role = $this->session->get_field_from_session('role', 'user');
 		if(!empty($role)){
 			$id = $this->session->get_field_from_session('user_id', 'user');
-		
-			$sql .= "AND zsm.users_id = '".$id."'";
+			if($role == 'ASM'){
+				$sql .= "AND temp2.asm_id = '".$id."'";
+			}
+			if($role == 'ZSM'){
+				$sql .= "AND temp2.zsm_id = '".$id."'";
+			}
 		}
 		
 
@@ -149,23 +174,79 @@ class Mdl_zsm_lists extends MY_Model {
                 if(!empty($value)) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
-                    $sql .= " AND $key LIKE '$value%' ";
+                    $sql .= " AND $key LIKE '%$value%' ";
                 }
             }
         }
 
-        //$sql .= " group by asm.users_id";
+		$sql .= " GROUP BY temp2.doctor_id ";
+		$sql .= " ORDER BY temp2.doctor_name ";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
-    }		
+    }	
+	/* function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
+        
+        $q = $this->db->select('b.brand_id, b.brand_name, b.insert_dt, b.update_dt, m.molecule_id, m.molecule_name')
+		->from('brand b')
+		->join('molecule m', 'b.molecule_id = m.molecule_id');
+        
+		if(sizeof($sfilters)) { 
+            
+            foreach ($sfilters as $key=>$value) { 
+                $q->where("$key", $value); 
+			}
+		}
+        
+		if(is_array($rfilters) && count($rfilters) ) {
+			$field_filters = $this->get_filters_from($rfilters);
+			
+            foreach($rfilters as $key=> $value) {
+                if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+                
+                if($key == 'from_date' && !empty($value)) {
+                    $this->db->where('DATE(b.insert_dt) >=', date('Y-m-d', strtotime($value)));
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+                    $this->db->where('DATE(b.insert_dt) <=', date('Y-m-d', strtotime($value)));
+                    continue;
+                }
+
+                if(!empty($value))
+                    $this->db->like($key, $value);
+            }
+        }
+
+		$user_role = $this->session->get_field_from_session('role','user');
+
+        if(empty($user_role)) {
+            $user_role = $this->session->get_field_from_session('role');
+		}
+		
+		if(in_array($user_role, ['MR','ASM','RSM'])) {
+			$q->where('insert_user_id', $this->session->get_field_from_session('user_id', 'user'));
+		}
+
+		if(! $count) {
+			$q->order_by('b.brand_id desc');
+		}
+
+		if(!empty($limit)) { $q->limit($limit, $offset); }        
+        //echo $this->db->get_compiled_select(); die();
+        $collection = (! $count) ? $q->get()->result_array() : $q->count_all_results();
+		return $collection;
+    } */	
     
     function validate($type)
 	{
@@ -288,7 +369,7 @@ class Mdl_zsm_lists extends MY_Model {
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
 	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-			
+			print_r($errors);
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             
@@ -301,7 +382,15 @@ class Mdl_zsm_lists extends MY_Model {
         $id = (int) $this->input->post($p_key);
 
         $status = (int) $this->_update([$p_key => $id], $data);
-        
+        $records['HQ City'] = $rows['city'];
+			$records['Doctor Name'] = $rows['doctor_name'];
+			$records['Speciality'] = $rows['speciality'];
+			$records['Type'] = $rows['type'];
+			$records['HyperPigmentation'] = $rows['hyper'];
+			$records['Acne'] = $rows['acne'];
+			$records['AntiFungal'] = $rows['anti'];
+			$records['ABM Status'] = ucfirst($rows['asm_status']);
+			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
         if(! $status){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;
@@ -314,65 +403,6 @@ class Mdl_zsm_lists extends MY_Model {
         return $response;
 	}
 
-	function sendsms($to, $msg, $msg_for){
-
-		$this->load->helper('send_sms');
-
-		send_sms($to, $msg, $msg_for);
-		//$this->helper->send_sms();
-
-	}
-
-	function download(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-			
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'D'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
-	function whatsapp(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'W'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
 	function _format_data_to_export($data){
 		
 		$resultant_array = [];
@@ -380,19 +410,33 @@ class Mdl_zsm_lists extends MY_Model {
 		foreach ($data as $rows) {
 			$user_role = $this->session->get_field_from_session('role','user');		
 			if(empty($user_role)) {  
-				$records['ZBM Name'] = $rows['zsm_name'];
+				$records['ZSM Name'] = $rows['zsm_name'];
 				$records['Zone'] = $rows['zone'];
+				$records['ASM Name'] = $rows['asm_name'];
+				$records['Area'] = $rows['area'];
 			}
-			
-			$records['ABM Name'] = $rows['asm_name'];
-			$records['Area'] = $rows['area'];
 			$records['MR Name'] = $rows['mr_name'];
 			$records['HQ City'] = $rows['city'];
-			$records['Chemist Name'] = $rows['chemist_name'];
 			$records['Doctor Name'] = $rows['doctor_name'];
+			$records['Speciality'] = $rows['speciality'];
+			$records['Type'] = $rows['type'];
+			$records['HyperPigmentation'] = $rows['hyper'];
+			$records['Acne'] = $rows['acne'];
+			$records['AntiFungal'] = $rows['anti'];
 			$records['ABM Status'] = ucfirst($rows['asm_status']);
 			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
-
+			$images= [];
+			if(!empty($rows['images'])){
+				$rx_files = explode(',', $rows['images']);
+				if(count($rx_files)){
+					foreach ($rx_files as $key => $value){
+						if(file_exists($value)){
+							$ext = pathinfo($value, PATHINFO_EXTENSION);
+							$records['Images'] = base_url($value);
+						}
+					}
+				}
+			}
 			array_push($resultant_array, $records);
 		}
 		return $resultant_array;
@@ -413,7 +457,7 @@ class Mdl_zsm_lists extends MY_Model {
 			return $response;
 		}
 
-		$data['zsm_status'] = 'approve';
+		$data['asm_status'] = 'approve';
 
 		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
 
@@ -442,7 +486,7 @@ class Mdl_zsm_lists extends MY_Model {
 			return $response;
 		}
 
-		$data['zsm_status'] = 'disapprove';
+		$data['asm_status'] = 'disapprove';
 
 		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
 

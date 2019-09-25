@@ -31,18 +31,18 @@
                     </a>
                 </li>
                 <?php if(in_array($user_role, ['ASM'])): ?>
-                    <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
-                        <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
+                    <li <?php echo ($mainmenu == 'mr_lists') ? 'class="active"': ''; ?> style="display:block;">
+                        <a href="<?php echo base_url("mr_lists/lists?t=$timestamp") ?>">
                             <i class="material-icons">receipt</i>
-                            <span>ASM Lists</span>
+                            <span>MR Lists</span>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if(in_array($user_role, ['ZSM'])): ?>
-                    <li <?php echo ($mainmenu == 'zsm_lists') ? 'class="active"': ''; ?> style="display:block;">
-                        <a href="<?php echo base_url("zsm_lists/lists?t=$timestamp") ?>">
+                    <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
+                        <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
                             <i class="material-icons">receipt</i>
-                            <span>ZSM Lists</span>
+                            <span>ASM Lists</span>
                         </a>
                     </li>
                 <?php endif; ?>

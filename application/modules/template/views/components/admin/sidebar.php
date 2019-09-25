@@ -119,10 +119,10 @@
                         <li <?php echo (isset($menu) && $menu == 'about') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("about/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>About</span></a>
                         </li> 
-                        <li <?php echo (isset($menu) && $menu == 'state') ? 'class="active"': ''; ?> style="display:none;">
+                        <li <?php echo (isset($menu) && $menu == 'state') ? 'class="active"': ''; ?> style="display:block;">
                             <a href="<?php echo base_url("state/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>State Master</span></a>
                         </li>    
-                        <li <?php echo (isset($menu) && $menu == 'city') ? 'class="active"': ''; ?> style="display:none;">
+                        <li <?php echo (isset($menu) && $menu == 'city') ? 'class="active"': ''; ?> style="display:block;">
                             <a href="<?php echo base_url("city/lists?t=$timestamp") ?>"><i class="material-icons">assignment_ind</i><span>City Master</span></a>
                         </li>                       
                     </ul>
@@ -184,42 +184,20 @@
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
-                    <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
+                <li <?php echo ($mainmenu == 'mr_lists') ? 'class="active"': ''; ?> style="display:block;">
+                    <a href="<?php echo base_url("mr_lists/lists?t=$timestamp") ?>">
                         <i class="material-icons">receipt</i>
                         <span>MR Lists</span>
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'zsm_lists') ? 'class="active"': ''; ?> style="display:block;">
-                    <a href="<?php echo base_url("zsm_lists/lists?t=$timestamp") ?>">
+                <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
+                    <a href="<?php echo base_url("asm_lists/lists?t=$timestamp") ?>">
                         <i class="material-icons">receipt</i>
                         <span>ASM Lists</span>
                     </a>
                 </li>
 
-
-                <li <?php echo ($mainmenu == 'language') ? 'class="active"': ''; ?> style="display:none;">
-                    <a href="<?php echo base_url("language/lists?t=$timestamp") ?>">
-                        <i class="material-icons">receipt</i>
-                        <span>ZSM Lists</span>
-                    </a>
-                </li>
-
-               <!--  <li <?php echo ($mainmenu == 'bunch') ? 'class="active"': ''; ?>>
-                    <a href="<?php echo base_url("bunch/lists?t=$timestamp") ?>">
-                        <i class="material-icons">receipt</i>
-                        <span>Bunch</span>
-                    </a>
-                </li> -->
-
-                <!-- <li <?php echo ($mainmenu == 'coupon') ? 'class="active"': ''; ?>>
-                    <a href="<?php echo base_url("coupon/lists?t=$timestamp") ?>">
-                        <i class="material-icons">receipt</i>
-                        <span>Coupon</span>
-                    </a>
-                </li> -->
-                    
                 <li <?php echo (in_array($menu, ['login_reports', 'category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report'])) ? 'class="active"': ''; ?> >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>

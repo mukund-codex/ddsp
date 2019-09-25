@@ -356,7 +356,7 @@ class User extends Api_Controller {
 		$message = trim(isset($this->input_data['message'])?$this->input_data['message']:'');
 		
 		if(empty($rating) || empty($message)){
-			$this->response['code'] = 401;
+			$this->response['code'] = 400;
 			$this->response['message'] = "Please give complete feedback.";
 			$this->error = array('message' => 'Please give complete feedback.');
 			$this->sendResponse();

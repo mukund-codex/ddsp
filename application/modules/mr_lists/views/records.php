@@ -10,15 +10,17 @@
      if(empty($user_role)){ ?>
         <td><?php echo $record['zsm_name'] ?></td> 
         <td><?php echo $record['zone'] ?></td> 
+        <td><?php echo $record['asm_name'] ?></td> 
+        <td><?php echo $record['area'] ?></td> 
     <?php } ?>
-    <td><?php echo $record['asm_name'] ?></td> 
-    <td><?php echo $record['area'] ?></td> 
     <td><?php echo $record['mr_name'] ?></td> 
     <td><?php echo $record['city'] ?></td> 
-    <td><?php echo $record['chemist_name'] ?></td>
-    <td><?php echo $record['chemist_address'] ?></td>
     <td><?php echo $record['doctor_name'] ?></td>
-    <td><?php echo $record['doctor_address'] ?></td>
+    <td><?php echo $record['speciality'] ?></td>
+    <td><?php echo $record['type'] ?></td>
+    <td><?php echo $record['hyper'] ?></td>
+    <td><?php echo $record['acne'] ?></td>
+    <td><?php echo $record['anti'] ?></td>
     <td style="font-weight:bold;">
         <?php 
             if($record['asm_status'] == 'approve'){
@@ -45,13 +47,31 @@
             echo $status;
         ?>
     </td>
+    <td><?php if(!empty($record['images'])): ?>
+            <?php $rx_files = explode(',', $record['images']); ?>
+            <?php if(count($rx_files)): ?>
+                <?php foreach ($rx_files as $key => $value): ?>
+                    <?php if(file_exists($value)): ?>
+                        <?php $ext = pathinfo($value, PATHINFO_EXTENSION); ?>
+                        <?php if(in_array($ext,['pdf','docx','doc'])): ?>
+                            <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'" download>Document</a>
+                        <?php else:?>
+                            <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'">
+                                <img src="<?php echo base_url($value); ?>" alt="Image" style="width:50px;height:50px">
+                            </a>
+                        <?php endif;?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    </td> 
     <td>
-        <?php if($record['zsm_status'] == 'pending'){ ?>
+        <?php if($record['asm_status'] == 'pending'){ ?>
             <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" >Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="<?php echo base_url("$controller/disapprove?id=".$record['doctor_id']) ?>" class="tooltips" title="Disapprove" >Disapprove</a>
-        <?php }else if($record['zsm_status'] == 'approve'){ ?>
-            <a href="<?php echo base_url("$controller/disapprove?id=".$record['doctor_id']) ?>" class="tooltips" title="Disapprove" >Disapprove</a>
-        <?php }else if($record['zsm_status'] == 'disapprove'){ ?>
+        <?php }else if($record['asm_status'] == 'approve'){ ?>
+            <a href="<?php echo base_url("$controller/disapprove?id=".$record['doctor_id']) ?>" class="tooltips" title="Disapprove" >Dispprove</a>
+        <?php }else if($record['asm_status'] == 'disapprove'){ ?>
             <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" >Approve</a> 
         <?php } ?>
 
