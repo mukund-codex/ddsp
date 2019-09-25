@@ -138,8 +138,12 @@
     <!-- FANCYBOX plugins JS loaded and initialized -->
     <script src="<?php echo base_url(); ?>assets/js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript">
-        (function($){
-            $('[data-fancybox="gallery"]').fancybox({   
+        $(document).on('click', '.fancybox', function(e){
+            e.preventDefault();
+            $.fancybox.open();
+        });
+        /* (function($){
+            $('.body').on('focusin', function(){    
                 $('a.fancybox').fancybox({
                     buttons : [
                         // 'download',
@@ -148,7 +152,7 @@
                     ]
                 });
             });
-        })(jQuery)
+        })(jQuery) */
     </script>
     <?php endif; ?>
 
