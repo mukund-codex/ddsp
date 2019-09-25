@@ -8,7 +8,7 @@ class Mr_lists extends User_Controller
         'permissions'=> ['download'],
     ];
     
-    private $scripts = ['doctor.js'];    
+    private $scripts = ['doctor.js'];
 
 	function __construct() {
         $user_role = $this->session->get_field_from_session('role');
@@ -145,4 +145,11 @@ class Mr_lists extends User_Controller
 
 	}
 
+	function getBrandMolecules() {
+		$doctor_id = $this->input->post("doctor_id");
+		$category_id = $this->input->post("category_id");
+		$data['records'] = $this->model->getBrandMolecules($doctor_id, $category_id);
+		$response = $this->load->view('moleculeResult', $data, TRUE);
+		echo json_encode(array('status' => TRUE, 'data' => $response));
+	}
 }

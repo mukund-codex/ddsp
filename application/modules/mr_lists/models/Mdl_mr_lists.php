@@ -502,4 +502,19 @@ class Mdl_mr_lists extends MY_Model {
 
 	}
 
+	function getBrandMolecules($doctor_id, $category_id) {
+		$q = $this->db->select('
+            users_brand.brand_name as custom_brand_name, users_brand.rxn, brand.brand_name, molecule.molecule_name')
+        ->from('doctor')
+        ->join('users_brand', 'users_brand.doctor_id = doctor.doctor_id')
+		->join('brand', 'brand.brand_id = users_brand.brand_id', 'left')
+		->join('users_molecule', 'users_molecule.molecule_id = users_brand.molecule_id')
+		->join('molecule', 'molecule.molecule_id = users_molecule.molecule');
+
+		$q->where('users_brand.doctor_id', $doctor_id);
+		$q->where('users_molecule.category_id', $category_id);
+
+		$collection = $q->get()->result_array();
+		return $collection;
+	}
 }
