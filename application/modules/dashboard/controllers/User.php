@@ -22,12 +22,31 @@ class User extends Front_Controller
 			$data['insert_user_id'] = $user_id;
 		} 
 
-		$this->data['doctor_count'] = count($this->model->get_records($data, 'doctor'));
-		$this->data['patientCount'] = 0;
-
 		$this->data['js'] = ['form-submit.js', 'common.js','doctor.js'];
 		$this->data['plugins'] = ['countTo','select2','material-datetime','jCrop'];
         $this->data['mainmenu'] = 'dashboard';
+
+		$chemist_data = $this->model->get_chemist_count();
+		$count = $chemist_data[0]['chemist_count'];
+		$chemist_count = empty($count) ? 0 : $count;
+		$this->data['chemist_count'] = $chemist_count;
+
+		$doctor_data = $this->model->get_doctor_count();
+		$dcount = $doctor_data[0]['doctor_count'];
+		$doctor_count = empty($dcount) ? 0 : $dcount;
+		$this->data['doctor_count'] = $doctor_count;
+
+		$app_doctor_data = $this->model->get_approved_doctor_count();
+		$acount = $app_doctor_data[0]['doctor_count'];
+		$adoctor_count = empty($acount) ? 0 : $acount;
+		$this->data['approved_doctor_count'] = $adoctor_count;
+
+		$dapp_doctor_data = $this->model->get_disapproved_doctor_count();
+		$dcount = $dapp_doctor_data[0]['doctor_count'];
+		$dadoctor_count = empty($dcount) ? 0 : $dcount;
+		$this->data['disapproved_doctor_count'] = $dadoctor_count;
+
+		//echo '<pre>';print_r($this->data);exit;
 
     	$this->set_view($this->data, $this->controller . '/dashboard',  '_user');
     }

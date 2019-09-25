@@ -14,7 +14,18 @@ class Admin extends Admin_Controller
 			redirect('admin','refresh');
 		}
 
-        $this->data['mainmenu'] = 'dashboard';
+		$this->data['mainmenu'] = 'dashboard';
+
+		$chemist_data = $this->model->get_chemist_count();
+		$count = $chemist_data[0]['chemist_count'];
+		$chemist_count = empty($count) ? 0 : $count;
+		$this->data['chemist_count'] = $chemist_count;
+
+		$doctor_data = $this->model->get_doctor_count();
+		$dcount = $doctor_data[0]['doctor_count'];
+		$doctor_count = empty($dcount) ? 0 : $dcount;
+		$this->data['doctor_count'] = $doctor_count;
+		
     	$this->set_view($this->data, $this->controller . '/dashboard',  '_admin');
     }
     

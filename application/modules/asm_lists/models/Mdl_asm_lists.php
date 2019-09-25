@@ -5,7 +5,7 @@ class Mdl_asm_lists extends MY_Model {
 	private $table = 'doctor';
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
-    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal', 'ABM Status', 'ZBM Status', 'Images', 'Action'];
+    private $column_list = ['ABM', 'Area', 'MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal', 'ABM Status', 'ZBM Status', 'Images'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -24,6 +24,10 @@ class Mdl_asm_lists extends MY_Model {
 			$admin_column_list = ['ZSM Name', 'Zone'];
             $this->column_list = array_merge($admin_column_list, $this->column_list);
 		}
+
+		if($user_role != 'HO' || empty($user_role)){
+			array_push($this->column_list,"Action");
+		}	
 
         return $this->column_list;
     }
