@@ -54,9 +54,9 @@
                     <?php if(file_exists($value)): ?>
                         <?php $ext = pathinfo($value, PATHINFO_EXTENSION); ?>
                         <?php if(in_array($ext,['pdf','docx','doc'])): ?>
-                            <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'" download>Document</a>
+                            <a href="<?php echo base_url($value); ?>" data-fancybox="gallery" data-caption="Documents" download>Document</a>
                         <?php else:?>
-                            <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'">
+                            <a href="<?php echo base_url($value); ?>" data-fancybox="gallery" data-caption="Images">
                                 <img src="<?php echo base_url($value); ?>" alt="Image" style="width:50px;height:50px">
                             </a>
                         <?php endif;?>

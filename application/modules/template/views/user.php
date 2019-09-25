@@ -139,7 +139,7 @@
     <script src="<?php echo base_url(); ?>assets/js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript">
         (function($){
-            $('.body').on('focusin', function(){    
+            $('[data-fancybox="gallery"]').fancybox({   
                 $('a.fancybox').fancybox({
                     buttons : [
                         // 'download',
