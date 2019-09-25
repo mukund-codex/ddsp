@@ -139,8 +139,10 @@
     <script src="<?php echo base_url(); ?>assets/js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript">
         $(document).on('click', '.fancybox', function(e){
-            e.preventDefault();
-            $.fancybox.open();
+            e.preventDefault(); 
+            $.fancybox.open({
+                src: $(this).children('img').attr('src')  
+            }); 
         });
         /* (function($){
             $('.body').on('focusin', function(){    
