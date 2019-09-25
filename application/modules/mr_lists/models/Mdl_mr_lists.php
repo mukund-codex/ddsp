@@ -438,7 +438,7 @@ class Mdl_mr_lists extends MY_Model {
 					$records['Images'] = rtrim($images, ', ');
 				}
 			}
-			
+
 			array_push($resultant_array, $records);
 		}
 		return $resultant_array;

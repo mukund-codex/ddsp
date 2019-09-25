@@ -8,7 +8,7 @@ class Asm_lists extends User_Controller
         'permissions'=> ['download'],
     ];
     
-    private $scripts = ['doctor.js'];    
+    private $scripts = ['doctor.js'];  
 
 	function __construct() {
         $user_role = $this->session->get_field_from_session('role');
