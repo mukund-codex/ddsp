@@ -125,7 +125,13 @@
     <!-- FANCYBOX plugins JS loaded and initialized -->
     <script src="<?php echo base_url(); ?>assets/js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+      $(document).on('click', '.fancybox', function(e){
+            e.preventDefault(); 
+            $.fancybox.open({
+                src: $(this).children('img').attr('src')  
+            }); 
+        });
+       /*  $(document).ready(function(){
          $(".fancybox").fancybox();
     
             $('.fancybox').fancybox({
@@ -158,7 +164,7 @@
               height:400,
               type: 'iframe'
             });
-        });
+        }); */
     </script>
     <?php endif; ?>
 
