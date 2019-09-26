@@ -144,7 +144,10 @@ class Mdl_summary_report extends MY_Model {
         JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
         JOIN zone z ON z.zone_id = zsm.users_zone_id
         JOIN area a ON a.area_id = asm.users_area_id
-        GROUP BY asm.users_id) temp";
+        GROUP BY asm.users_id
+        ) temp";
+
+        $sql .= " WHERE 1 = 1 ";
 
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
@@ -170,7 +173,7 @@ class Mdl_summary_report extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;exit;
+        echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
         return $collection;
