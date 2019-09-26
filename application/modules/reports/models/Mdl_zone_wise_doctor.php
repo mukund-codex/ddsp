@@ -44,7 +44,7 @@ class Mdl_zone_wise_doctor extends MY_Model {
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
         $sql = "SELECT temp.zsm_name, temp.zone, temp.asm_name, temp.area, 
-        MAX(temp.chemist_count) chemist_count, 
+        MAX(temp.chemist_count) chemist_count,
         MAX(temp.doctor_count) doctor_count, MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count
         FROM ( 
         SELECT 
@@ -75,7 +75,30 @@ class Mdl_zone_wise_doctor extends MY_Model {
         JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
         JOIN zone z ON z.zone_id = zsm.users_zone_id
         JOIN area a ON a.area_id = asm.users_area_id
-        GROUP BY asm.users_id
+        WHERE 1 =1 ";
+
+        if(is_array($rfilters) && count($rfilters) ) {
+            $field_filters = $this->get_filters_from($rfilters);
+            
+            foreach($rfilters as $key=> $value) {
+                $value = trim($value);
+                if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+
+                if($key == 'from_date' && !empty($value)) {
+                    $sql .= " AND DATE(ch.insert_dt) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+                    $sql .= " AND DATE(ch.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+            }
+        }
+
+        $sql.= " GROUP BY asm.users_id
         ) temp";
 
         $sql .= " WHERE 1 = 1 ";
@@ -85,21 +108,11 @@ class Mdl_zone_wise_doctor extends MY_Model {
 			
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
-                if(!in_array($key, $field_filters)) {
-                    continue;
-                }
-
-                if($key == 'from_date' && !empty($value)) {
-					$sql .= " AND DATE(temp.doctor_date) >= '".date('Y-m-d', strtotime($value))."' ";
-                    continue;
-                }
-
-                if($key == 'to_date' && !empty($value)) {
-					$sql .= " AND DATE(temp.doctor_date) <= '".date('Y-m-d', strtotime($value))."' ";
+                if(in_array($key, $field_filters)) {
                     continue;
                 }
                
-                if(!empty($value)) {
+                if(!empty($value) && !in_array($key, $field_filters)) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
                     $sql .= " AND $key LIKE '$value%' ";
@@ -115,7 +128,7 @@ class Mdl_zone_wise_doctor extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;exit;
+        echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
