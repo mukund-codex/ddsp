@@ -4,7 +4,7 @@ class Category_wise_report extends Reports_Controller
 	private $module = 'category_wise_report';
 	private $controller = 'reports/category_wise_report';
     private $model_name = 'mdl_category_wise_report';
-    private $columns = ['ZBM', 'Zone', 'ABM', 'Area', 'MR Name', 'HQ', 'AntiFungal', 'Acne Light', 'Hyper-Pigmentation'];
+    private $columns = ['ZBM', 'Zone', 'ABM', 'Area', 'MR Name', 'HQ', 'AntiFungal', 'Acne', 'Hyper-Pigmentation'];
     
 	function __construct() {
 		parent::__construct(
