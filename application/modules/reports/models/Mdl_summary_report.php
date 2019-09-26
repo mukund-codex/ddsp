@@ -173,7 +173,7 @@ class Mdl_summary_report extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        echo $sql;exit;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
         return $collection;
