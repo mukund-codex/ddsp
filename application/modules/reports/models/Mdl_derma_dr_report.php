@@ -140,7 +140,7 @@ class Mdl_derma_dr_report extends MY_Model {
         }
 
         //$sql .= " group by temp.doctor_id";
-        $sql .= " group by ch.insert_dt DESC";
+        $sql .= " ORDER by ch.insert_dt DESC";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
