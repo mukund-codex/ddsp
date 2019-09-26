@@ -59,7 +59,7 @@ class Mdl_doctor_list extends MY_Model {
 		temp.asm_id, temp.zsm_id,
 		temp.zsm_name,temp.asm_name, temp.mr_name, 
 		temp.zone, temp.area, temp.city,
-		temp.doctor_id, temp.doctor_name, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
+		temp.doctor_id, temp.doctor_name, temp.doctor_date, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
 		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti
 		
 		FROM (
@@ -67,7 +67,7 @@ class Mdl_doctor_list extends MY_Model {
 		mr.users_name as mr_name,
 		asm.users_id as asm_id, asm.users_name as asm_name, zsm.users_id as zsm_id, zsm.users_name as zsm_name,
 		z.zone_name as zone, a.area_name as area, c.city_name as city,
-		d.doctor_id, d.doctor_name, d.asm_status as asm_status, d.zsm_status as zsm_status,
+		d.doctor_id, d.doctor_name, d.insert_dt as doctor_date, d.asm_status as asm_status, d.zsm_status as zsm_status,
 		sp.speciality_name as speciality, spc.category_name as type,
 		cat.category_id,cat.category_name,
 		b.brand_name as other_name, ub.brand_name,
@@ -126,7 +126,7 @@ class Mdl_doctor_list extends MY_Model {
         }
 
 		$sql .= " GROUP BY temp2.doctor_id ";
-		$sql .= " ORDER BY temp2.doctor_name ";
+		$sql .= " ORDER BY temp2.doctor_date DESC";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        

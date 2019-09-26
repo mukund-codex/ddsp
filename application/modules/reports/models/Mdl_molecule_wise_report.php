@@ -78,7 +78,7 @@ class Mdl_molecule_wise_report extends MY_Model {
 
         $sql = "SELECT
             zsm_name, zone, asm_name, area, mr_name, city,
-            chemist_name, chemist_address, doctor_name, doctor_address,
+            chemist_name, chemist_address, chemist_date, doctor_name, doctor_address,
             ".$query."
         FROM
         (
@@ -86,7 +86,7 @@ class Mdl_molecule_wise_report extends MY_Model {
                 zsm.users_name as zsm_name, z.zone_name as zone,
                 asm.users_name as asm_name, a.area_name as area,
                 mr.users_name as mr_name, c.city_name as city,
-                ch.chemist_name, ch.address as chemist_address, 
+                ch.chemist_name, ch.address as chemist_address, ch.insert_dt as chemist_date,
                 d.doctor_id, d.doctor_name, d.address as doctor_address, 
                 um.molecule_id, um.category_id, um.molecule,
                 m.molecule_id AS 'm_molecule_id', m.molecule_name, m.category_id AS 'm_molecule_cat'		
@@ -121,7 +121,8 @@ class Mdl_molecule_wise_report extends MY_Model {
             }
         }
 
-        $sql .= " group by doctor_id";
+        $sql .= " group by doctor_id ";
+        $sql .= " ORDER by chemist_date DESC";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
