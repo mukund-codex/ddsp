@@ -198,7 +198,7 @@
                     </a>
                 </li>
 
-                <li <?php echo (in_array($menu, ['login_reports', 'category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list'])) ? 'class="active"': ''; ?> >
+                <li <?php echo (in_array($menu, ['login_reports', 'category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list','doctor_list'])) ? 'class="active"': ''; ?> >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>
                         <span>Reports</span>
@@ -209,6 +209,9 @@
                         </li>  
                         <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
+                        </li> 
+                        <li <?php echo (isset($menu) && $menu == 'doctor_list') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/doctor_list?t=$timestamp") ?>">Doctor List</a>
                         </li> 
                         <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>

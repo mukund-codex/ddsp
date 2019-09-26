@@ -6,7 +6,7 @@ class Mdl_mr_lists extends MY_Model {
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
 	
-    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation (rxn/week)', 'Acne (rxn/week)', 'AntiFungal (rxn/week)', 'ABM Status', 'Images', 'Action'];
+    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal(rxn/week)', 'ABM Status', 'Images', 'Action'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
