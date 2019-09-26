@@ -7,30 +7,50 @@ class Mdl_doctor_list extends MY_Model {
     
     function get_filters() {
         return [
+			[
+                'field_name' => 'temp2|zsm_name',
+                'field_label' => 'ZSM Name'
+            ],
             [
-                'field_name' => 'asm|users_name',
+                'field_name' => 'temp2|zone',
+                'field_label' => 'Zone'
+            ],
+            [
+                'field_name' => 'temp2|asm_name',
                 'field_label' => 'ASM Name'
             ],
             [
-                'field_name' => 'a|area_name',
+                'field_name' => 'temp2|area',
                 'field_label' => 'Area'
             ],
             [
-                'field_name' => 'm|users_name',
+                'field_name' => 'temp2|mr_name',
                 'field_label' => 'MR Name'
             ],
             [
-                'field_name' => 'c|city_name',
+                'field_name' => 'temp2|city',
                 'field_label' => 'HQ'
             ],
             [
-                'field_name' => 'ch|chemist_name',
-                'field_label' => 'Chemist Name'
-            ],
+                'field_name' => 'temp2|doctor_name',
+                'field_label' => 'Doctor Name'
+			],			
+			[
+                'field_name' => 'temp2|type',
+                'field_label' => 'Type'
+			],
             [
-                'field_name' => 'ch|address',
-                'field_label' => 'Chemist Location'
-            ]
+                'field_name' => 'temp2|speciality',
+                'field_label' => 'Speciality'
+			],
+			[
+                'field_name' => 'temp2|asm_status',
+                'field_label' => 'ABM Status'
+			],
+			[
+                'field_name' => 'temp2|zsm_status',
+                'field_label' => 'ZBM Status'
+            ],
         ];
     }
 
@@ -144,13 +164,35 @@ class Mdl_doctor_list extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
+			$user_role = $this->session->get_field_from_session('role','user');		
+			if(empty($user_role) || $user_role == 'HO') {  
+				$records['ZBM Name'] = $rows['zsm_name'];
+				$records['Zone'] = $rows['zone'];
+			}
+			
 			$records['ABM Name'] = $rows['asm_name'];
 			$records['Area'] = $rows['area'];
-            $records['MR Name'] = $rows['mr_name'];
-            $records['HQ'] = $rows['city'];            
-            $records['Chemist Name'] = $rows['chemist_name'];            
-			$records['Chemist Location'] = $rows['chemist_location'];
-            
+			$records['MR Name'] = $rows['mr_name'];
+			$records['HQ City'] = $rows['city'];
+			$records['Doctor Name'] = $rows['doctor_name'];
+			$records['Type'] = $rows['type'];
+			$records['Speciality'] = $rows['speciality'];
+			$records['ABM Status'] = ucfirst($rows['asm_status']);
+			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
+			$images = "";
+			if(!empty($rows['images'])){
+				$rx_files = explode(',', $rows['images']);
+				if(count($rx_files)){
+					foreach ($rx_files as $key => $value){
+						if(file_exists($value)){
+							$ext = pathinfo($value, PATHINFO_EXTENSION);
+							$images .= base_url($value).", ";
+						}
+					}
+					$records['Images'] = rtrim($images, ', ');
+				}
+			}
+			
 			array_push($resultant_array, $records);
 		}
 		return $resultant_array;

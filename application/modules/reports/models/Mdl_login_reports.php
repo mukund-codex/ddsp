@@ -80,7 +80,7 @@ class Mdl_login_reports extends MY_Model {
         LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
         LEFT JOIN national_zone nz ON nz.national_zone_id = nsm.users_national_id";
 
-        $sql .= " WHERE 1 = 1 AND m.users_type = 'MR' AND at.token_status = 'active' ";
+        $sql .= " WHERE 1 = 1 AND m.users_type = 'MR'";
        
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);

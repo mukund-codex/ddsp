@@ -6,13 +6,8 @@
             <label for="check_<?= $id ?>"></label>
         </td>
     <?php endif; ?>
-    <?php $user_role = $this->session->get_field_from_session('role','user');
-     if(empty($user_role)){ ?>
-        <!-- <td><?php echo $record['zsm_name'] ?></td> 
-        <td><?php echo $record['zone'] ?></td> 
-        <td><?php echo $record['asm_name'] ?></td> 
-        <td><?php echo $record['area'] ?></td> -->
-    <?php } ?>
+    <td><?php echo $record['zsm_name'] ?></td> 
+    <td><?php echo $record['zone'] ?></td> 
     <td><?php echo $record['asm_name'] ?></td> 
     <td><?php echo $record['area'] ?></td>
     <td><?php echo $record['mr_name'] ?></td> 
