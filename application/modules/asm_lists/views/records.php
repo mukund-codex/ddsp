@@ -18,9 +18,19 @@
     <td><?php echo $record['doctor_name'] ?></td>
     <td><?php echo $record['speciality'] ?></td>
     <td><?php echo $record['type']; ?></td>
-    <td><?php echo $record['hyper'] ?></td>
-    <td><?php echo $record['acne'] ?></td>
-    <td><?php echo $record['anti'] ?></td>
+    <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="1"><?php echo $record['hyper'] ?></a></td>
+    <td>
+    <?php if($record['acne'] != 0) { ?>
+        <a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="2"><?php echo $record['acne'] ?></a></td>
+    <?php } else { ?>
+        <?php echo $record['acne'] ?></td>
+    <?php } ?>
+
+     <?php if($record['anti'] != 0) { ?>
+        <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="3"><?php echo $record['anti'] ?></a></td>
+    <?php } else { ?>
+        <td><?php echo $record['anti'] ?></td>
+    <?php } ?>
     <td style="font-weight:bold;">
         <?php 
             if($record['asm_status'] == 'approve'){
