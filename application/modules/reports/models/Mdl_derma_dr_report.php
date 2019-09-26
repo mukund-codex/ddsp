@@ -107,7 +107,7 @@ class Mdl_derma_dr_report extends MY_Model {
         JOIN doctor dr ON dr.doctor_id = um.doctor_id
         JOIN chemist ch ON ch.chemist_id = dr.chemist_id
         JOIN speciality sp ON sp.speciality_id = dr.speciality
-        JOIN speciality_category scat ON scat.sc_id = sp.speciality_id
+        JOIN speciality_category scat ON scat.sc_id = dr.speciality_category
         JOIN category cat ON cat.category_id = um.category_id";
 
         $sql .= " WHERE 1 = 1 and sp.speciality_name = 'Derma'";
