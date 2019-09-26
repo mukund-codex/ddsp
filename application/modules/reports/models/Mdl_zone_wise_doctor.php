@@ -44,12 +44,12 @@ class Mdl_zone_wise_doctor extends MY_Model {
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
         $sql = "SELECT temp.zsm_name, temp.zone, temp.asm_name, temp.area, 
-        MAX(temp.chemist_count) chemist_count, MAX(temp.doctor_count) doctor_count, MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count 
+        MAX(temp.chemist_count) chemist_count, MAX(temp.doctor_count) doctor_count, MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count , temp.doctor_date
         FROM ( 
         SELECT 
         zsm.users_name as zsm_name, z.zone_name as zone,
         asm.users_id as asm_id, asm.users_name as asm_name, a.area_name as area,
-        NULL as chemist_count, COUNT(d.doctor_id) as doctor_count,
+        NULL as chemist_count, COUNT(d.doctor_id) as doctor_count, d.insert_dt as doctor_date,
         SUM(IF(d.asm_status = 'approve', 1, 0)) as asm_count,
         SUM(IF(d.zsm_status = 'approve', 1, 0)) as zsm_count
         FROM
@@ -85,6 +85,16 @@ class Mdl_zone_wise_doctor extends MY_Model {
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
                 if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+
+                if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(temp.doctor_date) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(temp.doctor_date) <= '".date('Y-m-d', strtotime($value))."' ";
                     continue;
                 }
                

@@ -54,14 +54,14 @@ class Mdl_category_wise_report extends MY_Model {
         $sql = "SELECT 
         zsm.users_name as zsm_name, z.zone_name as zone,
         asm.users_name as asm_name, a.area_name as area,
-        mr.users_name as mr_name, c.city_name as city,
+        mr.users_name as mr_name, c.city_name as city, temp.chemist_date,
         temp.chemist_name, temp.chemist_address, temp.doctor_name, 
         temp.doctor_address, SUM(temp.hyper) hyper, 
         SUM(temp.acne) acne, SUM(temp.anti) anti
         FROM
         (
         SELECT 
-        ch.users_id,ch.chemist_id, ch.chemist_name, ch.address AS chemist_address, 
+        ch.users_id,ch.chemist_id, ch.chemist_name, ch.address AS chemist_address, ch.insert_dt as chemist_date,
         d.doctor_id, d.doctor_name, d.address AS doctor_address,
         cat.category_id, cat.category_name,
         IF(cat.category_id = 1, 1,0) AS hyper, 
@@ -88,6 +88,16 @@ class Mdl_category_wise_report extends MY_Model {
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
                 if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+
+                if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(temp.chemist_date) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(temp.chemist_date) <= '".date('Y-m-d', strtotime($value))."' ";
                     continue;
                 }
                

@@ -107,6 +107,16 @@ class Mdl_brand_wise_report extends MY_Model {
                 if(!in_array($key, $field_filters)) {
                     continue;
                 }
+
+                if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(ch.insert_dt) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(ch.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
                
                 if(!empty($value)) {
                     $key = str_replace('|', '.', $key);

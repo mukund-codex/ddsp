@@ -136,7 +136,17 @@ class Mdl_doctor_list extends MY_Model {
                 if(!in_array($key, $field_filters)) {
                     continue;
                 }
-               
+				
+				if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.doctor_date) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.doctor_date) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
                 if(!empty($value)) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
