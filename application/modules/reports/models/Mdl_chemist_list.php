@@ -80,6 +80,7 @@ class Mdl_chemist_list extends MY_Model {
         }
 
         //$sql .= " group by m.users_id";
+        $sql .= " ORDER by ch.insert_dt DESC";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
