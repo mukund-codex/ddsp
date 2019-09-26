@@ -128,7 +128,7 @@ class Asm_lists extends User_Controller
 		$response = $this->model->approve_doctor($doctor_id);
 
 		if($response['status']){
-			redirect(base_url("zsm_lists/lists")); 
+			redirect(base_url("asm_lists/lists")); 
 		}
 
 	}
