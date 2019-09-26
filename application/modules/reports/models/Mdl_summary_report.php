@@ -151,14 +151,14 @@ class Mdl_summary_report extends MY_Model {
 			
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
-                if(!in_array($key, $field_filters)) {
+                /* if(!in_array($key, $field_filters)) {
                     continue;
-                }
+                } */
                
-                if(!empty($value) && !in_array($key, $field_filters)) {
+                if(!empty($value) && !in_array($key, ['from_date', 'to_date'])) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
-                    $sql .= " AND $key LIKE '$value%' ";
+                    $sql .= " AND $key LIKE '%$value%' ";
                 }
             }
         }

@@ -112,12 +112,10 @@ class Mdl_zone_wise_doctor extends MY_Model {
 
                 if($key == 'from_date' && !empty($value)) {
                     $sql .= " AND DATE(ch.insert_dt) >= '".date('Y-m-d', strtotime($value))."' ";
-                    continue;
                 }
 
                 if($key == 'to_date' && !empty($value)) {
                     $sql .= " AND DATE(ch.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
-                    continue;
                 }
             }
         }
@@ -129,17 +127,19 @@ class Mdl_zone_wise_doctor extends MY_Model {
        
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
-			
+            
+            //echo '<pre>';print_r($field_filters);exit;
+
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
-                if(in_array($key, $field_filters)) {
+                /* if(in_array($key, ['from_date', 'to_date'])) {
                     continue;
-                }
+                } */
                
-                if(!empty($value) && !in_array($key, $field_filters)) {
+                if(!empty($value) && !in_array($key, ['from_date', 'to_date'])) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
-                    $sql .= " AND $key LIKE '$value%' ";
+                    $sql .= " AND $key LIKE '%$value%' ";
                 }
             }
         }

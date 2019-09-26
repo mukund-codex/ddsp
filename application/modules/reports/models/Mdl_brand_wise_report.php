@@ -117,11 +117,11 @@ class Mdl_brand_wise_report extends MY_Model {
 					$sql .= " AND DATE(ch.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
                     continue;
                 }
-               
-                if(!empty($value)) {
+                              
+                if(!empty($value) && !in_array($key, ['from_date', 'to_date'])) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
-                    $sql .= " AND $key LIKE '$value%' ";
+                    $sql .= " AND $key LIKE '%$value%' ";
                 }
             }
         }
