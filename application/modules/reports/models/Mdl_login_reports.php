@@ -99,14 +99,15 @@ class Mdl_login_reports extends MY_Model {
             }
         }
 
-        $sql .= " group by m.users_id";
+        $sql .= " group by m.users_id ";
+        $sql .= " ORDER by MAX(at.update_dt) DESC";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;

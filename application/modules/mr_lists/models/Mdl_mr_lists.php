@@ -6,7 +6,7 @@ class Mdl_mr_lists extends MY_Model {
 	private $alias = 'd';
 	private $fillable = ['molecule_id','brand_name'];
 	
-    private $column_list = ['MR Name', 'HQ', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal(rxn/week)', 'ABM Status', 'Images', 'Action'];
+    private $column_list = ['MR Name', 'HQ', 'Chemist Count', 'Doctor Name', 'Speciality', 'Type', 'HyperPigmentation', 'Acne', 'AntiFungal(rxn/week)', 'ABM Status', 'Images', 'Action'];
     private $csv_columns = ['ABM', 'Area', 'MR Name', 'HQ', 'Chemist Name', 'Doctor Name'];
 
 	function __construct() {
@@ -61,6 +61,7 @@ class Mdl_mr_lists extends MY_Model {
                 'field_name'=>'temp2|city',
                 'field_label'=> 'HQ Name',
 			],
+			[],
 			[
                 'field_name'=>'temp2|doctor_name',
                 'field_label'=> 'Doctor Name',
@@ -108,7 +109,7 @@ class Mdl_mr_lists extends MY_Model {
 		SELECT 
 		temp.asm_id, temp.zsm_id,
 		temp.zsm_name,temp.asm_name, temp.mr_name, 
-		temp.zone, temp.area, temp.city,
+		temp.zone, temp.area, temp.city, temp.chemist_count,
 		temp.doctor_id, temp.doctor_name, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
 		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti
 		
@@ -116,7 +117,7 @@ class Mdl_mr_lists extends MY_Model {
 		SELECT
 		mr.users_name as mr_name,
 		asm.users_id as asm_id, asm.users_name as asm_name, zsm.users_id as zsm_id, zsm.users_name as zsm_name,
-		z.zone_name as zone, a.area_name as area, c.city_name as city,
+		z.zone_name as zone, a.area_name as area, c.city_name as city, COUNT(ch.chemist_id) as chemist_count,
 		d.doctor_id, d.doctor_name, d.asm_status as asm_status, d.zsm_status as zsm_status,
 		sp.speciality_name as speciality, spc.category_name as type,
 		cat.category_id,cat.category_name,
@@ -138,6 +139,7 @@ class Mdl_mr_lists extends MY_Model {
 		JOIN zone z ON z.zone_id = zsm.users_zone_id
 		JOIN area a ON a.area_id = asm.users_area_id
 		JOIN city c ON c.city_id = mr.users_city_id
+		JOIN chemist ch ON ch.chemist_id = d.chemist_id
 		GROUP BY ub.id
 		)temp
 		GROUP BY temp.doctor_id
@@ -412,6 +414,7 @@ class Mdl_mr_lists extends MY_Model {
 			}
 			$records['MR Name'] = $rows['mr_name'];
 			$records['HQ City'] = $rows['city'];
+			$records['Chemist Count'] = $rows['chemist_count'];
 			$records['Doctor Name'] = $rows['doctor_name'];
 			$records['Speciality'] = $rows['speciality'];
 			$records['Type'] = $rows['type'];

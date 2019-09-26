@@ -15,6 +15,7 @@
     <?php } ?>
     <td><?php echo $record['mr_name'] ?></td> 
     <td><?php echo $record['city'] ?></td> 
+    <td><?php echo $record['chemist_count'] ?></td> 
     <td><?php echo $record['doctor_name'] ?></td>
     <td><?php echo $record['speciality'] ?></td>
     <td><?php echo $record['type'] ?></td>
