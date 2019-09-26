@@ -44,12 +44,13 @@ class Mdl_zone_wise_doctor extends MY_Model {
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
         $sql = "SELECT temp.zsm_name, temp.zone, temp.asm_name, temp.area, 
-        MAX(temp.chemist_count) chemist_count, MAX(temp.doctor_count) doctor_count, MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count , temp.doctor_date
+        MAX(temp.chemist_count) chemist_count, 
+        MAX(temp.doctor_count) doctor_count, MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count
         FROM ( 
         SELECT 
         zsm.users_name as zsm_name, z.zone_name as zone,
         asm.users_id as asm_id, asm.users_name as asm_name, a.area_name as area,
-        NULL as chemist_count, COUNT(d.doctor_id) as doctor_count, d.insert_dt as doctor_date,
+        NULL as chemist_count, COUNT(d.doctor_id) as doctor_count, 
         SUM(IF(d.asm_status = 'approve', 1, 0)) as asm_count,
         SUM(IF(d.zsm_status = 'approve', 1, 0)) as zsm_count
         FROM
@@ -114,7 +115,7 @@ class Mdl_zone_wise_doctor extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
