@@ -503,7 +503,7 @@ class Mdl_mr_lists extends MY_Model {
 			ub.brand_name as custom_brand_name, ub.rxn')
         ->from('users_molecule um')
         ->join('users_brand ub', 'ub.molecule_id = um.molecule_id')
-		->join('molecule m', 'm.molecule_id = um.molecule',)
+		->join('molecule m', 'm.molecule_id = um.molecule')
 		->join('brand b', 'b.brand_id = ub.brand_id', 'left');
 
 		$q->where('ub.doctor_id', $doctor_id);
