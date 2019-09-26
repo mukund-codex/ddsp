@@ -465,7 +465,7 @@ class Mdl_mr_lists extends MY_Model {
 		if($id){
 			$response['status'] = TRUE;
 			$response['message'] = 'Congratulations! Doctor Approved successfully.';
-			$response['redirectTo'] = 'asm_lists/lists';
+			$response['redirectTo'] = 'mr_lists/lists';
 
 			return $response;
 		}
@@ -494,7 +494,7 @@ class Mdl_mr_lists extends MY_Model {
 		if($id){
 			$response['status'] = TRUE;
 			$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
-			$response['redirectTo'] = 'asm_lists/lists';
+			$response['redirectTo'] = 'mr_lists/lists';
 
 			return $response;
 		}
