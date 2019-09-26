@@ -110,6 +110,7 @@ class Mdl_category_wise_report extends MY_Model {
         }
 
         $sql .= " group by temp.doctor_id";
+        $sql .= " order by temp.chemist_date DESC ";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
