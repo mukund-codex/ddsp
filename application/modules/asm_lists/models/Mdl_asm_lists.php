@@ -175,6 +175,16 @@ class Mdl_asm_lists extends MY_Model {
                 $value = trim($value);
                 if(!in_array($key, $field_filters)) {
                     continue;
+				}
+				
+				if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.chemist_date) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.chemist_date) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
                 }
                
                 if(!empty($value)) {

@@ -96,7 +96,7 @@ class Mdl_mr_lists extends MY_Model {
         if(array_key_exists('to_date', $filters))  {
             array_push($new_filters, 'to_date');
         }
-
+		
         return $new_filters;
     }
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
@@ -163,13 +163,23 @@ class Mdl_mr_lists extends MY_Model {
 
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
-			
+			// echo '<pre>';print_r($field_filters);exit;
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
                 if(!in_array($key, $field_filters)) {
                     continue;
                 }
-               
+			   
+				if($key == 'from_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.chemist_date) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+					$sql .= " AND DATE(temp2.chemist_date) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
                 if(!empty($value)) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
