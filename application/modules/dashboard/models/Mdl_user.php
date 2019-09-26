@@ -11,7 +11,7 @@ class Mdl_user extends MY_Model {
 	function get_chemist_count(){
 		
 		$sql = "SELECT 
-		COUNT(DISTINCT(ch.chemist_name)) as chemist_count
+		COUNT(ch.chemist_name) as chemist_count
 		FROM chemist ch
 		JOIN manpower mr ON mr.users_id = ch.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id";
@@ -40,7 +40,7 @@ class Mdl_user extends MY_Model {
 	function get_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
+		COUNT(d.doctor_name) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -70,7 +70,7 @@ class Mdl_user extends MY_Model {
 	function get_approved_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
+		COUNT(d.doctor_name) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -100,7 +100,7 @@ class Mdl_user extends MY_Model {
 	function get_disapproved_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
+		COUNT(d.doctor_name) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
