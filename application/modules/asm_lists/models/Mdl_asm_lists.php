@@ -152,7 +152,7 @@ class Mdl_asm_lists extends MY_Model {
 		)temp
 		GROUP BY temp.doctor_id
 		) temp2
-		JOIN images im ON im.doctor_id = temp2.doctor_id AND im.category = 'doctor'";
+		LEFT JOIN images im ON im.doctor_id = temp2.doctor_id AND im.category = 'doctor'";
 
         $sql .= " WHERE 1 = 1 ";
 		
