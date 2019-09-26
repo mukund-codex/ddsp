@@ -54,6 +54,7 @@ class Mdl_category_wise_report extends MY_Model {
         $sql = "SELECT 
         zsm.users_name as zsm_name, z.zone_name as zone,
         asm.users_name as asm_name, a.area_name as area,
+        mr.users_id,
         mr.users_name as mr_name, c.city_name as city, temp.chemist_date,
         temp.chemist_name, temp.chemist_address, temp.doctor_name, 
         temp.doctor_address, SUM(temp.hyper) hyper, 
@@ -109,7 +110,7 @@ class Mdl_category_wise_report extends MY_Model {
             }
         }
 
-        $sql .= " group by temp.doctor_id";
+        $sql .= " group by mr.users_id";
         $sql .= " order by temp.chemist_date DESC ";
 
         if(! $count) {
