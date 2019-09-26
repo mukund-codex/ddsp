@@ -109,7 +109,7 @@ class Mdl_mr_lists extends MY_Model {
 		SELECT 
 		temp.asm_id, temp.zsm_id,
 		temp.zsm_name,temp.asm_name, temp.mr_name, 
-		temp.zone, temp.area, temp.city, temp.chemist_count,
+		temp.zone, temp.area, temp.city, temp.chemist_count, temp.chemist_date, 
 		temp.doctor_id, temp.doctor_name, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
 		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti
 		
@@ -118,6 +118,7 @@ class Mdl_mr_lists extends MY_Model {
 		mr.users_name as mr_name,
 		asm.users_id as asm_id, asm.users_name as asm_name, zsm.users_id as zsm_id, zsm.users_name as zsm_name,
 		z.zone_name as zone, a.area_name as area, c.city_name as city, COUNT(ch.chemist_id) as chemist_count,
+		ch.insert_dt as chemist_date,
 		d.doctor_id, d.doctor_name, d.asm_status as asm_status, d.zsm_status as zsm_status,
 		sp.speciality_name as speciality, spc.category_name as type,
 		cat.category_id,cat.category_name,
@@ -178,7 +179,7 @@ class Mdl_mr_lists extends MY_Model {
         }
 
 		$sql .= " GROUP BY temp2.doctor_id ";
-		$sql .= " ORDER BY temp2.doctor_name ";
+		$sql .= " ORDER BY temp2.chemist_date DESC ";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
