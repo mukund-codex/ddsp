@@ -112,8 +112,9 @@ class Mdl_chemist_list extends MY_Model {
 			$records['Area'] = $rows['area'];
             $records['MR Name'] = $rows['mr_name'];
             $records['HQ'] = $rows['city'];            
-            $records['Chemist Name'] = $rows['chemist_name'];            
-			$records['Chemist Location'] = $rows['chemist_location'];
+            $records['Chemist Name'] = $rows['chemist_name'];        
+            $chemist_location = $rows['chemist_location'];
+			$records['Chemist Location'] = str_replace(", ", " | ", $chemist_location);
             
 			array_push($resultant_array, $records);
 		}
