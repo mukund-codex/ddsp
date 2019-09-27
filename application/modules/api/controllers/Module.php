@@ -600,7 +600,7 @@ class Module extends Api_Controller {
             $this->sendResponse();
             return;
         }
-
+        $doctor_name = '';
         $chemist_doctor = [];
         $chemist_doctor['users_id'] = $user_id;
 
@@ -610,24 +610,35 @@ class Module extends Api_Controller {
 
         if($category === 'chemist') {
             $chemist_doctor['chemist_id'] = $doctor_chemist_id;
-            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'chemist', ['chemist_id']);
+            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'chemist', ['chemist_id', 'chemist_name as name']);
 
             $is_max_fileupload['chemist_id'] = $doctor_chemist_id;    
     
         } else if($category === 'doctor') {
             $chemist_doctor['doctor_id'] = $doctor_chemist_id;
-            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'doctor', ['doctor_id']);
-
+            $is_doctor_chemist_exist = $this->model->get_records($chemist_doctor, 'doctor', ['doctor_id', 'doctor_name as name']);
+           
             $is_max_fileupload['doctor_id'] = $doctor_chemist_id;
+
         }
-        
+
+        $name = $is_doctor_chemist_exist[0]->name;
+
+        $users_details = $this->model->get_mr_hq($user_id);
+        $mr_name = $users_details[0]['mr_name'];
+        $hq = $users_details[0]['city'];
+
+        $random = rand(1111,9999);
+
+        $file_name = $mr_name."_".$hq."_".$name."_".$random;
+        $file_name = url_title($file_name, 'underscore', TRUE); 
+
         if(count($is_doctor_chemist_exist) < 0) {
             $this->response['code'] = 400;
             $this->response['message'] = "Invalid $category";
             $this->sendResponse();
             return;
         }
-
 
         $is_chemist_max_uploaded = $this->model->get_records($is_max_fileupload, 'images', ['image_id']);
 
@@ -640,11 +651,10 @@ class Module extends Api_Controller {
             return;
         }
 
-        
         $path = ($category == 'doctor') ? 'uploads/doctorImages' : 'uploads/chemistImages';
 
         $this->load->helper('upload_media');
-        $is_file_upload = upload_media('images', $path, ['jpeg', 'png', 'jpg'], 10000000);
+        $is_file_upload = upload_media('images', $path, ['jpeg', 'png', 'jpg'], 10000000, '' ,'', $file_name);
 
         if(array_key_exists('error', $is_file_upload)) {
             $this->response['code'] = 400;

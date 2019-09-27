@@ -30,4 +30,15 @@ class Mdl_module extends MY_Model{
 		return $collection;
 
 	}	
+	
+	function get_mr_hq($user_id){
+		$q = $this->db->select('mr.users_id, mr.users_name as mr_name, c.city_name as city')
+		->from('manpower mr')
+		->join('city c','c.city_id = mr.users_city_id')
+		->where('mr.users_id', $user_id);
+
+		$collection = $q->get()->result_array();
+		return $collection;
+
+	}
 }

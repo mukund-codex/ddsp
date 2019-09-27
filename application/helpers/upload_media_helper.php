@@ -72,7 +72,7 @@ if (!function_exists('upload_media')) {
      * @return array
      * 
      */
-	function upload_media(string $field_name, string $local_storage_path = '', array $allowed_types, int $max_file_size = 10000, bool $to_s3 = false, string $s3_storage_path = ''): array{
+	function upload_media(string $field_name, string $local_storage_path = '', array $allowed_types, int $max_file_size = 10000, bool $to_s3 = false, string $s3_storage_path = '', $file_name= ''): array{
         $ci = &get_instance();
         $ci->load->library('upload');
         
@@ -97,7 +97,13 @@ if (!function_exists('upload_media')) {
         $config['allowed_types'] = $allowed_types;
         $config['max_size']	= (int) $max_file_size;
         $config['overwrite'] = FALSE;
-        $config['encrypt_name'] = TRUE;
+
+        if(empty($file_name)){
+            $config['encrypt_name'] = TRUE;
+        }else{
+            $config['file_name'] = $file_name;
+        }
+
         $config['file_ext_tolower'] = TRUE;
         $config['remove_spaces'] = TRUE;
 
