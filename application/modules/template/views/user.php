@@ -127,6 +127,9 @@
     <script src="<?php echo base_url() ?>assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
     <?php endif; ?>
     
+    <!-- Double Scroll -->
+    <script src="<?php echo base_url() ?>assets/js/jquery.doubleScroll.js"></script>
+
     <?php if( isset($plugins) && in_array('webcam', $plugins )) : ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
     <?php endif; ?>

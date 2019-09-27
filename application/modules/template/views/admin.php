@@ -177,6 +177,9 @@
     <!-- SELECT2 plugins JS loaded -->
     <script src="<?php echo  base_url();?>assets/resources/select2.min-new.js" ></script>
     <?php endif; ?>
+    
+    <!-- Double Scroll -->
+    <script src="<?php echo base_url() ?>assets/js/jquery.doubleScroll.js"></script>
 
     <script src="<?php echo base_url() ?>assets/js/admin.js"></script>
     <script src="<?php echo base_url() ?>assets/js/demo.js"></script>
