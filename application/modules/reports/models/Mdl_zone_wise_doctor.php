@@ -55,11 +55,11 @@ class Mdl_zone_wise_doctor extends MY_Model {
         SUM(IF(d.zsm_status = 'approve', 1, 0)) as zsm_count
         FROM
         doctor d
-        JOIN manpower mr ON mr.users_id = d.users_id
-        JOIN manpower asm ON asm.users_id = mr.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-        JOIN zone z ON z.zone_id = zsm.users_zone_id
-        JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower mr ON mr.users_id = d.users_id
+        LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
         WHERE 1 =1 ";
 
         if(is_array($rfilters) && count($rfilters) ) {
@@ -94,11 +94,11 @@ class Mdl_zone_wise_doctor extends MY_Model {
         COUNT(ch.chemist_id) chemist_count, NULL as doctor_count, NULL as asm_count, NULL as zsm_count
         FROM
         chemist ch
-        JOIN manpower mr ON mr.users_id = ch.users_id
-        JOIN manpower asm ON asm.users_id = mr.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-        JOIN zone z ON z.zone_id = zsm.users_zone_id
-        JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower mr ON mr.users_id = ch.users_id
+        LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
         WHERE 1 =1 ";
 
         if(is_array($rfilters) && count($rfilters) ) {
