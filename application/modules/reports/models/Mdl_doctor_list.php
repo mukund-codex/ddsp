@@ -96,18 +96,18 @@ class Mdl_doctor_list extends MY_Model {
 		IF(cat.category_id = 3,SUM(ub.rxn),0) as anti
 		FROM
 		doctor d
-		JOIN speciality sp ON sp.speciality_id = d.speciality
+		LEFT JOIN speciality sp ON sp.speciality_id = d.speciality
 		LEFT JOIN speciality_category spc ON spc.sc_id = d.speciality_category
-		JOIN users_molecule um ON um.doctor_id = d.doctor_id
-		JOIN category cat ON cat.category_id = um.category_id
-		JOIN users_brand ub ON ub.molecule_id = um.molecule_id
+		LEFT JOIN users_molecule um ON um.doctor_id = d.doctor_id
+		LEFT JOIN category cat ON cat.category_id = um.category_id
+		LEFT JOIN users_brand ub ON ub.molecule_id = um.molecule_id
 		LEFT JOIN brand b ON b.brand_id = ub.brand_id
-		JOIN manpower mr ON mr.users_id = d.users_id
-		JOIN manpower asm ON asm.users_id = mr.users_parent_id
-		JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-		JOIN zone z ON z.zone_id = zsm.users_zone_id
-		JOIN area a ON a.area_id = asm.users_area_id
-		JOIN city c ON c.city_id = mr.users_city_id
+		LEFT JOIN manpower mr ON mr.users_id = d.users_id
+		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
+		LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+		LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+		LEFT JOIN area a ON a.area_id = asm.users_area_id
+		LEFT JOIN city c ON c.city_id = mr.users_city_id
 		GROUP BY ub.id
 		)temp
 		GROUP BY temp.doctor_id

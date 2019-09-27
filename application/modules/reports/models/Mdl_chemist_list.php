@@ -55,10 +55,10 @@ class Mdl_chemist_list extends MY_Model {
         m.users_name as mr_name, c.city_name as city,
         ch.chemist_name as chemist_name, ch.address as chemist_location
         FROM chemist ch
-        JOIN manpower m ON m.users_id = ch.users_id
-        JOIN city c ON c.city_id = m.users_city_id
-        JOIN manpower asm ON asm.users_id = m.users_parent_id
-        JOIN area a ON a.area_id = asm.users_area_id";
+        LEFT JOIN manpower m ON m.users_id = ch.users_id
+        LEFT JOIN city c ON c.city_id = m.users_city_id
+        LEFT JOIN manpower asm ON asm.users_id = m.users_parent_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id";
 
         $sql .= " WHERE 1 = 1";
        
@@ -97,7 +97,7 @@ class Mdl_chemist_list extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
