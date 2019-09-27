@@ -53,16 +53,16 @@ class Mdl_summary_report extends MY_Model {
         SELECT 
         zsm.users_name AS zsm_name, z.zone_name AS zone,
         asm.users_id AS asm_id, asm.users_name AS asm_name, a.area_name AS area, 
-        NULL AS chemist_count, COUNT(d.doctor_id) AS doctor_count, 
+        NULL AS chemist_count, COUNT(d.doctor_name) AS doctor_count, 
         SUM(IF(d.asm_status = 'approve', 1, 0)) AS asm_count, SUM(IF(d.zsm_status = 'approve', 1, 0)) AS zsm_count,
         NULL as total_reps, NULL as no_of_days
         FROM
         doctor d
-        JOIN manpower mr ON mr.users_id = d.users_id
-        JOIN manpower asm ON asm.users_id = mr.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-        JOIN zone z ON z.zone_id = zsm.users_zone_id
-        JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower mr ON mr.users_id = d.users_id
+        LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
         WHERE 1 =1 ";
         
         if(is_array($rfilters) && count($rfilters) ) {
@@ -97,11 +97,11 @@ class Mdl_summary_report extends MY_Model {
         DATEDIFF(MAX(ch.insert_dt),MIN(ch.insert_dt)) no_of_days
         FROM
         chemist ch
-        JOIN manpower mr ON mr.users_id = ch.users_id
-        JOIN manpower asm ON asm.users_id = mr.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-        JOIN zone z ON z.zone_id = zsm.users_zone_id
-        JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower mr ON mr.users_id = ch.users_id
+        LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
         WHERE 1= 1 ";
 
         if(is_array($rfilters) && count($rfilters) ) {
@@ -140,10 +140,10 @@ class Mdl_summary_report extends MY_Model {
                 JOIN access_token at ON at.user_id = mr.users_id
                 GROUP BY mr.users_id
         )temp
-        JOIN manpower asm ON asm.users_id = temp.mr_parent
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
-        JOIN zone z ON z.zone_id = zsm.users_zone_id
-        JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower asm ON asm.users_id = temp.mr_parent
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
         GROUP BY asm.users_id
         ) temp";
 
