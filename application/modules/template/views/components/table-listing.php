@@ -1,3 +1,4 @@
+<a onclick="reset();" class="btn btn-primary m-t-15 waves-effect" style="margin-left:15px;">Reset Filters</a></li>
 <div class="body table-responsive">
 <?php if(isset($date_filters) && $date_filters): ?>
 <div class="row clearfix">
