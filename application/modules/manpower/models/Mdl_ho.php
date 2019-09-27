@@ -78,12 +78,12 @@ class Mdl_ho extends MY_Model {
                 }
                 
                 if($key == 'from_date' && $value) {
-                    $this->db->where('DATE('.$this->table.'.insert_dt) >=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(m.insert_dt) >=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
                 if($key == 'to_date' && $value) {
-                    $this->db->where('DATE('.$this->table.'.insert_dt) <=', date('Y-m-d', strtotime($value)));
+                    $this->db->where('DATE(m.insert_dt) <=', date('Y-m-d', strtotime($value)));
                     continue;
                 }
 
