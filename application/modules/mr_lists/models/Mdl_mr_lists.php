@@ -445,7 +445,7 @@ class Mdl_mr_lists extends MY_Model {
 					foreach ($rx_files as $key => $value){
 						if(file_exists($value)){
 							$ext = pathinfo($value, PATHINFO_EXTENSION);
-							$$images .= base_url($value)." | ";								
+							$images .= base_url($value)." | ";								
 						}						
 					}
 				}
