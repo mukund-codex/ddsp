@@ -4,13 +4,13 @@
     <td><?php echo $record['zone'] ?></td>  
     <td><?php echo $record['asm_name'] ?></td>   
     <td><?php echo $record['area'] ?></td>  
-    <td><?php echo $record['chemist_count'] ?></td>  
-    <td><?php echo $record['total_reps'] ?></td>  
-    <td><?php echo $record['no_of_days'] ?></td>  
-    <td><?php echo $record['chemist_avg'] ?></td>   
-    <td><?php echo $record['doctor_count'] ?></td>  
-    <td><?php echo $record['asm_count'] ?></td>   
-    <td><?php echo $record['zsm_count'] ?></td>   
+    <td><?php echo !empty($record['chemist_count']) ? $record['chemist_count'] : 0; ?></td>  
+    <td><?php echo !empty($record['total_reps']) ? $record['total_reps'] : 0; ?></td>  
+    <td><?php echo !empty($record['no_of_days']) ? $record['no_of_days'] : 0; ?></td>  
+    <td><?php echo !empty($record['chemist_avg']) ? $record['chemist_avg'] : 0; ?></td>   
+    <td><?php echo !empty($record['doctor_count']) ? $record['doctor_count'] : 0; ?></td>  
+    <td><?php echo !empty($record['asm_count']) ? $record['asm_count'] : 0; ?></td>   
+    <td><?php echo !empty($record['zsm_count']) ? $record['zsm_count'] : 0; ?></td>   
 </tr>
 <?php $i++;  } ?>
 
