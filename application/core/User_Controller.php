@@ -75,7 +75,7 @@ abstract class User_Controller extends Generic_Controller{
         $table_columns = $this->model->get_column_list();
         $csv_columns = $this->model->get_csv_columns();
 
-        if(!in_array('remove', $this->permissions)) {
+        if(!in_array('remove', $this->permissions) || !in_array('approve', $this->permissions)) {
             $this->data['all_action'] = FALSE;
         }
        

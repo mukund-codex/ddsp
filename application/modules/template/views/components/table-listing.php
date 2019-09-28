@@ -1,7 +1,7 @@
 <a onclick="reset();" class="btn btn-primary m-t-15 waves-effect" style="margin-left:20px;">Reset Filters</a></li>
 
 <?php if(in_array('download', $permissions)) : ?>
-    <a href="<?php echo base_url("$download_url") ?>" class="btn btn-primary m-t-15 waves-effect id="export" title="Export" style="float:right;margin-right:20px;">Export</a>
+    <a href="<?php echo base_url("$download_url") ?>" class="btn btn-primary m-t-15 waves-effect" id="export" title="Export" style="float:right;margin-right:20px;">Export</a>
 <?php endif; ?>
             
 <div class="body table-responsive">
@@ -41,7 +41,7 @@
                     <?php } ?>
                     
 
-                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
+                    <?php if(! isset($all_action) || $all_action ): ?>
 
                 <?php if(in_array('edit', $permissions)) : ?>
                     <th class="font-bold"><i class="fa fa-edit"></i> Action</th>
@@ -52,8 +52,8 @@
                 
                 <?php if(isset($show_filters) ? $show_filters : FALSE): ?>
                 <tr>
-                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
-                    <td></td>
+                    <?php if(! isset($all_action) || $all_action ): ?>
+                    <td>&nbsp;</td>
                     <?php endif; ?>
 
                     <?php foreach ($filter_columns as $filters): if(! count($filters)) { echo '<td></td>'; continue; } ?>
@@ -71,7 +71,7 @@
                     </td>
                     <?php endforeach; ?>
                     
-                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
+                    <?php if(! isset($all_action) || $all_action ): ?>
                     <td></td>
                     <?php endif; ?>
                 </td>

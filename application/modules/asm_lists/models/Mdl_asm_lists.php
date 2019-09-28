@@ -94,6 +94,8 @@ class Mdl_asm_lists extends MY_Model {
 		$non_filter = [
 			[],
 		];
+
+		// echo '<pre>'; print_r($newcolumns); die();
 		return array_merge($non_filter,$newcolumns);
     }
 
@@ -205,9 +207,10 @@ class Mdl_asm_lists extends MY_Model {
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
-        
+		
+		// echo $sql;exit; 
         $q = $this->db->query($sql);
-        //echo $sql;exit;
+        // echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
