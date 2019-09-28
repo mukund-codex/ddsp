@@ -38,10 +38,10 @@
     <!-- Sweet Alert Css -->
     <link href="<?php echo base_url() ?>assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
-    <?php if( isset($plugins) && in_array('select2', $plugins )) : ?>
+    <?php //if( isset($plugins) && in_array('select2', $plugins )) : ?>
     <!-- SELECT2 plugins CSS loaded -->
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/select2-materialize.css" />
-    <?php endif; ?>
+    <?php //endif; ?>
 
     <?php if( isset($plugins) && in_array('image-area-select', $plugins )) : ?>
     <!-- Image Area Select -->
@@ -173,10 +173,10 @@
     <script src="<?php echo base_url() ?>assets/js/pages/index.js"></script>
     <?php endif; ?>
     
-    <?php if( isset($plugins) && in_array('select2', $plugins )) : ?>
+    <?php //if( isset($plugins) && in_array('select2', $plugins )) : ?>
     <!-- SELECT2 plugins JS loaded -->
     <script src="<?php echo  base_url();?>assets/resources/select2.min-new.js" ></script>
-    <?php endif; ?>
+    <?php //endif; ?>
     
     <!-- Double Scroll -->
     <script src="<?php echo base_url() ?>assets/js/jquery.doubleScroll.js"></script>

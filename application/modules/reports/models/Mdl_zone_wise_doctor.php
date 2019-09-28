@@ -83,8 +83,7 @@ class Mdl_zone_wise_doctor extends MY_Model {
             }
         }
         
-        $sql .=" GROUP BY asm.users_id
-        
+        $sql .=" GROUP BY asm.users_id        
         
         UNION ALL
         
@@ -128,15 +127,13 @@ class Mdl_zone_wise_doctor extends MY_Model {
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
             
-            //echo '<pre>';print_r($field_filters);exit;
-
             foreach($rfilters as $key=> $value) {
                 $value = trim($value);
                 /* if(in_array($key, ['from_date', 'to_date'])) {
                     continue;
                 } */
                
-                if(!empty($value) && !in_array($key, ['from_date', 'to_date'])) {
+                if(!empty($value) && !in_array($key, ['from_date', 'to_date','xcel'])) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
                     $sql .= " AND $key LIKE '%$value%' ";
