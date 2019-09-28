@@ -438,20 +438,19 @@ class Mdl_mr_lists extends MY_Model {
 			$records['AntiFungal'] = $rows['anti'];
 			$records['ABM Status'] = ucfirst($rows['asm_status']);
 			$records['ZBM Status'] = ucfirst($rows['zsm_status']);		
-			$records['Image'] = "";	
+			$images = "";
 			if(!empty($rows['images'])){
 				$rx_files = explode(',', $rows['images']);
 				if(count($rx_files)){
 					foreach ($rx_files as $key => $value){
 						if(file_exists($value)){
 							$ext = pathinfo($value, PATHINFO_EXTENSION);
-							$images = base_url($value);
-							$records['Image'] = $images;
-						}
-						
+							$$images .= base_url($value)." | ";								
+						}						
 					}
 				}
 			}
+			$records['Image'] = !empty($images) ? rtrim($images, " | ") : "";
 
 			array_push($resultant_array, $records);
 		}
