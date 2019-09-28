@@ -41,7 +41,7 @@
                     <?php } ?>
                     
 
-                    <?php if(! isset($all_action) || $all_action): ?>
+                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
 
                 <?php if(in_array('edit', $permissions)) : ?>
                     <th class="font-bold"><i class="fa fa-edit"></i> Action</th>
@@ -52,7 +52,7 @@
                 
                 <?php if(isset($show_filters) ? $show_filters : FALSE): ?>
                 <tr>
-                    <?php if(! isset($all_action) || $all_action): ?>
+                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
                     <td></td>
                     <?php endif; ?>
 
@@ -71,7 +71,7 @@
                     </td>
                     <?php endforeach; ?>
                     
-                    <?php if(! isset($all_action) || $all_action): ?>
+                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
                     <td></td>
                     <?php endif; ?>
                 </td>
