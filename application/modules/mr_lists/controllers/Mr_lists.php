@@ -5,7 +5,7 @@ class Mr_lists extends User_Controller
     private $model_name = 'mdl_mr_lists';
     private $controller = 'mr_lists';
     private $settings = [
-        'permissions'=> ['download'],
+        'permissions'=> ['approve','download'],
     ];
     
     private $scripts = ['doctor.js'];
@@ -126,7 +126,7 @@ class Mr_lists extends User_Controller
 		$doctor_id = $this->input->get('id');
 
 		$response = $this->model->approve_doctor($doctor_id);
-
+		
 		if($response['status']){
 			redirect(base_url("mr_lists/lists")); 
 		}
@@ -138,7 +138,7 @@ class Mr_lists extends User_Controller
 		$doctor_id = $this->input->get('id');
 
 		$response = $this->model->disapprove_doctor($doctor_id);
-
+		
 		if($response['status']){
 			redirect(base_url("mr_lists/lists")); 
 		}

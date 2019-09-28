@@ -83,7 +83,11 @@ class Mdl_mr_lists extends MY_Model {
 			],
 		];
 		
-		return array_merge($admin_columns, $user_columns);
+		$newcolumns = array_merge($admin_columns, $user_columns);
+		$non_filter = [
+			[],
+		];
+		return array_merge($non_filter,$newcolumns);
     }
 
     function get_filters_from($filters) {
@@ -455,59 +459,64 @@ class Mdl_mr_lists extends MY_Model {
 
 	function approve_doctor($doctor_id){
 
-		if(empty($doctor_id)){
+		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
+			$ids = $this->input->post('ids');
+
+			$ids = implode("', '",$ids);
+
+		}
+		
+		$doctor_ids = empty($ids) ? $doctor_id : $ids;
+
+		if(empty($doctor_ids)){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;
 			return $response;
 		}
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
+		$sql = "UPDATE doctor
+		SET asm_status = 'approve'
+		WHERE doctor_id IN ('".$doctor_ids."')";
 
-		$data['asm_status'] = 'approve';
+		$q = $this->db->query($sql);
 
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
+		$response['status'] = TRUE;
+		$response['message'] = 'Congratulations! Doctor Approved successfully.';
+		$response['redirectTo'] = 'mr_lists/lists';
 
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Approved successfully.';
-			$response['redirectTo'] = 'mr_lists/lists';
-
-			return $response;
-		}
+		return $response;
 
 	}
 
 	function disapprove_doctor($doctor_id){
 
-		if(empty($doctor_id)){
+		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
+
+			$ids = $this->input->post('ids');
+
+			$ids = implode("', '",$ids);
+
+		}
+		
+		$doctor_ids = empty($ids) ? $doctor_id : $ids;
+		
+		if(empty($doctor_ids)){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;
 			return $response;
 		}
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
+		$sql = "UPDATE doctor
+		SET asm_status = 'disapprove'
+		WHERE doctor_id IN ('".$doctor_ids."')";
 
-		$data['asm_status'] = 'disapprove';
+		$q = $this->db->query($sql);
 
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
+		$response['status'] = TRUE;
+		$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
+		$response['redirectTo'] = 'mr_lists/lists';
 
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
-			$response['redirectTo'] = 'mr_lists/lists';
-
-			return $response;
-		}
+		return $response;
 
 	}
 

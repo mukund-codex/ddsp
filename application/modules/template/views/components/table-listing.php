@@ -18,12 +18,13 @@
 </div>
 <?php endif; ?>
 
-<?php echo form_open("$controller/remove",array('id'=>'frm_delete', 'name'=>'frm_delete')); ?>
+
+<?php echo form_open("$controller/",array('id'=>'frm_delete', 'name'=>'frm_delete')); ?>
     <div class="double-scroll">
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
-                    <?php if(! isset($all_action) || $all_action): ?>
+                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
                     <th>
                         <input type="checkbox" name="" id="checkall" class="chk-col-<?= $settings['theme'] ?> filled-in">
                         <label for="checkall" style="margin:0; vertical-align:bottom"></label>
@@ -76,8 +77,17 @@
             </tbody>
         </table>
     </div>
-     <?php if(isset($permissions) && count($permissions)) : if(in_array('remove', $permissions)) {  ?>
+    <?php if(isset($permissions) && count($permissions)) : if(in_array('remove', $permissions)) {  ?>
     <a class="btn btn-danger deleteAction" href="#" data-type="ajax-loader"><i class="material-icons">remove_circle</i> <span>Delete</span></a>
     <?php } endif; ?>
+    <br>
+    <?php if(in_array('approve', $permissions)) {  ?>
+
+        <input type="button" class="btn btn-danger approveAction" data-status="approve" data-type="ajax-loader" value="Approve"/>
+
+        <input type="button" class="btn btn-danger disapproveAction" data-status="disapprove" data-type="ajax-loader" value="Disapprove"/>
+
+    <?php } ?>
 <?php echo form_close(); ?>
+
 </div>
