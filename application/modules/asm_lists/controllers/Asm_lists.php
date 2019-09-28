@@ -5,7 +5,7 @@ class Asm_lists extends User_Controller
     private $model_name = 'mdl_asm_lists';
     private $controller = 'asm_lists';
     private $settings = [
-        'permissions'=> ['download'],
+        'permissions'=> ['approve', 'download'],
     ];
     
     private $scripts = ['doctor.js'];  
@@ -126,12 +126,12 @@ class Asm_lists extends User_Controller
 		$doctor_id = $this->input->get('id');
 
 		$response = $this->model->approve_doctor($doctor_id);
-
+		
 		if($response['status']){
 			redirect(base_url("asm_lists/lists")); 
 		}
 
-	}
+	}	
 
 	function disapprove(){
 

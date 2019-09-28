@@ -90,7 +90,13 @@ class Mdl_asm_lists extends MY_Model {
 			],
 		];
 		
-		return array_merge($admin_columns, $user_columns);
+		$newcolumns = array_merge($admin_columns, $user_columns);
+		$non_filter = [
+			[],
+		];
+
+		// echo '<pre>'; print_r($newcolumns); die();
+		return array_merge($non_filter,$newcolumns);
     }
 
     function get_filters_from($filters) {
@@ -201,9 +207,10 @@ class Mdl_asm_lists extends MY_Model {
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
-        
+		
+		// echo $sql;exit; 
         $q = $this->db->query($sql);
-        //echo $sql;exit;
+        // echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
@@ -446,12 +453,12 @@ class Mdl_asm_lists extends MY_Model {
 					foreach ($rx_files as $key => $value){
 						if(file_exists($value)){
 							$ext = pathinfo($value, PATHINFO_EXTENSION);
-							$images .= base_url($value).", ";
-						}
-					}
-					$records['Images'] = rtrim($images, ', ');
+							$images .= base_url($value)." | ";							
+						}						
+					}					
 				}
 			}
+			$records['Image'] = !empty($images) ? rtrim($images, " | ") : "";
 			
 			array_push($resultant_array, $records);
 		}
@@ -460,59 +467,65 @@ class Mdl_asm_lists extends MY_Model {
 
 	function approve_doctor($doctor_id){
 
-		if(empty($doctor_id)){
+		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
+
+			$ids = $this->input->post('ids');
+
+			$ids = implode("', '",$ids);
+
+		}
+		
+		$doctor_ids = empty($ids) ? $doctor_id : $ids;
+		
+		if(empty($doctor_ids)){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;
 			return $response;
 		}
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
+		$sql = "UPDATE doctor
+		SET zsm_status = 'approve'
+		WHERE doctor_id IN ('".$doctor_ids."')";
 
-		$data['zsm_status'] = 'approve';
+		$q = $this->db->query($sql);
 
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
+		$response['status'] = TRUE;
+		$response['message'] = 'Congratulations! Doctor Approved successfully.';
+		$response['redirectTo'] = 'asm_lists/lists';
 
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Approved successfully.';
-			$response['redirectTo'] = 'asm_lists/lists';
-
-			return $response;
-		}
+		return $response;
 
 	}
 
 	function disapprove_doctor($doctor_id){
 
-		if(empty($doctor_id)){
+		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
+
+			$ids = $this->input->post('ids');
+
+			$ids = implode("', '",$ids);
+
+		}
+		
+		$doctor_ids = empty($ids) ? $doctor_id : $ids;
+		
+		if(empty($doctor_ids)){
 			$response['message'] = 'Internal Server Error';
 			$response['status'] = FALSE;
 			return $response;
 		}
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
+		$sql = "UPDATE doctor
+		SET zsm_status = 'disapprove'
+		WHERE doctor_id IN ('".$doctor_ids."')";
 
-		$data['zsm_status'] = 'disapprove';
+		$q = $this->db->query($sql);
 
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
+		$response['status'] = TRUE;
+		$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
+		$response['redirectTo'] = 'asm_lists/lists';
 
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
-			$response['redirectTo'] = 'asm_lists/lists';
-
-			return $response;
-		}
+		return $response;
 
 	}
 

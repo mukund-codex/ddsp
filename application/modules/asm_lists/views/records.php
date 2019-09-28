@@ -1,6 +1,6 @@
 <?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['doctor_id']; ?>
 <tr>
-    <?php if(! isset($all_action) || $all_action): ?>
+    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
         <td>
             <input type="checkbox" name="ids[]" value="<?php echo $id ?>" id="check_<?= $id ?>" class="chk-col-<?= $settings['theme'] ?> filled-in" />
             <label for="check_<?= $id ?>"></label>
