@@ -69,11 +69,9 @@ class Mr extends Admin_Controller
 
 		$new = array(); $json['results'] = array();
 
-        $role = strtoupper($_POST['role']);
-        
-        // $_options = $this->model->get_options(['users_type' => 'MR'], 'users_name', [], $page * $limit, $limit);
-        // echo $this->db->last_query();exit;
-       
+        //echo '<pre>';print_r($_POST);exit;
+
+        //$role = strtoupper($_POST['role']);       
         
         $_options = $this->model->get_records(['users_type' => 'MR'], 'manpower', ['DISTINCT(users_id)','users_name']);
         $_opt_count = count($_options);
