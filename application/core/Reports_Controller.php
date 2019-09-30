@@ -31,7 +31,8 @@ abstract class Reports_Controller extends Generic_Controller{
     
     function index(){
 		if( ! $this->session->is_logged_in() ){
-			show_error("Forbidden", 403);
+            // show_error("Forbidden", 403);
+            redirect('user/login','refresh');
 		}
 
 		$sfilters = array();
@@ -87,8 +88,10 @@ abstract class Reports_Controller extends Generic_Controller{
 
 	function download(){
 
-		if( ! $this->session->is_logged_in() )
-            show_error("Forbidden", 403);
+		if( ! $this->session->is_logged_in() ){
+            // show_error("Forbidden", 403);
+            redirect('admin/login','refresh');
+        }
             
 
         $get_request = $this->input->get();

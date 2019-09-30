@@ -176,5 +176,4 @@ class Change_image extends Generic_Controller{
         echo "\n========================\n";
         exit;
     }
-
 }
