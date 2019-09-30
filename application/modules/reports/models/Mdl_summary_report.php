@@ -158,7 +158,7 @@ class Mdl_summary_report extends MY_Model {
                     continue;
                 } */
                
-                if(!empty($value) && !in_array($key, ['from_date', 'to_date'])) {
+                if(!empty($value) && !in_array($key, ['from_date', 'to_date','xcel'])) {
                     $key = str_replace('|', '.', $key);
                     $value = $this->db->escape_like_str($value);
                     $sql .= " AND $key LIKE '%$value%' ";
@@ -189,13 +189,13 @@ class Mdl_summary_report extends MY_Model {
 			$records['Zone'] = $rows['zone'];
 			$records['ABM'] = $rows['asm_name'];
 			$records['Area'] = $rows['area'];
-			$records['Chemist Count'] = $rows['chemist_count'];
-			$records['No. of Reps'] = $rows['total_reps'];
-			$records['No. of Days'] = $rows['no_of_days'];
-			$records['Chemist Average'] = $rows['chemist_avg'];
-			$records['Total Doctor Count'] = $rows['doctor_count'];
-			$records['ABM Approved Count'] = $rows['asm_count'];
-			$records['ZBM Approved Count'] = $rows['zsm_count'];
+			$records['Chemist Count'] = !empty($rows['chemist_count']) ? $rows['chemist_count'] : 0;;
+			$records['No. of Reps'] = !empty($rows['total_reps']) ? $rows['total_reps'] : 0;
+			$records['No. of Days'] = !empty($rows['no_of_days']) ? $rows['no_of_days'] : 0;
+			$records['Chemist Average'] = !empty($rows['chemist_avg']) ? $rows['chemist_avg'] : 0;
+			$records['Total Doctor Count'] = !empty($rows['doctor_count']) ? $rows['doctor_count'] : 0;
+			$records['ABM Approved Count'] = !empty($rows['asm_count']) ? $rows['asm_count'] : 0;
+			$records['ZBM Approved Count'] = !empty($rows['zsm_count']) ? $rows['zsm_count'] : 0;
             
 			array_push($resultant_array, $records);
 		}
