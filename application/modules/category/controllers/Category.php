@@ -11,7 +11,7 @@ class Category extends User_Controller
     private $scripts = ['doctor.js'];    
 
 	function __construct() {
-        $user_role = $this->session->get_field_from_session('role');
+//        $user_role = $this->session->get_field_from_session('role');
         
         parent::__construct( 
             $this->module, 
@@ -23,6 +23,8 @@ class Category extends User_Controller
         );
 
         $this->set_defaults();
+
+	$user_role = $this->session->get_field_from_session('role');
     }
 
 	function options(){

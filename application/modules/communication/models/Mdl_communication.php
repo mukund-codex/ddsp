@@ -136,21 +136,30 @@ class Mdl_communication extends MY_Model {
 	function save(){
 		
 		$this->load->library('form_validation');
-		$this->load->helper('upload_media');
-		
-		$this->form_validation->set_rules($this->validate('save'));
-		
-		if(! $this->form_validation->run()){
-			$errors = array();	        
-	        foreach ($this->input->post() as $key => $value)
-				$errors[$key] = form_error($key, '<label class="error">', '</label>');
-				
-	        $response['errors'] = array_filter($errors); // Some might be empty
+		$this->load->helper('upload_media');		
+
+		if(!array_key_exists('sms_group', $_POST) || !in_array($_POST['sms_group'], ['group', 'single'])){
+			$response['errors'] = [
+				"sms_group" => '<label class="error">This field is Required.</label>'
+			];
             $response['status'] = FALSE;
             
             return $response;
 		}
 		
+
+		$this->form_validation->set_rules($this->validate('save'));
+		if(! $this->form_validation->run()){
+			$errors = array();	        
+	        foreach ($this->input->post() as $key => $value)
+				$errors[$key] = form_error($key, '<label class="error">', '</label>');
+			
+	        $response['errors'] = array_filter($errors); // Some might be empty
+            $response['status'] = FALSE;
+            
+            return $response;
+		}
+
 		$media_files = $is_image_file_upload = $is_doc_file_upload = [];
 		
 		if(array_sum($_FILES['images']['size']) > 0) {			
@@ -189,6 +198,14 @@ class Mdl_communication extends MY_Model {
 			}
 		}
 		
+		$role = isset($_POST['group_id']) ? $_POST['group_id'] : '';
+
+		if(!in_array(strtoupper($role), ['ASM', 'ZSM', 'MR'])){
+			$response['message'] = 'Invalid User Group'; 
+            $response['status'] = FALSE;
+            return $response;
+		}
+
 		$data = $this->process_data($this->fillable, $_POST);
 		$id = $this->_insert($data);
 
@@ -231,8 +248,6 @@ class Mdl_communication extends MY_Model {
 		$notification_request['desc'] = (!empty($data['description'])) ? $data['description'] : '';
 
 		$req_id = $this->_insert($notification_request, 'notification_request');
-		
-		$role = isset($_POST['group_id']) ? $_POST['group_id'] : '';
 
 		$selected_roles = isset($_POST['selected_role']) ? array_filter($_POST['selected_roles']) : '';
 		

@@ -2,7 +2,7 @@
 <tr>
     <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
         <td>
-            <input type="checkbox" name="ids[]" value="<?php echo $id ?>" id="check_<?= $id ?>" class="chk-col-<?= $settings['theme'] ?> filled-in" />
+            <input type="checkbox" name="id[]" value="<?php echo $id ?>" id="check_<?= $id ?>" class="chk-col-<?= $settings['theme'] ?> filled-in" />
             <label for="check_<?= $id ?>"></label>
         </td>
     <?php endif; ?>
@@ -65,16 +65,15 @@
     </td> 
     <td>
         <?php if($record['asm_status'] == 'pending'){ ?>
-            <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" >Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="<?php echo base_url("$controller/disapprove?id=".$record['doctor_id']) ?>" class="tooltips" title="Disapprove" >Disapprove</a>
+            <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>">Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>">Disapprove</a>
         <?php }else if($record['asm_status'] == 'approve'){ ?>
-            <a href="<?php echo base_url("$controller/disapprove?id=".$record['doctor_id']) ?>" class="tooltips" title="Disapprove" >Dispprove</a>
+            <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>">Disapprove</a>
         <?php }else if($record['asm_status'] == 'disapprove'){ ?>
-            <a href="<?php echo base_url("$controller/approve?id=".$record['doctor_id']) ?>" class="tooltips" title="Approve" >Approve</a> 
+            <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>">Approve</a> 
         <?php } ?>
 
     </td>
-   
 </tr>
 <?php $i++;  } ?>
 
