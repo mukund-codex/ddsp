@@ -1,12 +1,13 @@
 <?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['doctor_id']; ?>
 <tr>
-    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
+    <?php  $user_role = $this->session->get_field_from_session('role','user');
+     if(! isset($all_action) || $all_action || in_array('approve', $permissions) && $role != 'HO'): ?>
         <td>
             <input type="checkbox" name="id[]" value="<?php echo $id ?>" id="check_<?= $id ?>" class="chk-col-<?= $settings['theme'] ?> filled-in" />
             <label for="check_<?= $id ?>"></label>
         </td>
     <?php endif; ?>
-    <?php $user_role = $this->session->get_field_from_session('role','user');
+    <?php
      if(empty($user_role)){ ?>
         <td><?php echo $record['zsm_name'] ?></td> 
         <td><?php echo $record['zone'] ?></td> 
