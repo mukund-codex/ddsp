@@ -76,10 +76,12 @@ class Mdl_troubleshoot_report extends MY_Model {
             }
         }
 
+        $sql .= " ORDER BY ts.insert_dt DESC";
+
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
-        
+
         $q = $this->db->query($sql);
         //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();

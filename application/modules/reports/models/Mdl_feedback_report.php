@@ -81,6 +81,8 @@ class Mdl_feedback_report extends MY_Model {
             }
         }
 
+        $sql .= " ORDER BY uf.insert_dt DESC";
+
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
