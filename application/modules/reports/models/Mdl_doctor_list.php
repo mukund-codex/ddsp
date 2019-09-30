@@ -196,12 +196,12 @@ class Mdl_doctor_list extends MY_Model {
 					foreach ($rx_files as $key => $value){
 						if(file_exists($value)){
 							$ext = pathinfo($value, PATHINFO_EXTENSION);
-							$images .= base_url($value).", ";
-						}
-					}
-					$records['Images'] = rtrim($images, ', ');
+							$images .= base_url($value)." | ";							
+						}						
+					}					
 				}
 			}
+			$records['Image'] = !empty($images) ? rtrim($images, " | ") : "";
 			
 			array_push($resultant_array, $records);
 		}

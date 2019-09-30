@@ -83,7 +83,11 @@ class Mdl_mr_lists extends MY_Model {
 			],
 		];
 		
-		return array_merge($admin_columns, $user_columns);
+		$newcolumns = array_merge($admin_columns, $user_columns);
+		$non_filter = [
+			[],
+		];
+		return array_merge($non_filter,$newcolumns);
     }
 
     function get_filters_from($filters) {
@@ -433,7 +437,7 @@ class Mdl_mr_lists extends MY_Model {
 			$records['Acne'] = $rows['acne'];
 			$records['AntiFungal'] = $rows['anti'];
 			$records['ABM Status'] = ucfirst($rows['asm_status']);
-			$records['ZBM Status'] = ucfirst($rows['zsm_status']);
+			$records['ZBM Status'] = ucfirst($rows['zsm_status']);		
 			$images = "";
 			if(!empty($rows['images'])){
 				$rx_files = explode(',', $rows['images']);
@@ -441,74 +445,53 @@ class Mdl_mr_lists extends MY_Model {
 					foreach ($rx_files as $key => $value){
 						if(file_exists($value)){
 							$ext = pathinfo($value, PATHINFO_EXTENSION);
-							$images .= base_url($value).", ";
-						}
+							$images .= base_url($value)." | ";								
+						}						
 					}
-					$records['Images'] = rtrim($images, ', ');
 				}
 			}
+			$records['Image'] = !empty($images) ? rtrim($images, " | ") : "";
 
 			array_push($resultant_array, $records);
 		}
 		return $resultant_array;
 	}
 
-	function approve_doctor($doctor_id){
+	function change_doctor_status(){
 
-		if(empty($doctor_id)){
-			$response['message'] = 'Internal Server Error';
+		if(empty($_POST['id'])){
 			$response['status'] = FALSE;
+			$response['message'] = 'Invalid Doctor';
 			return $response;
 		}
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
+		if(! in_array($_POST['status'], ['approve', 'disapprove'])) {
 			$response['status'] = FALSE;
+			$response['message'] = 'Invalid Status';
 			return $response;
 		}
 
-		$data['asm_status'] = 'approve';
+		$status = strtolower($this->input->post('status'));
+		$doctor_ids = '';
 
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
-
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Approved successfully.';
-			$response['redirectTo'] = 'mr_lists/lists';
-
-			return $response;
+		if(is_array($_POST['id'])){
+			$doctor_ids = $this->input->post('id');
+			$update_status = $this->model->_update_with('doctor_id', $doctor_ids, [], ['asm_status' => $status], 'doctor');
+		}else{
+			$doctor_ids = (int) $this->input->post('id');		
+			$update_status = $this->model->_update(['doctor_id' => $doctor_ids], ['asm_status' => $status], 'doctor');
 		}
-
-	}
-
-	function disapprove_doctor($doctor_id){
-
-		if(empty($doctor_id)){
-			$response['message'] = 'Internal Server Error';
+				
+		if(! $update_status) {
 			$response['status'] = FALSE;
-			return $response;
+			$response['message'] = 'Failed to Update Status. Please Try Again.';
+			return $response;	
 		}
+		
+		$response['status'] = TRUE;
+		$response['message'] = "Congratulations! Doctor " .ucfirst($status). " successfully.";
 
-		$records = $this->get_records(['doctor_id' => $doctor_id], 'doctor', [] , '' ,1);
-		if(empty($records)){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
-
-		$data['asm_status'] = 'disapprove';
-
-		$id = $this->_update(['doctor_id' => $doctor_id], $data, 'doctor');
-
-		if($id){
-			$response['status'] = TRUE;
-			$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
-			$response['redirectTo'] = 'mr_lists/lists';
-
-			return $response;
-		}
-
+		return $response;
 	}
 
 	function getBrandMolecules($doctor_id, $category_id) {
