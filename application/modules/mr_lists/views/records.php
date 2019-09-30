@@ -2,8 +2,10 @@
 <tr>
     <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
         <td>
+            <?php if($record['asm_status'] == 'pending'){ ?>
             <input type="checkbox" name="id[]" value="<?php echo $id ?>" id="check_<?= $id ?>" class="chk-col-<?= $settings['theme'] ?> filled-in" />
             <label for="check_<?= $id ?>"></label>
+            <?php } ?>
         </td>
     <?php endif; ?>
     <?php $user_role = $this->session->get_field_from_session('role','user');
@@ -19,16 +21,16 @@
     <td><?php echo $record['doctor_name'] ?></td>
     <td><?php echo $record['speciality'] ?></td>
     <td><?php echo $record['type'] ?></td>
-    <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="1"><?php echo $record['hyper'] ?></a></td>
+    <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="1" style="cursor:pointer;"><?php echo $record['hyper'] ?></a></td>
     <td>
     <?php if($record['acne'] != 0) { ?>
-        <a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="2"><?php echo $record['acne'] ?></a></td>
+        <a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="2" style="cursor:pointer;"><?php echo $record['acne'] ?></a></td>
     <?php } else { ?>
         <?php echo $record['acne'] ?></td>
     <?php } ?>
 
      <?php if($record['anti'] != 0) { ?>
-        <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="3"><?php echo $record['anti'] ?></a></td>
+        <td><a class="category_popup" doctor-id="<?php echo $id; ?>" category-id="3" style="cursor:pointer;"><?php echo $record['anti'] ?></a></td>
     <?php } else { ?>
         <td><?php echo $record['anti'] ?></td>
     <?php } ?>
@@ -65,12 +67,12 @@
     </td> 
     <td>
         <?php if($record['asm_status'] == 'pending'){ ?>
-            <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>">Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>">Disapprove</a>
+            <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>" style="cursor:pointer;">Approve</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>" style="cursor:pointer;">Disapprove</a>
         <?php }else if($record['asm_status'] == 'approve'){ ?>
-            <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>">Disapprove</a>
+            <!-- <a class="tooltips asm_approve" title="Disapprove" data-status = "disapprove" data-id = "<?php echo $record['doctor_id'];?>">Disapprove</a> -->
         <?php }else if($record['asm_status'] == 'disapprove'){ ?>
-            <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>">Approve</a> 
+            <!-- <a class="tooltips asm_approve" title="Approve" data-status = "approve" data-id = "<?php echo $record['doctor_id'];?>">Approve</a> --> 
         <?php } ?>
 
     </td>

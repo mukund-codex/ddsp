@@ -35,6 +35,7 @@ class Mdl_asm_lists extends MY_Model {
     function get_filters() {
         $user_role = $this->session->get_field_from_session('role','user');
 		$admin_columns = [];
+		$non_filter= [];
 		if(empty($user_role)) {
 			$admin_columns = [
 				[
@@ -91,9 +92,11 @@ class Mdl_asm_lists extends MY_Model {
 		];
 		
 		$newcolumns = array_merge($admin_columns, $user_columns);
-		$non_filter = [
-			[],
-		];
+		if($user_role != 'HO'){
+			$non_filter = [
+				[],
+			];
+		}		
 
 		// echo '<pre>'; print_r($newcolumns); die();
 		return array_merge($non_filter,$newcolumns);

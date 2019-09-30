@@ -678,6 +678,7 @@ class Module extends Api_Controller {
             $file_upload['category'] = $category;
             $file_upload['image_name'] = $upload['file_name'];
             $file_upload['image_path'] = $upload['full_path'];
+            $file_upload['insert_dt'] = $file_upload['update_dt'] = date('Y-m-d H:i:s');
             array_push($data, $file_upload);            
         }
 

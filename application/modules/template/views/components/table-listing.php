@@ -24,12 +24,14 @@
 <?php endif; ?>
 
 
-<?php echo form_open("$controller/",array('id'=>'frm_delete', 'name'=>'frm_delete')); ?>
+<?php
+$role = $this->session->get_field_from_session('role', 'user');
+echo form_open("$controller/",array('id'=>'frm_delete', 'name'=>'frm_delete')); ?>
     <div class="double-scroll">
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
-                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions)): ?>
+                    <?php if(! isset($all_action) || $all_action || in_array('approve', $permissions) && $role != 'HO'): ?>
                     <th>
                         <input type="checkbox" name="" id="checkall" class="chk-col-<?= $settings['theme'] ?> filled-in">
                         <label for="checkall" style="margin:0; vertical-align:bottom"></label>
@@ -86,8 +88,10 @@
     <a class="btn btn-danger deleteAction" href="#" data-type="ajax-loader"><i class="material-icons">remove_circle</i> <span>Delete</span></a>
     <?php } endif; ?>
     <br>
-    <?php if(in_array('approve', $permissions)) {  ?>
-
+    <?php 
+    
+    if(in_array('approve', $permissions) && $role != 'HO') { ?>
+        
         <input type="button" class="btn btn-success doctorAction" data-status="approve" data-type="ajax-loader" value="Approve"/>
 
         <input type="button" class="btn btn-danger doctorAction" data-status="disapprove" data-type="ajax-loader" value="Disapprove"/>
