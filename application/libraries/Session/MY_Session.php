@@ -80,7 +80,7 @@ class MY_Session extends CI_Session {
 		
 		$user_login_status = (int) $this->user_logged_in();
 		
-		if( ! $admin_login_status || ! $user_login_status){
+		if( ! $admin_login_status && ! $user_login_status){
 			echo json_encode(['status'=> FALSE, 'error'=> 'Forbidden']); exit;
 		}
     }
@@ -89,7 +89,7 @@ class MY_Session extends CI_Session {
         $admin_login_status = (int) $this->is_admin_logged_in();
 		$user_login_status = (int) $this->user_logged_in();
 
-		if( ! $admin_login_status || ! $user_login_status){
+		if( ! $admin_login_status && ! $user_login_status){
 			echo json_encode(['status'=> FALSE, 'error'=> 'Forbidden']); exit;
 		}
 		return true;
