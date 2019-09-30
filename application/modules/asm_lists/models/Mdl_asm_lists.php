@@ -465,68 +465,41 @@ class Mdl_asm_lists extends MY_Model {
 		return $resultant_array;
 	}
 
-	function approve_doctor($doctor_id){
+	function change_doctor_status(){
 
-		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
-
-			$ids = $this->input->post('ids');
-
-			$ids = implode("', '",$ids);
-
-		}
-		
-		$doctor_ids = empty($ids) ? $doctor_id : $ids;
-		
-		if(empty($doctor_ids)){
-			$response['message'] = 'Internal Server Error';
+		if(empty($_POST['id'])){
 			$response['status'] = FALSE;
+			$response['message'] = 'Invalid Doctor';
 			return $response;
 		}
 
-		$sql = "UPDATE doctor
-		SET zsm_status = 'approve'
-		WHERE doctor_id IN ('".$doctor_ids."')";
-
-		$q = $this->db->query($sql);
-
-		$response['status'] = TRUE;
-		$response['message'] = 'Congratulations! Doctor Approved successfully.';
-		$response['redirectTo'] = 'asm_lists/lists';
-
-		return $response;
-
-	}
-
-	function disapprove_doctor($doctor_id){
-
-		if(isset($_POST['ids']) && sizeof($_POST['ids']) > 0){
-
-			$ids = $this->input->post('ids');
-
-			$ids = implode("', '",$ids);
-
-		}
-		
-		$doctor_ids = empty($ids) ? $doctor_id : $ids;
-		
-		if(empty($doctor_ids)){
-			$response['message'] = 'Internal Server Error';
+		if(! in_array($_POST['status'], ['approve', 'disapprove'])) {
 			$response['status'] = FALSE;
+			$response['message'] = 'Invalid Status';
 			return $response;
 		}
 
-		$sql = "UPDATE doctor
-		SET zsm_status = 'disapprove'
-		WHERE doctor_id IN ('".$doctor_ids."')";
+		$status = strtolower($this->input->post('status'));
+		$doctor_ids = '';
 
-		$q = $this->db->query($sql);
-
+		if(is_array($_POST['id'])){
+			$doctor_ids = $this->input->post('id');
+			$update_status = $this->model->_update_with('doctor_id', $doctor_ids, [], ['zsm_status' => $status], 'doctor');
+		}else{
+			$doctor_ids = (int) $this->input->post('id');		
+			$update_status = $this->model->_update(['doctor_id' => $doctor_ids], ['zsm_status' => $status], 'doctor');
+		}
+				
+		if(! $update_status) {
+			$response['status'] = FALSE;
+			$response['message'] = 'Failed to Update Status. Please Try Again.';
+			return $response;	
+		}
+		
 		$response['status'] = TRUE;
-		$response['message'] = 'Congratulations! Doctor Disapproved successfully.';
-		$response['redirectTo'] = 'asm_lists/lists';
+		$response['message'] = "Congratulations! Doctor " .ucfirst($status). " successfully.";
 
 		return $response;
-
 	}
 
 }

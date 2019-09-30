@@ -8,7 +8,7 @@ class Mr_lists extends User_Controller
         'permissions'=> ['approve','download'],
     ];
     
-    private $scripts = ['doctor.js'];
+    private $scripts = ['doctor.js', 'custom.js'];
 
 	function __construct() {
         $user_role = $this->session->get_field_from_session('role');
@@ -121,29 +121,10 @@ class Mr_lists extends User_Controller
 		echo json_encode(['newrows'=> "$newrows record(s) added successfully"]);
 	}
 
-	function approve(){
-
-		$doctor_id = $this->input->get('id');
-
-		$response = $this->model->approve_doctor($doctor_id);
-		
-		if($response['status']){
-			redirect(base_url("mr_lists/lists")); 
-		}
-
-	}
-
-	function disapprove(){
-
-		$doctor_id = $this->input->get('id');
-
-		$response = $this->model->disapprove_doctor($doctor_id);
-		
-		if($response['status']){
-			redirect(base_url("mr_lists/lists")); 
-		}
-
-	}
+	function change_doctor_status(){
+		$response = $this->model->change_doctor_status();
+		echo json_encode($response);
+	}	
 
 	function getBrandMolecules() {
 		$doctor_id = $this->input->post("doctor_id");

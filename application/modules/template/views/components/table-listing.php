@@ -88,9 +88,9 @@
     <br>
     <?php if(in_array('approve', $permissions)) {  ?>
 
-        <input type="button" class="btn btn-danger approveAction" data-status="approve" data-type="ajax-loader" value="Approve"/>
+        <input type="button" class="btn btn-success doctorAction" data-status="approve" data-type="ajax-loader" value="Approve"/>
 
-        <input type="button" class="btn btn-danger disapproveAction" data-status="disapprove" data-type="ajax-loader" value="Disapprove"/>
+        <input type="button" class="btn btn-danger doctorAction" data-status="disapprove" data-type="ajax-loader" value="Disapprove"/>
 
     <?php } ?>
 <?php echo form_close(); ?>
