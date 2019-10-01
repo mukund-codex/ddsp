@@ -126,6 +126,17 @@ class Mdl_brand_wise_report extends MY_Model {
             }
         }
 
+        $role = $this->session->get_field_from_session('role', 'user');
+		if(!empty($role)){
+			$id = $this->session->get_field_from_session('user_id', 'user');
+			if($role == 'ASM'){
+				$sql .= "AND asm.users_id = '".$id."'";
+			}
+			if($role == 'ZSM'){
+				$sql .= "AND zsm.users_id = '".$id."'";
+			}
+		}
+
         //$sql .= " group by temp.doctor_id";
         $sql .= " ORDER by ch.insert_dt DESC";
 

@@ -83,8 +83,8 @@ class Mdl_molecule_wise_report extends MY_Model {
         FROM
         (
             SELECT
-                zsm.users_name as zsm_name, z.zone_name as zone,
-                asm.users_name as asm_name, a.area_name as area,
+                zsm.users_id as zsm_id,zsm.users_name as zsm_name, z.zone_name as zone,
+                asm.users_id as asm_id,asm.users_name as asm_name, a.area_name as area,
                 mr.users_name as mr_name, c.city_name as city,
                 ch.chemist_name, ch.address as chemist_address, ch.insert_dt as chemist_date,
                 d.doctor_id, d.doctor_name, d.address as doctor_address, 
@@ -130,6 +130,18 @@ class Mdl_molecule_wise_report extends MY_Model {
                 }
             }
         }
+
+        $role = $this->session->get_field_from_session('role', 'user');
+		if(!empty($role)){
+			$id = $this->session->get_field_from_session('user_id', 'user');
+			if($role == 'ASM'){
+				$sql .= "AND temp.asm_id = '".$id."'";
+			}
+			if($role == 'ZSM'){
+				$sql .= "AND temp.zsm_id = '".$id."'";
+			}
+		}
+
 
         $sql .= " group by doctor_id ";
         $sql .= " ORDER by chemist_date DESC";

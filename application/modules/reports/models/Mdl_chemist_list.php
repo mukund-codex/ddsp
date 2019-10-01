@@ -58,9 +58,11 @@ class Mdl_chemist_list extends MY_Model {
         LEFT JOIN manpower m ON m.users_id = ch.users_id
         LEFT JOIN city c ON c.city_id = m.users_city_id
         LEFT JOIN manpower asm ON asm.users_id = m.users_parent_id
-        LEFT JOIN area a ON a.area_id = asm.users_area_id";
+        LEFT JOIN area a ON a.area_id = asm.users_area_id
+        LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        LEFT JOIN zone z ON z.zone_id = zsm.users_zone_id";
 
-        $sql .= " WHERE 1 = 1";
+        $sql .= " WHERE 1 = 1 ";
        
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
@@ -88,6 +90,17 @@ class Mdl_chemist_list extends MY_Model {
                 }
             }
         }
+
+        $role = $this->session->get_field_from_session('role', 'user');
+		if(!empty($role)){
+			$id = $this->session->get_field_from_session('user_id', 'user');
+			if($role == 'ASM'){
+				$sql .= "AND asm.users_id = '".$id."'";
+			}
+			if($role == 'ZSM'){
+				$sql .= "AND zsm.users_id = '".$id."'";
+			}
+		}
 
         //$sql .= " group by m.users_id";
         $sql .= " ORDER by ch.insert_dt DESC";

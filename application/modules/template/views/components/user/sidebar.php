@@ -37,6 +37,47 @@
                             <span>MR Lists</span>
                         </a>
                     </li>
+                    <li <?php echo (in_array($menu, ['category_wise_report', 'mr_summary_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list', 'doctor_list', 'summary_report', 'feedback_report', 'troubleshoot_report'])) ? 'class="active"': ''; ?> >
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">receipt</i>
+                            <span>Reports</span>
+                        </a>
+                        <ul class="ml-menu">  
+                            <li <?php echo (isset($menu) && $menu == 'mr_summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/mr_summary_report?t=$timestamp") ?>">MR Wise Summary Report</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'doctor_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/doctor_list?t=$timestamp") ?>">Doctor List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>
+                            </li>      
+                            <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'molecule_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/molecule_wise_report?t=$timestamp") ?>">Molecule Wise Report</a>
+                            </li>    
+                            <li <?php echo (isset($menu) && $menu == 'brand_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/brand_wise_report?t=$timestamp") ?>">Brand Wise Report</a>
+                            </li>     
+                            <li <?php echo (isset($menu) && $menu == 'derma_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/derma_dr_report?t=$timestamp") ?>">Derma Dr Live Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'cp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/cp_dr_report?t=$timestamp") ?>">CP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gp_dr_report?t=$timestamp") ?>">GP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gynaec_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gynaec_dr_report?t=$timestamp") ?>">Gynaec Dr Live Report</a>
+                            </li>            
+                        </ul>
+                    </li>
                 <?php endif; ?>
                 <?php if(in_array($user_role, ['ZSM'])): ?>
                     <li <?php echo ($mainmenu == 'asm_lists') ? 'class="active"': ''; ?> style="display:block;">
@@ -45,14 +86,50 @@
                             <span>ASM Lists</span>
                         </a>
                     </li>
-                <?php endif; ?>
-                <?php if(in_array($user_role, ['RSM','ASM','MR'])): ?>
-                    <!-- <li <?php echo ($menu == 'doctor') ? 'class="active"': ''; ?>>
-                        <a href="<?php echo base_url("doctor/lists?t=$timestamp") ?>">
-                            <i class="material-icons">person_add</i>
-                            <span>Doctors</span>
+                    <li <?php echo (in_array($menu, ['category_wise_report', 'mr_summary_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list', 'doctor_list', 'summary_report', 'feedback_report', 'troubleshoot_report'])) ? 'class="active"': ''; ?> >
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">receipt</i>
+                            <span>Reports</span>
                         </a>
-                    </li> -->
+                        <ul class="ml-menu">
+                            <li <?php echo (isset($menu) && $menu == 'summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/summary_report?t=$timestamp") ?>">ABM Summary Report</a>
+                            </li>   
+                            <li <?php echo (isset($menu) && $menu == 'mr_summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/mr_summary_report?t=$timestamp") ?>">MR Wise Summary Report</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'doctor_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/doctor_list?t=$timestamp") ?>">Doctor List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>
+                            </li>      
+                            <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'molecule_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/molecule_wise_report?t=$timestamp") ?>">Molecule Wise Report</a>
+                            </li>    
+                            <li <?php echo (isset($menu) && $menu == 'brand_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/brand_wise_report?t=$timestamp") ?>">Brand Wise Report</a>
+                            </li>     
+                            <li <?php echo (isset($menu) && $menu == 'derma_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/derma_dr_report?t=$timestamp") ?>">Derma Dr Live Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'cp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/cp_dr_report?t=$timestamp") ?>">CP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gp_dr_report?t=$timestamp") ?>">GP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gynaec_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gynaec_dr_report?t=$timestamp") ?>">Gynaec Dr Live Report</a>
+                            </li>        
+                        </ul>
+                    </li>
                 <?php endif; ?>
 
                 <?php if($user_role == 'HO'): ?>
@@ -69,52 +146,55 @@
                         </a>
                     </li>
                     <li <?php echo (in_array($menu, ['login_reports', 'category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list', 'doctor_list', 'summary_report', 'feedback_report', 'troubleshoot_report'])) ? 'class="active"': ''; ?> >
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">receipt</i>
-                        <span>Reports</span>
-                    </a>
-                    <ul class="ml-menu">     
-                        <li <?php echo (isset($menu) && $menu == 'feedback_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/feedback_report?t=$timestamp") ?>">Feedback Report</a>
-                        </li>  
-                        <li <?php echo (isset($menu) && $menu == 'troubleshoot_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/troubleshoot_report?t=$timestamp") ?>">Troubleshoot Report</a>
-                        </li>
-                        <li <?php echo (isset($menu) && $menu == 'summary_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/summary_report?t=$timestamp") ?>">Summary Report</a>
-                        </li> 
-                        <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
-                        </li> 
-                        <li <?php echo (isset($menu) && $menu == 'doctor_list') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/doctor_list?t=$timestamp") ?>">Doctor List</a>
-                        </li> 
-                        <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>
-                        </li>      
-                        <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
-                        </li>  
-                        <li <?php echo (isset($menu) && $menu == 'molecule_wise_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/molecule_wise_report?t=$timestamp") ?>">Molecule Wise Report</a>
-                        </li>    
-                        <li <?php echo (isset($menu) && $menu == 'brand_wise_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/brand_wise_report?t=$timestamp") ?>">Brand Wise Report</a>
-                        </li>     
-                        <li <?php echo (isset($menu) && $menu == 'derma_dr_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/derma_dr_report?t=$timestamp") ?>">Derma Dr Live Report</a>
-                        </li>  
-                        <li <?php echo (isset($menu) && $menu == 'cp_dr_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/cp_dr_report?t=$timestamp") ?>">CP Dr Live Report</a>
-                        </li>
-                        <li <?php echo (isset($menu) && $menu == 'gp_dr_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/gp_dr_report?t=$timestamp") ?>">GP Dr Live Report</a>
-                        </li>
-                        <li <?php echo (isset($menu) && $menu == 'gynaec_dr_report') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/gynaec_dr_report?t=$timestamp") ?>">Gynaec Dr Live Report</a>
-                        </li>               
-                    </ul>
-                </li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">receipt</i>
+                            <span>Reports</span>
+                        </a>
+                        <ul class="ml-menu">     
+                            <li <?php echo (isset($menu) && $menu == 'summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/summary_report?t=$timestamp") ?>">ABM Summary Report</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'mr_summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/mr_summary_report?t=$timestamp") ?>">MR Wise Summary Report</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'doctor_list') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/doctor_list?t=$timestamp") ?>">Doctor List</a>
+                            </li> 
+                            <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>
+                            </li>      
+                            <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'molecule_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/molecule_wise_report?t=$timestamp") ?>">Molecule Wise Report</a>
+                            </li>    
+                            <li <?php echo (isset($menu) && $menu == 'brand_wise_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/brand_wise_report?t=$timestamp") ?>">Brand Wise Report</a>
+                            </li>     
+                            <li <?php echo (isset($menu) && $menu == 'derma_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/derma_dr_report?t=$timestamp") ?>">Derma Dr Live Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'cp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/cp_dr_report?t=$timestamp") ?>">CP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gp_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gp_dr_report?t=$timestamp") ?>">GP Dr Live Report</a>
+                            </li>
+                            <li <?php echo (isset($menu) && $menu == 'gynaec_dr_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/gynaec_dr_report?t=$timestamp") ?>">Gynaec Dr Live Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'feedback_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/feedback_report?t=$timestamp") ?>">Feedback Report</a>
+                            </li>  
+                            <li <?php echo (isset($menu) && $menu == 'troubleshoot_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/troubleshoot_report?t=$timestamp") ?>">Troubleshoot Report</a>
+                            </li>             
+                        </ul>
+                    </li>
                    
                 <?php endif; ?>
 

@@ -51,7 +51,7 @@ class Mdl_summary_report extends MY_Model {
         MAX(temp.asm_count) asm_count, MAX(temp.zsm_count) zsm_count
         FROM (
         SELECT 
-        zsm.users_name AS zsm_name, z.zone_name AS zone,
+        zsm.users_id as zsm_id, zsm.users_name AS zsm_name, z.zone_name AS zone,
         asm.users_id AS asm_id, asm.users_name AS asm_name, a.area_name AS area, 
         NULL AS chemist_count, COUNT(d.doctor_name) AS doctor_count, 
         SUM(IF(d.asm_status = 'approve', 1, 0)) AS asm_count, SUM(IF(d.zsm_status = 'approve', 1, 0)) AS zsm_count,
@@ -89,7 +89,7 @@ class Mdl_summary_report extends MY_Model {
         $sql .= " GROUP BY asm.users_id 
         UNION ALL
         SELECT 
-        zsm.users_name AS zsm_name, z.zone_name AS zone,
+        zsm.users_id as zsm_id, zsm.users_name AS zsm_name, z.zone_name AS zone,
         asm.users_id AS asm_id, asm.users_name AS asm_name, a.area_name AS AREA, 
         COUNT(ch.chemist_id) chemist_count, 
         NULL AS doctor_count, NULL AS asm_count, NULL AS zsm_count,
@@ -128,7 +128,7 @@ class Mdl_summary_report extends MY_Model {
         $sql .= " GROUP BY asm.users_id
         UNION ALL
         SELECT 
-        zsm.users_name AS zsm_name, z.zone_name AS zone,
+        zsm.users_id as zsm_id, zsm.users_name AS zsm_name, z.zone_name AS zone,
         asm.users_id AS asm_id, asm.users_name AS asm_name, a.area_name AS area,
         NULL as chemist_count, NULL AS doctor_count, NULL AS asm_count, NULL AS zsm_count,
         COUNT(temp.mr_id) as total_reps, NULL as no_of_days
@@ -165,6 +165,17 @@ class Mdl_summary_report extends MY_Model {
                 }
             }
         }
+
+        $role = $this->session->get_field_from_session('role', 'user');
+		if(!empty($role)){
+			$id = $this->session->get_field_from_session('user_id', 'user');
+			if($role == 'ASM'){
+				$sql .= " AND temp.asm_id = '".$id."'";
+			}
+			if($role == 'ZSM'){
+				$sql .= " AND temp.zsm_id = '".$id."'";
+			}
+		}
 
         $sql .= " GROUP BY temp.asm_id ";
 
