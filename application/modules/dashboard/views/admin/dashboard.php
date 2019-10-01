@@ -28,7 +28,7 @@
                     <i class="material-icons">person_add</i>
                 </div>
                 <div class="content">
-                    <div class="text">ASM Approved Count</div>
+                    <div class="text" style="margin-top:0px !important">ASM Approved Count</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $asm_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $asm_count; ?></div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <i class="material-icons">person_add</i>
                 </div>
                 <div class="content">
-                    <div class="text">ZSM Approved Doctor</div>
+                    <div class="text" style="margin-top:0px !important">ZSM Approved Doctor</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $zsm_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $zsm_count; ?></div>
                 </div>
             </div>
