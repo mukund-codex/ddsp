@@ -92,7 +92,7 @@
                         <li <?php echo (isset($menu) && $menu == 'zone_wise_doctor') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/zone_wise_doctor?t=$timestamp") ?>">Zone Wise Doctor</a>
                         </li>      
-                       <!--  <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
+                        <li <?php echo (isset($menu) && $menu == 'category_wise_report') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/category_wise_report?t=$timestamp") ?>">Category Wise Report</a>
                         </li>  
                         <li <?php echo (isset($menu) && $menu == 'molecule_wise_report') ? 'class="active"': ''; ?>>
@@ -112,7 +112,7 @@
                         </li>
                         <li <?php echo (isset($menu) && $menu == 'gynaec_dr_report') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/gynaec_dr_report?t=$timestamp") ?>">Gynaec Dr Live Report</a>
-                        </li>  -->              
+                        </li>               
                     </ul>
                 </li>
                    
