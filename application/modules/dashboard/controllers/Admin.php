@@ -7,6 +7,7 @@ class Admin extends Admin_Controller
 	
 	function __construct() {
 		parent::__construct($this->module, $this->controller, $this->model_name);
+		$this->load->driver('cache', array('adapter' => 'file'));
 	}
 
 	function index(){
@@ -14,17 +15,38 @@ class Admin extends Admin_Controller
 			redirect('admin','refresh');
 		}
 
+		$filters = [];
+		
+		/* $zone_id = (int) $this->input->post('zone_id');
+
+		if($zone_id) {
+			$filters['temp.zone_id'] = $zone_id;
+		} */
+
 		$this->data['mainmenu'] = 'dashboard';
 
-		$chemist_data = $this->model->get_chemist_count();
-		$count = $chemist_data[0]['chemist_count'];
-		$chemist_count = empty($count) ? 0 : $count;
-		$this->data['chemist_count'] = $chemist_count;
+		$dashboard_widget_data = $this->cache->get('dashboard_widget_data');
 
-		$doctor_data = $this->model->get_doctor_count();
-		$dcount = $doctor_data[0]['doctor_count'];
-		$doctor_count = empty($dcount) ? 0 : $dcount;
-		$this->data['doctor_count'] = $doctor_count;
+		if(empty($dashboard_widget_data)) {
+			$dashboard_widget_data = $this->model->get_dashboard_collection($filters);
+		}
+		
+		$this->data['chemist_count'] = !empty($dashboard_widget_data) ? (int) $dashboard_widget_data['chemist_count'] : 0;
+		$this->data['doctor_count'] = !empty($dashboard_widget_data) ? (int) $dashboard_widget_data['doctor_count'] : 0;
+		$this->data['asm_count'] = !empty($dashboard_widget_data) ? (int) $dashboard_widget_data['asm_count'] : 0;
+		$this->data['zsm_count'] = !empty($dashboard_widget_data) ? (int) $dashboard_widget_data['zsm_count'] : 0;
+
+		$dashboard_table_data = $this->cache->get('dashboard_table_data');
+
+		if(empty($dashboard_table_data)) {
+			$dashboard_table_data = $this->model->dashboard_table_collection();
+		}
+
+		$this->data['dashboard_table_data'] = $dashboard_table_data;
+
+		$this->cache->save('dashboard_widget_data', $dashboard_widget_data, 300);
+		$this->cache->save('dashboard_table_data', $dashboard_table_data, 300);
+		$this->data['js'] = ['dashboard.js'];
 		
     	$this->set_view($this->data, $this->controller . '/dashboard',  '_admin');
     }
