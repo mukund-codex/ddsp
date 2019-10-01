@@ -43,7 +43,8 @@ class Usertracking {
 			'name' => 'session_id',
 			'type' => 'string',
 			'forge_type' => 'varchar',
-			'forge_constraint' => '100'
+			'forge_constraint' => '100',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'user_identifier',
@@ -55,24 +56,28 @@ class Usertracking {
 		array(
 			'name' => 'request_uri',
 			'type' => 'string',
-			'forge_type' => 'text'
+			'forge_type' => 'text',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'timestamp',
 			'type' => 'string',
 			'forge_type' => 'varchar',
-			'forge_constraint' => '20'
+			'forge_constraint' => '20',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'client_ip',
 			'type' => 'string',
 			'forge_type' => 'varchar',
-			'forge_constraint' => '50'
+			'forge_constraint' => '50',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'client_user_agent',
 			'type' => 'string',
-			'forge_type' => 'text'
+			'forge_type' => 'text',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'admin_identifier',
@@ -84,13 +89,15 @@ class Usertracking {
 		array(
 			'name' => 'referer_page',
 			'type' => 'string',
-			'forge_type' => 'text'
+			'forge_type' => 'text',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'http_method',
 			'type' => 'string',
 			'forge_type' => 'varchar',
-			'forge_constraint' => '20'
+			'forge_constraint' => '20',
+			'null' => TRUE
 		),
 		array(
 			'name' => 'get_parameters',
