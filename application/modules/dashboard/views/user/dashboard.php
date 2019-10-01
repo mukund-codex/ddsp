@@ -30,7 +30,7 @@
                     <i class="material-icons">assignment_turned_in</i>
                 </div>
                 <div class="content">
-                    <div class="text">Approved Doctor Count</div>
+                    <div class="text" style="margin-top:0px !important">Approved Doctor Count</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $approved_doctor_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $approved_doctor_count; ?></div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                     <i class="material-icons">assignment_late</i>
                 </div>
                 <div class="content">
-                    <div class="text">Disapproved Doctor Count</div>
+                    <div class="text" style="margin-top:0px !important">Disapproved Doctor Count</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $disapproved_doctor_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $disapproved_doctor_count; ?></div>
                 </div>
             </div>
