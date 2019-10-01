@@ -71,7 +71,8 @@
                             <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'" download>Document</a>
                         <?php else:?>
                             <a href="<?php echo base_url($value); ?>" class="fancybox" rel="rxn_group_'".$i."'">
-                                <img src="<?php echo base_url($value); ?>" alt="Image" style="width:50px;height:50px">
+                                <!-- <img src="<?php echo base_url($value); ?>" alt="Image" style="width:50px;height:50px"> -->
+                                Preview
                             </a>
                         <?php endif;?>
                     <?php endif; ?>
