@@ -90,7 +90,8 @@ class MY_Session extends CI_Session {
 		$user_login_status = (int) $this->user_logged_in();
 
 		if( ! $admin_login_status && ! $user_login_status){
-			echo json_encode(['status'=> FALSE, 'error'=> 'Forbidden']); exit;
+			// echo json_encode(['status'=> FALSE, 'error'=> 'Forbidden']); exit;
+			redirect('user/login','refresh');
 		}
 		return true;
     }
