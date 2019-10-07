@@ -19,7 +19,7 @@ abstract class Admin_Controller extends Generic_Controller{
 			$config[$record->config_type] = $record->config_value;
 		}
 
-		$this->scripts = $scripts;
+        $this->scripts = $scripts;
 		$this->controller = $controller;
         $this->module = $module;
 
