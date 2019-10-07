@@ -91,10 +91,10 @@ class Asm_lists extends User_Controller
 		$this->data['gynae'] = $approved_data['gynae'];
 
         $filter_columns = $this->model->get_filters();
-        
+        //
         $this->data['show_filters'] = TRUE;
         $this->data['date_filters'] = TRUE;
-        
+        //echo '<pre>';print_r($filter_columns);exit;
         $this->set_view_columns($table_columns, $csv_columns, $filter_columns);
         /* END columns */
 		

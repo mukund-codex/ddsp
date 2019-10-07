@@ -35,7 +35,7 @@ class Mdl_asm_lists extends MY_Model {
     function get_filters() {
         $user_role = $this->session->get_field_from_session('role','user');
 		$admin_columns = [];
-		$non_filter= [];
+		/* $non_filter= []; */
 		if(empty($user_role)) {
 			$admin_columns = [
 				[
@@ -92,14 +92,14 @@ class Mdl_asm_lists extends MY_Model {
 		];
 		
 		$newcolumns = array_merge($admin_columns, $user_columns);
-		if($user_role != 'HO'){
+		/* if($user_role != 'HO'){
 			$non_filter = [
 				[],
 			];
-		}		
-
+		}	 */	
+		return $newcolumns;
 		// echo '<pre>'; print_r($newcolumns); die();
-		return array_merge($non_filter,$newcolumns);
+		//return array_merge($non_filter,$newcolumns);
     }
 
     function get_filters_from($filters) {
@@ -548,7 +548,7 @@ function change_doctor_status(){
 		$sql .= " )temp";
 		
 		$q = $this->db->query($sql);
-		
+		//echo $sql;exit;
         $collection = $q->row_array();
 		return $collection;
 	}
