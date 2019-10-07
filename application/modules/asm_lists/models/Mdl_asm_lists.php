@@ -505,4 +505,51 @@ function change_doctor_status(){
 
 		return $response;
 	}
+
+	function get_speciality_wise_approve_count($sfilters = []) {		
+		$sql = "SELECT 
+		MAX(IF(temp.speciality_name = 'Derma', temp.zsm_count, 0)) derma, 
+		MAX(IF(temp.speciality_name = 'CP', temp.zsm_count, 0)) cp,
+		MAX(IF(temp.speciality_name = 'GP', temp.zsm_count, 0)) gp,
+		MAX(IF(temp.speciality_name = 'Gynae', temp.zsm_count, 0)) gynae,
+		(	MAX(IF(temp.speciality_name = 'Derma', temp.zsm_count, 0)) + 
+			MAX(IF(temp.speciality_name = 'CP', temp.zsm_count, 0)) +
+			MAX(IF(temp.speciality_name = 'GP', temp.zsm_count, 0)) + 
+			MAX(IF(temp.speciality_name = 'Gynae', temp.zsm_count, 0))
+		) total
+		FROM
+		(
+		SELECT 
+			sp.speciality_name,
+			SUM(IF(d.zsm_status = 'approve', 1, 0)) AS zsm_count
+		FROM doctor d
+		JOIN speciality sp ON sp.speciality_id = d.speciality
+		JOIN manpower mr ON mr.users_id = d.users_id
+		JOIN manpower asm ON asm.users_id = mr.users_parent_id
+		JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+		JOIN zone z ON z.zone_id = zsm.users_zone_id
+		JOIN area a ON a.area_id = asm.users_area_id
+		WHERE 1 = 1 ";
+
+		if(sizeof($sfilters)) { 
+            foreach ($sfilters as $key => $value) { 
+                $sql .= " AND $key = $value "; 
+			}
+		}
+
+		$user_role = $this->session->get_field_from_session('role','user');
+		
+		if(in_array($user_role, ['ZSM'])) {
+			$user_id = $this->session->get_field_from_session('user_id', 'user');
+			$sql .= ' AND zsm.users_id = '.$user_id.' ';
+		}
+		
+		$sql .= " GROUP BY sp.speciality_id ";
+		$sql .= " )temp";
+		
+		$q = $this->db->query($sql);
+		
+        $collection = $q->row_array();
+		return $collection;
+	}
 }

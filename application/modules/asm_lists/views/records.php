@@ -1,3 +1,4 @@
+
 <?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['doctor_id']; ?>
 <tr>
     <?php  $user_role = $this->session->get_field_from_session('role','user');

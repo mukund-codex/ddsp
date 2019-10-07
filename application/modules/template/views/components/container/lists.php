@@ -1,3 +1,65 @@
+
+<?php if($module_title == 'asm_lists'){ ?>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box-4">
+                <div class="icon">
+                    <i class="material-icons col-blue">devices</i>
+                </div>
+                <div class="content">
+                    <div class="text">Total</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $total; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $total; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box-4">
+                <div class="icon">
+                    <i class="material-icons col-teal">equalizer</i>
+                </div>
+                <div class="content">
+                    <div class="text">Derma</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $derma; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $derma; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box-4">
+                <div class="icon">
+                    <i class="material-icons col-teal">equalizer</i>
+                </div>
+                <div class="content">
+                    <div class="text">CP</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $cp; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $cp; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box-4">
+                <div class="icon">
+                    <i class="material-icons col-teal">equalizer</i>
+                </div>
+                <div class="content">
+                    <div class="text">GP</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $gp; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $gp; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box-4">
+                <div class="icon">
+                    <i class="material-icons col-teal">equalizer</i>
+                </div>
+                <div class="content">
+                    <div class="text">Gynae</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $gynae; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $gynae; ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php  } ?>  
 <div class="row clearfix">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="card">

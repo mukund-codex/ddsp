@@ -23,7 +23,7 @@ class Asm_lists extends User_Controller
         );
 
         $this->set_defaults();
-    }
+	}
 
 	function options(){
 		$this->session->is_Ajax_and_logged_in();
@@ -57,12 +57,68 @@ class Asm_lists extends User_Controller
 		echo json_encode($json);
     }
 
-	function whatsapp(){
-		$this->session->is_Ajax_and_logged_in();
+	function lists(){
+		if( ! $this->session->is_logged_in() ){
+			show_error("Forbidden", 403);
+		}
 
-		$response = $this->model->whatsapp();
-		echo json_encode($response);
-    }
+		$sfilters = array();
+
+        $offset = (int) $this->input->post('page');
+        // print_r(print_r($_POST)); die();
+        // $keywords = !empty($this->input->post('keywords'))?$this->input->post('keywords'):'';
+
+        $post_array = $this->input->post();
+        unset($post_array['page']);
+        unset($post_array['search']);
+        
+		$this->data['collection'] = $this->model->get_collection($count = FALSE, $sfilters, $post_array, $this->perPage, $offset);
+		$totalRec = $this->model->get_collection( $count = TRUE, $sfilters, $post_array);
+        
+        $this->paginate($this->data['controller'], $totalRec, 3);
+    
+        $this->data['plugins'] = ['paginate'];
+        
+        /* columns for list & CSV */
+        $table_columns = $this->model->get_column_list();
+        $csv_columns = $this->model->get_csv_columns();
+
+		$approved_data = $this->model->get_speciality_wise_approve_count();
+		$this->data['total'] = $approved_data['total'];
+		$this->data['derma'] = $approved_data['derma'];
+		$this->data['cp'] = $approved_data['cp'];
+		$this->data['gp'] = $approved_data['gp'];
+		$this->data['gynae'] = $approved_data['gynae'];
+
+        $filter_columns = $this->model->get_filters();
+        
+        $this->data['show_filters'] = TRUE;
+        $this->data['date_filters'] = TRUE;
+        
+        $this->set_view_columns($table_columns, $csv_columns, $filter_columns);
+        /* END columns */
+		
+        $records_view = $this->data['controller'].'/records';
+        $this->data['js'] = $this->scripts;
+		$this->data['permissions'] = $this->settings['permissions'];
+		
+		$role = $this->session->get_field_from_session('role','user');
+
+        if(empty($role)) {
+            $role = $this->session->get_field_from_session('role');
+        }
+        
+        $this->data['role'] = $role;
+		$template = ( in_array($role, ['SA', 'A'])) ? '_admin' : '_user';
+		        
+		if ($this->input->post('search') == TRUE) {
+			$this->load->view($records_view, $this->data);
+        }else
+        {
+			$this->data['records_view'] = $records_view;
+			$this->set_view($this->data, 'template/components/container/lists', $template);
+		}
+	}
 
 	function uploadcsv(){
         
@@ -125,17 +181,5 @@ class Asm_lists extends User_Controller
 		$response = $this->model->change_doctor_status();
 		echo json_encode($response);
 	}	
-
-	/* function disapprove(){
-
-		$doctor_id = $this->input->post('id');
-
-		$response = $this->model->disapprove_doctor($doctor_id);
-
-		if($response['status']){
-			redirect(base_url("asm_lists/lists")); 
-		}
-
-	} */
 
 }

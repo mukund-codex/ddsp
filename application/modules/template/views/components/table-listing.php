@@ -3,7 +3,7 @@
 <?php if(in_array('download', $permissions)) : ?>
     <a href="<?php echo base_url("$download_url") ?>" class="btn btn-primary m-t-15 waves-effect" id="export" title="Export" style="float:right;margin-right:20px;">Export</a>
 <?php endif; ?>
-            
+          
 <div class="body table-responsive">
 <?php if(isset($date_filters) && $date_filters): ?>
 <div class="row clearfix">
