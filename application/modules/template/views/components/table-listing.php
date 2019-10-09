@@ -1,3 +1,48 @@
+<br>
+<?php if(in_array('addSMSbalance', $permissions)) : ?>
+<div class="block-header" style="margin-left:20px;">
+	<h2>SMS USAGE</h2>
+</div>
+<div class="row clearfix" style="margin-left:5px;">
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-zoom-effect">
+			<div class="icon bg-deep-orange">
+				<i class="material-icons">email</i>
+			</div>
+			<div class="content">
+				<div class="text">TOTAL SMS</div>
+				<div class="number"><?= number_format($total_balance[0]->balance); ?></div>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-zoom-effect">
+			<div class="icon bg-blue">
+				<i class="material-icons">email</i>
+			</div>
+			<div class="content">
+				<div class="text">SMS REMAINING</div>
+				<div class="number"><?= number_format($sms_balance); ?></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-expand-effect">
+			<div class="icon bg-teal">
+				<i class="material-icons">equalizer</i>
+			</div>
+			<div class="content">
+				<div class="text">SMS USAGE</div>
+				<div class="number"><?= number_format($total_balance[0]->balance - $sms_balance) ?></div>
+			</div>
+		</div>
+	</div>
+		
+</div>
+<?php endif; ?>
+
 <a onclick="reset();" class="btn btn-primary m-t-15 waves-effect" style="margin-left:20px;">Reset Filters</a></li>
 
 <?php if(in_array('download', $permissions)) : ?>

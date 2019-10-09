@@ -198,6 +198,13 @@
                     </a>
                 </li>
 
+                <li <?php echo ($mainmenu == 'sms') ? 'class="active"': ''; ?> style="display:block;">
+                    <a href="<?php echo base_url("sms/lists?t=$timestamp") ?>">
+                        <i class="material-icons">receipt</i>
+                        <span>SMS Logs</span>
+                    </a>
+                </li>
+
                 <li <?php echo (in_array($menu, ['login_reports', 'mr_summary_report','category_wise_report', 'molecule_wise_report', 'brand_wise_report', 'derma_dr_report', 'cp_dr_report', 'gp_dr_report', 'gynaec_dr_report', 'zone_wise_doctor','chemist_list','doctor_list','summary_report','feedback_report', 'troubleshoot_report'])) ? 'class="active"': ''; ?> >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">receipt</i>

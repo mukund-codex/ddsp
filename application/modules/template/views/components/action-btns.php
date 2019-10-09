@@ -3,7 +3,7 @@ function reset(){
     location.reload();
 }
 </script>
-<?php if(in_array('add', $permissions) || in_array('upload', $permissions)) : ?>
+<?php if(in_array('add', $permissions) || in_array('upload', $permissions) || in_array('addSMSbalance', $permissions)) : ?>
     <ul class="header-dropdown m-r--5">
         <li class="dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -12,6 +12,10 @@ function reset(){
             <ul class="dropdown-menu pull-right">
                 <?php if(in_array('add', $permissions)) : ?>
                 <li><a href="<?php echo base_url("$controller/add") ?>">Add <?= ucfirst($module_title) ?></a></li>
+                <?php endif; ?>
+
+                <?php if(in_array('addSMSbalance', $permissions)) : ?>
+                    <li><a href="<?php echo base_url("$controller/addSMSbalance") ?>">Add <?= ucfirst($module_title) ?></a></li>
                 <?php endif; ?>
 
                 <?php if(in_array('upload', $permissions)) : ?>
