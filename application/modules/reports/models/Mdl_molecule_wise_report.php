@@ -72,7 +72,9 @@ class Mdl_molecule_wise_report extends MY_Model {
         foreach($molecule_data as $key => $molecule){
             $molecule_name = $molecule->molecule_name;
             //echo $molecule_name."<br>";
-            $query .= "SUM(IF(molecule_name = '".$molecule_name."', 1, 0)) AS '".$molecule_name."', ";
+            //$query .= "SUM(IF(molecule_name = '".$molecule_name."', 1, 0)) AS '".$molecule_name."', ";
+            $query .= "SUM(ifnull(case when (molecule_name = '".$molecule_name."' AND brand_molecule_id = molecule_molecule_id) 
+            THEN rxn END, 0)) as '".$molecule_name."',";
         }
         $query = rtrim($query, ", ");
 
@@ -82,17 +84,22 @@ class Mdl_molecule_wise_report extends MY_Model {
             ".$query."
         FROM
         (
-            SELECT
-                zsm.users_id as zsm_id,zsm.users_name as zsm_name, z.zone_name as zone,
-                asm.users_id as asm_id,asm.users_name as asm_name, a.area_name as area,
-                mr.users_name as mr_name, c.city_name as city,
-                ch.chemist_name, ch.address as chemist_address, ch.insert_dt as chemist_date,
-                d.doctor_id, d.doctor_name, d.address as doctor_address, 
-                um.molecule_id, um.category_id, um.molecule,
-                m.molecule_id AS 'm_molecule_id', m.molecule_name, m.category_id AS 'm_molecule_cat'		
+            SELECT zsm.users_id AS zsm_id,zsm.users_name AS zsm_name, 
+            z.zone_name AS zone, asm.users_id AS asm_id,
+            asm.users_name AS asm_name, a.area_name AS area, 
+            mr.users_name AS mr_name, c.city_name AS city, 
+            ch.chemist_name, ch.address AS chemist_address, 
+            ch.insert_dt AS chemist_date, d.doctor_id, 
+            d.doctor_name, d.address AS doctor_address, 
+            um.molecule_id, um.category_id, um.molecule, 
+            m.molecule_id AS 'm_molecule_id', 
+            m.molecule_name, m.category_id AS 'm_molecule_cat',
+            ub.molecule_id as brand_molecule_id, ub.rxn as rxn,
+            um.molecule_id as molecule_molecule_id
             FROM doctor d
-            LEFT JOIN users_molecule um ON d.doctor_id = um.doctor_id 
+            LEFT JOIN users_molecule um ON d.doctor_id = um.doctor_id
             LEFT JOIN molecule m ON um.molecule = m.molecule_id
+            JOIN users_brand ub ON ub.molecule_id = um.molecule_id
             JOIN chemist ch ON ch.chemist_id = um.chemist_id
             JOIN manpower mr ON ch.users_id = mr.users_id
             JOIN manpower asm ON asm.users_id = mr.users_parent_id

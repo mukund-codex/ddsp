@@ -51,37 +51,41 @@ class Mdl_category_wise_report extends MY_Model {
 
 	function get_collection($count = FALSE, $f_filters = [], $rfilters ='', $limit = 0, $offset = 0 ) {
         
-        $sql = "SELECT 
-        zsm.users_name as zsm_name, z.zone_name as zone,
+        $sql = "select 
+        zsm.users_name as zsm_name, z.zone_name as zone, 
         asm.users_name as asm_name, a.area_name as area,
-        mr.users_id,
-        mr.users_name as mr_name, c.city_name as city, temp.chemist_date,
-        temp.chemist_name, temp.chemist_address, temp.doctor_name, 
-        temp.doctor_address, SUM(temp.hyper) hyper, 
-        SUM(temp.acne) acne, SUM(temp.anti) anti
-        FROM
-        (
-        SELECT 
-        ch.users_id,ch.chemist_id, ch.chemist_name, ch.address AS chemist_address, ch.insert_dt as chemist_date,
-        d.doctor_id, d.doctor_name, d.address AS doctor_address,
-        cat.category_id, cat.category_name,
-        IF(cat.category_id = 1, 1,0) AS hyper, 
-        IF(cat.category_id = 2, 1,0) AS acne, 
-        IF(cat.category_id = 3, 1,0) AS anti
-        FROM 
-        chemist ch
-        JOIN doctor d ON d.chemist_id = ch.chemist_id
-        JOIN users_molecule um ON um.doctor_id = d.doctor_id
-        JOIN category cat ON cat.category_id = um.category_id
-        ) temp
-        JOIN manpower mr ON mr.users_id = temp.users_id
-        JOIN manpower asm ON asm.users_id = mr.users_parent_id
-        JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
+        mr.users_name as mr_name, c.city_name as city,
+        chemist.chemist_name, chemist.address as chemist_address,
+        doctor.doctor_name, doctor.address as doctor_address,
+
+        SUM(ifnull(case when (category.category_id = 1 AND users_molecule.category_id = 1 AND users_brand.molecule_id = users_molecule.molecule_id) 
+        THEN users_brand.rxn END, 0)) as hyper,
+        SUM(ifnull(case when (category.category_id = 2 AND users_molecule.category_id = 2 AND users_brand.molecule_id = users_molecule.molecule_id) 
+        THEN users_brand.rxn END, 0)) as acne,
+        SUM(ifnull(case when (category.category_id = 3 AND users_molecule.category_id = 3 AND users_brand.molecule_id = users_molecule.molecule_id) 
+        THEN users_brand.rxn END, 0)) as anti,
+        chemist.insert_dt as chemist_date
+
+        from doctor
+        JOIN manpower mr on mr.users_id = doctor.users_id
+        JOIN manpower asm on asm.users_id = mr.users_parent_id
+        JOIN manpower zsm on zsm.users_id = asm.users_parent_id
+        JOIN chemist on chemist.users_id = mr.users_id
         JOIN zone z ON z.zone_id = zsm.users_zone_id
         JOIN area a ON a.area_id = asm.users_area_id
-        JOIN city c ON c.city_id = mr.users_city_id";
+        JOIN city c ON c.city_id = mr.users_city_id
 
-        $sql .= " WHERE 1 = 1 ";
+        JOIN users_molecule on users_molecule.doctor_id = doctor.doctor_id
+        and users_molecule.users_id = users_molecule.users_id
+        and users_molecule.chemist_id = users_molecule.chemist_id
+
+        JOIN category on category.category_id = users_molecule.category_id
+        JOIN users_brand on users_brand.molecule_id = users_molecule.molecule_id
+        and users_brand.doctor_id = doctor.doctor_id
+        and users_brand.chemist_id = chemist.chemist_id
+        and users_brand.users_id = mr.users_id";
+
+        $sql .= " WHERE 1 = 1 AND mr.users_type = 'MR' ";
        
 		if(is_array($rfilters) && count($rfilters) ) {
 			$field_filters = $this->get_filters_from($rfilters);
@@ -93,12 +97,12 @@ class Mdl_category_wise_report extends MY_Model {
                 }
 
                 if($key == 'from_date' && !empty($value)) {
-					$sql .= " AND DATE(temp.chemist_date) >= '".date('Y-m-d', strtotime($value))."' ";
+					$sql .= " AND DATE(chemist_date) >= '".date('Y-m-d', strtotime($value))."' ";
                     continue;
                 }
 
                 if($key == 'to_date' && !empty($value)) {
-					$sql .= " AND DATE(temp.chemist_date) <= '".date('Y-m-d', strtotime($value))."' ";
+					$sql .= " AND DATE(chemist_date) <= '".date('Y-m-d', strtotime($value))."' ";
                     continue;
                 }
                
@@ -121,15 +125,15 @@ class Mdl_category_wise_report extends MY_Model {
 			}
 		}
 
-        $sql .= " group by mr.users_id";
-        $sql .= " order by temp.chemist_date DESC ";
+        $sql .= " group by doctor.doctor_id";
+        $sql .= " order by chemist_date DESC ";
 
         if(! $count) {
             if(!empty($limit)) { $sql .= " LIMIT $offset, $limit"; }        
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
 		return $collection;
