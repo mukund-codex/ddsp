@@ -94,7 +94,12 @@ class Mdl_summary_report extends MY_Model {
         COUNT(ch.chemist_id) chemist_count, 
         NULL AS doctor_count, NULL AS asm_count, NULL AS zsm_count,
         NULL as total_reps, 
-        DATEDIFF(MAX(ch.insert_dt),MIN(ch.insert_dt)) no_of_days
+        (
+            SELECT COUNT(DISTINCT DATE(chemist.insert_dt))  
+            FROM
+            chemist 
+            WHERE chemist.users_id = ch.users_id
+        ) as no_of_days
         FROM
         chemist ch
         LEFT JOIN manpower mr ON mr.users_id = ch.users_id

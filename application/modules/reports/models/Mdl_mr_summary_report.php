@@ -105,7 +105,12 @@ class Mdl_mr_summary_report extends MY_Model {
         mr.users_id as mr_id, mr.users_name as mr_name, c.city_id,c.city_name as city,
         COUNT(ch.chemist_id) chemist_count, NULL AS doctor_count, NULL AS asm_count, 
         NULL AS zsm_count, NULL AS total_reps, 
-        DATEDIFF(MAX(ch.insert_dt), MIN(ch.insert_dt)) no_of_days
+        (
+            SELECT COUNT(DISTINCT DATE(chemist.insert_dt))  
+            FROM
+            chemist 
+            WHERE chemist.users_id = ch.users_id
+        ) as no_of_days
         FROM chemist ch
         LEFT JOIN manpower mr ON mr.users_id = ch.users_id
         LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -197,7 +202,7 @@ class Mdl_mr_summary_report extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        // echo $sql;exit;
+        //echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
         return $collection;
