@@ -35,7 +35,42 @@ class Mdl_user extends MY_Model {
 
 		return $collection;
 
-	}
+    }
+    
+    function chemist_graph_count() {
+        $sql = "SELECT
+            'Greater than 15' AS 'key', SUM(IF(chemist_count > 15, 1, 0)) AS 'value'
+        FROM (
+            SELECT
+                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
+            FROM chemist c
+            GROUP BY c.users_id
+        ) temp
+
+        UNION
+
+        SELECT
+            'Exactly 15' AS 'key', SUM(IF(chemist_count = 15, 1, 0)) AS 'value'
+        FROM (
+            SELECT
+                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
+            FROM chemist c
+            GROUP BY c.users_id
+        ) temp
+
+        UNION 
+
+        SELECT
+            'Less than 15' AS 'key', SUM(IF(chemist_count < 15, 1, 0)) AS 'value'
+        FROM (
+            SELECT
+                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
+            FROM chemist c
+            GROUP BY c.users_id
+        ) temp";
+
+        return $this->db->query($sql)->result_array();
+    }
 
 	function get_doctor_count(){
 		

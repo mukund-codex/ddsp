@@ -22,8 +22,8 @@ class User extends Front_Controller
 			$data['insert_user_id'] = $user_id;
 		} 
 
-		$this->data['js'] = ['form-submit.js', 'common.js','doctor.js'];
-		$this->data['plugins'] = ['countTo','select2','material-datetime','jCrop'];
+		$this->data['js'] = ['form-submit.js', 'common.js','doctor.js', 'pie.js'];
+		$this->data['plugins'] = ['countTo','select2','material-datetime','jCrop', 'amcharts4'];
         $this->data['mainmenu'] = 'dashboard';
 
 		$chemist_data = $this->model->get_chemist_count();
@@ -46,9 +46,15 @@ class User extends Front_Controller
 		$dadoctor_count = empty($dcount) ? 0 : $dcount;
 		$this->data['disapproved_doctor_count'] = $dadoctor_count;
 
-		//echo '<pre>';print_r($this->data);exit;
+        //echo '<pre>';print_r($this->data);exit;
+        
+        // print_r($this->data['chemist_graph_count']); die();
 
     	$this->set_view($this->data, $this->controller . '/dashboard',  '_user');
+    }
+
+    function chemist_count_for_day() {
+        echo json_encode($this->model->chemist_graph_count());
     }
     
     function logout() {

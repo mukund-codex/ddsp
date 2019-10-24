@@ -201,6 +201,13 @@
     <script type="text/javascript" src="<?= base_url('assets/components/jCrop/js/imgOnLoad.js') ?>"></script>
     <script type="text/javascript" src="<?= base_url('assets/js/crop-script.js') ?>"></script>
     <?php endif; ?>
+
+    <?php if( isset($plugins) && in_array('amcharts4', $plugins )) : ?>
+        <script src="<?php echo base_url(); ?>assets/plugins/amcharts4/core.js"></script>
+        <script src="<?php echo base_url(); ?>assets/plugins/amcharts4/charts.js"></script>
+        <script src="<?php echo base_url(); ?>assets/plugins/amcharts4/themes/animated.js"></script>
+    <?php endif; ?>
+    
     <?php if(isset($js) && sizeof($js)): foreach($js as $javascript): ?>
     <script type="text/javascript" src="<?php echo base_url()?>assets/resources/<?php echo $javascript ?>?ver=<?php echo $timestamp ?>"></script>
     <?php endforeach; endif; ?>
