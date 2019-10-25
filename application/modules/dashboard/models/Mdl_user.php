@@ -41,10 +41,10 @@ class Mdl_user extends MY_Model {
 		
 		$where = " WHERE 1 = 1 ";
 		if($from_date) {
-			$where .= " AND c.insert_dt >='".$from_date."'";
+			$where .= " AND date(c.insert_dt) >='".$from_date."'";
 		}
 		if($to_date) {
-			$where .= " AND c.insert_dt <='".$to_date."'";
+			$where .= " AND date(c.insert_dt) <='".$to_date."'";
 		}
 
         $sql = "SELECT
@@ -177,10 +177,10 @@ class Mdl_user extends MY_Model {
 	function get_chemist_count_data($zone_id, $from_date = "", $to_date = "") {
 		$where = "";
 		if($from_date) {
-			$where .= " AND chemist.insert_dt >=".$from_date;
+			$where .= " AND date(chemist.insert_dt) >=".$from_date;
 		}
 		if($to_date) {
-			$where .= " AND chemist.insert_dt <=".$to_date;
+			$where .= " AND date(chemist.insert_dt) <=".$to_date;
 		}
 
 		$q = $this->db->query("select sum(less_than_15) as count_less, sum(greater_15) as count_greater, sum(equal_15) as count_equal, asm.users_id, asm.users_name 
@@ -199,6 +199,7 @@ class Mdl_user extends MY_Model {
 								JOIN zone on zone.zone_id = asm.users_zone_id
 								where zone.zone_id = $zone_id
 								group by asm.users_id");
+								// echo $this->db->last_query();exit;
 		$collection = $q->result_array();
 		return $collection;
 	}
