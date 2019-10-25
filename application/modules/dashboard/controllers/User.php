@@ -73,8 +73,8 @@ class User extends Front_Controller
 	
 	function getZoneWiseRecords() {
 		$zone_id = $this->input->post('zone_id');
-		$from_date = $this->input->post('from_date');
-		$to_date = $this->input->post('to_date');
+		$from_date = date('Y-m-d', strtotime($this->input->post('from_date')));
+		$to_date = date('Y-m-d', strtotime($this->input->post('to_date')));
 		$this->data['chemistRecords'] = json_encode($this->model->get_chemist_count_data($zone_id, $from_date, $to_date));
 		echo $this->data['chemistRecords'];
 	}
