@@ -12,7 +12,7 @@ class User extends Front_Controller
 	function index(){
 		if( ! $this->session->user_logged_in() ){
 			redirect('user','refresh');
-		}
+        }
         
         $user_id = $this->session->get_field_from_session('user_id', 'user');
 		$role = $this->session->get_field_from_session('user_id', 'role');
@@ -22,8 +22,8 @@ class User extends Front_Controller
 			$data['insert_user_id'] = $user_id;
 		} 
 
-		$this->data['js'] = ['form-submit.js', 'common.js','doctor.js', 'pie.js', 'filters.js'];
-		$this->data['plugins'] = ['countTo','select2','material-datetime','jCrop', 'amcharts4'];
+		$this->data['js'] = ['form-submit.js', 'common.js','doctor.js', 'filters.js'];
+		$this->data['plugins'] = ['countTo','select2','material-datetime','jCrop'];
         $this->data['mainmenu'] = 'dashboard';
 
 		$chemist_data = $this->model->get_chemist_count();
@@ -44,23 +44,13 @@ class User extends Front_Controller
 		$dapp_doctor_data = $this->model->get_disapproved_doctor_count();
 		$dcount = $dapp_doctor_data[0]['doctor_count'];
 		$dadoctor_count = empty($dcount) ? 0 : $dcount;
-		$this->data['disapproved_doctor_count'] = $dadoctor_count;
+
 		$this->data['zones'] = $zones = $this->model->get_records([], 'zone');
+		$this->data['disapproved_doctor_count'] = $dadoctor_count;
 
 		$this->data['zone_id'] = $zone_id = $zones[0]->zone_id;
 		$this->data['chemistRecords'] = json_encode($this->model->get_chemist_count_data($zone_id));
-
-        //echo '<pre>';print_r($this->data);exit;
-        
-        // print_r($this->data['chemist_graph_count']); die();
-
     	$this->set_view($this->data, $this->controller . '/dashboard',  '_user');
-    }
-
-    function chemist_count_for_day() {
-		$from_date = date('Y-m-d', strtotime($this->input->post('from_date')));
-		$to_date = date('Y-m-d', strtotime($this->input->post('to_date')));
-        echo json_encode($this->model->chemist_graph_count($from_date, $to_date));
     }
     
     function logout() {

@@ -1,10 +1,3 @@
-<!-- Styles -->
-<style>
-#chartdiv,#chartdiv_asm {
-  width: 100%;
-  height: 500px;
-}
-</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -37,7 +30,7 @@
                     <i class="material-icons">assignment_turned_in</i>
                 </div>
                 <div class="content">
-                    <div class="text" style="margin-top:0px !important">Approved Doctor Count</div>
+                    <div class="text">Approved Doctor Count</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $approved_doctor_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $approved_doctor_count; ?></div>
                 </div>
             </div>
@@ -48,15 +41,14 @@
                     <i class="material-icons">assignment_late</i>
                 </div>
                 <div class="content">
-                    <div class="text" style="margin-top:0px !important">Disapproved Doctor Count</div>
+                    <div class="text">Disapproved Doctor Count</div>
                     <div class="number count-to" data-from="0" data-to="<?php echo $disapproved_doctor_count; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $disapproved_doctor_count; ?></div>
                 </div>
             </div>
         </div>
         <?php } ?>
     </div>
-    <!-- HTML -->
-
+</div>
 
 <div class="panel panel-default">
     <div class="panel-body">
@@ -70,18 +62,23 @@
             </div>
 
             <div class="col-md-4">
-                <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date">
             </div>
 
             <div class="col-md-4">
-                <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+                <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date">
             </div>
         </div>
-
         <div class="card-text">
-            <div id="chartdiv"></div>
             <div id="chartdiv_asm"></div>
         </div>
     </div>
 </div>
-</div>
+
+<!-- Styles -->
+<style>
+#chartdiv_asm {
+  width: 100%;
+  height: 500px;
+}
+</style>

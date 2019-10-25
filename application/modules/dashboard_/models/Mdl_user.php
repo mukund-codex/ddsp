@@ -11,7 +11,7 @@ class Mdl_user extends MY_Model {
 	function get_chemist_count(){
 		
 		$sql = "SELECT 
-		COUNT(ch.chemist_name) as chemist_count
+		COUNT(DISTINCT(ch.chemist_name)) as chemist_count
 		FROM chemist ch
 		JOIN manpower mr ON mr.users_id = ch.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id";
@@ -35,59 +35,12 @@ class Mdl_user extends MY_Model {
 
 		return $collection;
 
-    }
-    
-    function chemist_graph_count($from_date = false, $to_date = false) {
-		
-		$where = " WHERE 1 = 1 ";
-		if($from_date) {
-			$where .= " AND c.insert_dt >='".$from_date."'";
-		}
-		if($to_date) {
-			$where .= " AND c.insert_dt <='".$to_date."'";
-		}
-
-        $sql = "SELECT
-            'Greater than 15' AS 'key', SUM(IF(chemist_count > 15, 1, 0)) AS 'value'
-        FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
-        ) temp
-
-        UNION
-
-        SELECT
-            'Exactly 15' AS 'key', SUM(IF(chemist_count = 15, 1, 0)) AS 'value'
-        FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
-        ) temp
-
-        UNION 
-
-        SELECT
-            'Less than 15' AS 'key', SUM(IF(chemist_count < 15, 1, 0)) AS 'value'
-        FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
-        ) temp";
-
-        return $this->db->query($sql)->result_array();
-    }
+	}
 
 	function get_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(d.doctor_name) AS doctor_count
+		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -117,7 +70,7 @@ class Mdl_user extends MY_Model {
 	function get_approved_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(d.doctor_name) AS doctor_count
+		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -147,7 +100,7 @@ class Mdl_user extends MY_Model {
 	function get_disapproved_doctor_count(){
 		
 		$sql = "SELECT 
-		COUNT(d.doctor_name) AS doctor_count
+		COUNT(DISTINCT(d.doctor_name)) AS doctor_count
 		FROM doctor d
 		JOIN manpower mr ON mr.users_id = d.users_id
 		LEFT JOIN manpower asm ON asm.users_id = mr.users_parent_id
@@ -202,5 +155,4 @@ class Mdl_user extends MY_Model {
 		$collection = $q->result_array();
 		return $collection;
 	}
-
 }
