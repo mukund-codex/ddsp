@@ -58,7 +58,26 @@
     <!-- HTML -->
 
 
-    <div class="panel panel-default">            
+    <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <div class="col-md-4">
+                        <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="no-data" style="display:none;text-align:center;">
+                <h4>Select Date to view Pie!</h4>
+            </div>
+            <div id="chartdiv"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
             <div class="panel-body">
                 <div>
                     <div class="col-md-4">
@@ -70,16 +89,14 @@
                     </div>
 
                     <div class="col-md-4">
-                        <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                        <input type="text" name="from_date_asm" id="from_date_asm" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
                     </div>
 
                     <div class="col-md-4">
-                        <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+                        <input type="text" name="to_date_asm" id="to_date_asm" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
                     </div>
                 </div>
             </div>
-
-            <div id="chartdiv"></div>
             <div id="chartdiv_asm"></div>
         </div>
     </div>

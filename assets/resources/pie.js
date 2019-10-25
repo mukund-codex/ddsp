@@ -40,9 +40,11 @@ function successFn(data, chart) {
 	console.log(count);
 	if (count == 3) {
 		$('#chartdiv').css('display', 'none');
+		$('.no-data').show();
 	}
 	if (count != 3) {
 		$('#chartdiv').css('display', 'block');
+		$('.no-data').hide();
 		chart.data = data;
 		chart.validateData();
 	}
