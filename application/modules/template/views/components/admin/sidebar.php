@@ -220,6 +220,9 @@
                         <li <?php echo (isset($menu) && $menu == 'mr_summary_report') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/mr_summary_report?t=$timestamp") ?>">MR Wise Summary Report</a>
                         </li> 
+                        <li <?php echo (isset($menu) && $menu == 'speciality_wise_summary_report') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("reports/speciality_wise_summary_report?t=$timestamp") ?>">Speciality Wise Summary Report</a>
+                        </li> 
                         <li <?php echo (isset($menu) && $menu == 'chemist_list') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("reports/chemist_list?t=$timestamp") ?>">Chemist List</a>
                         </li> 

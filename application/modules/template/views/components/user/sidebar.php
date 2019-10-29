@@ -154,6 +154,9 @@
                             <li <?php echo (isset($menu) && $menu == 'summary_report') ? 'class="active"': ''; ?>>
                                 <a href="<?php echo base_url("reports/summary_report?t=$timestamp") ?>">ABM Summary Report</a>
                             </li> 
+                            <li <?php echo (isset($menu) && $menu == 'speciality_wise_summary_report') ? 'class="active"': ''; ?>>
+                                <a href="<?php echo base_url("reports/speciality_wise_summary_report?t=$timestamp") ?>">Speciality Wise Summary Report</a>
+                            </li> 
                             <li <?php echo (isset($menu) && $menu == 'mr_summary_report') ? 'class="active"': ''; ?>>
                                 <a href="<?php echo base_url("reports/mr_summary_report?t=$timestamp") ?>">MR Wise Summary Report</a>
                             </li> 
