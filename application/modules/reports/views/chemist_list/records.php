@@ -6,6 +6,7 @@
     <td><?php echo $record['city'] ?></td>
     <td><?php echo $record['chemist_name'] ?></td>
     <td><?php echo $record['chemist_location'] ?></td> 
+    <td><?php echo $record['insert_dt'] ?></td> 
 </tr>
 <?php $i++;  } ?>
 

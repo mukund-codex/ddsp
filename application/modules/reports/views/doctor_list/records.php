@@ -14,7 +14,7 @@
     <td><?php echo $record['city'] ?></td> 
     <td><?php echo $record['doctor_name'] ?></td>
     <td><?php echo $record['type'] ?></td>
-    <td><?php echo $record['speciality'] ?></td>
+    <td><?php echo $record['speciality'] ?></td >
     <td style="font-weight:bold;">
         <?php 
             if($record['asm_status'] == 'approve'){
@@ -59,6 +59,7 @@
             <?php endif; ?>
         <?php endif; ?>
     </td> 
+    <td><?php echo $record['insert_dt'] ?></td >
    
 </tr>
 <?php $i++;  } ?>

@@ -53,7 +53,7 @@ class Mdl_chemist_list extends MY_Model {
         $sql = "SELECT 
         asm.users_name as asm_name, a.area_name as area,
         m.users_name as mr_name, c.city_name as city,
-        ch.chemist_name as chemist_name, ch.address as chemist_location
+        ch.chemist_name as chemist_name, ch.address as chemist_location, ch.insert_dt
         FROM chemist ch
         LEFT JOIN manpower m ON m.users_id = ch.users_id
         LEFT JOIN city c ON c.city_id = m.users_city_id
@@ -127,7 +127,8 @@ class Mdl_chemist_list extends MY_Model {
             $records['HQ'] = $rows['city'];            
             $records['Chemist Name'] = $rows['chemist_name'];        
             $chemist_location = $rows['chemist_location'];
-			$records['Chemist Location'] = str_replace(", ", " | ", $chemist_location);
+            $records['Chemist Location'] = str_replace(", ", " | ", $chemist_location);
+            $records['Date'] = $rows['insert_dt'];
             
 			array_push($resultant_array, $records);
 		}

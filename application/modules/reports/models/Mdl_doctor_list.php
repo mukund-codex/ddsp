@@ -80,7 +80,7 @@ class Mdl_doctor_list extends MY_Model {
 		temp.zsm_name,temp.asm_name, temp.mr_name, 
 		temp.zone, temp.area, temp.city,
 		temp.doctor_id, temp.doctor_name, temp.doctor_date, temp.speciality, temp.type, temp.asm_status, temp.zsm_status,
-		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti
+		SUM(temp.hyper) hyper, SUM(temp.acne) acne, SUM(temp.anti) anti, temp.insert_dt
 		
 		FROM (
 		SELECT
@@ -93,7 +93,8 @@ class Mdl_doctor_list extends MY_Model {
 		b.brand_name as other_name, ub.brand_name,
 		IF(cat.category_id = 1,SUM(ub.rxn),0) as hyper,
 		IF(cat.category_id = 2,SUM(ub.rxn),0) as acne,
-		IF(cat.category_id = 3,SUM(ub.rxn),0) as anti
+		IF(cat.category_id = 3,SUM(ub.rxn),0) as anti,
+		d.insert_dt
 		FROM
 		doctor d
 		LEFT JOIN speciality sp ON sp.speciality_id = d.speciality
@@ -202,6 +203,7 @@ class Mdl_doctor_list extends MY_Model {
 				}
 			}
 			$records['Image'] = !empty($images) ? rtrim($images, " | ") : "";
+			$records['Date'] = ucfirst($rows['insert_dt']);
 			
 			array_push($resultant_array, $records);
 		}
