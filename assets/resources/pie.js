@@ -30,8 +30,24 @@ var loadPie = function(chart) {
 };
 
 function successFn(data, chart) {
-	chart.data = data;
-	chart.validateData();
+	console.log(data.length);
+	var count = 0;
+	for (i = 0; i < data.length; i++) {
+		if (data[i].value == null) {
+			count++;
+		}
+	}
+	console.log(count);
+	if (count == 3) {
+		$('#chartdiv').css('display', 'none');
+		$('.no-data').show();
+	}
+	if (count != 3) {
+		$('#chartdiv').css('display', 'block');
+		$('.no-data').hide();
+		chart.data = data;
+		chart.validateData();
+	}
 }
 
 am4core.ready(function() {

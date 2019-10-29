@@ -36,15 +36,15 @@ am4core.ready(function() {
 	// Add legend
 	chartAsm.legend = new am4charts.Legend();
 
-	$('#zone_id, #from_date, #to_date').change(function() {
+	$('#zone_id, #from_date_asm, #to_date_asm').change(function() {
 		$.ajax({
 			url: baseUrl + 'dashboard/user/getZoneWiseRecords',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
 				zone_id: $('#zone_id').val(),
-				from_date: $('#from_date').val(),
-				to_date: $('#to_date').val(),
+				from_date: $('#from_date_asm').val(),
+				to_date: $('#to_date_asm').val(),
 				token: $('input[name=token]').val()
 			}
 		}).done(function(result) {

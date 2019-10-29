@@ -58,30 +58,46 @@
     <!-- HTML -->
 
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="panel-heading">
-            <div class="col-md-4">
-                <select class="form-control" name="zone_id" id="zone_id">
-                    <?php foreach($zones as $zone): ?>
-                        <option value="<?php echo $zone->zone_id; ?>"><?php echo $zone->zone_name; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+    <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <div class="col-md-4">
+                        <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
 
-            <div class="col-md-4">
-                <input type="text" name="from_date" id="from_date" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                    <div class="col-md-4">
+                        <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
+                </div>
             </div>
-
-            <div class="col-md-4">
-                <input type="text" name="to_date" id="to_date" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+            <div class="no-data" style="display:none;text-align:center;">
+                <h4>Select Date to view Pie!</h4>
             </div>
-        </div>
-
-        <div class="card-text">
             <div id="chartdiv"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <div class="col-md-4">
+                        <select class="form-control" name="zone_id" id="zone_id">
+                            <?php foreach($zones as $zone): ?>
+                                <option value="<?php echo $zone->zone_id; ?>"><?php echo $zone->zone_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="from_date_asm" id="from_date_asm" class="form-control datepicker" placeholder="Start Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="to_date_asm" id="to_date_asm" class="form-control datepicker" placeholder="End Date" value="<?php echo date('d-m-Y'); ?>">
+                    </div>
+                </div>
+            </div>
             <div id="chartdiv_asm"></div>
         </div>
     </div>
-</div>
 </div>
