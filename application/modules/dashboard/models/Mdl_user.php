@@ -183,14 +183,13 @@ class Mdl_user extends MY_Model {
 			$where .= " AND date(chemist.insert_dt) <='".$to_date."'";
 		}
 
-		$q = $this->db->query("select sum(less_than_15) as count_less, sum(greater_15) as count_greater, sum(equal_15) as count_equal, asm.users_id, asm.users_name 
+		$sql  = "select temp.users_type,sum(less_than_15) as count_less, sum(greater_15) as count_greater, sum(equal_15) as count_equal, asm.users_id, asm.users_name
 								from 
 								(select mr.users_id as mr_id, mr.users_parent_id as mr_parent_id,
 								case when (count(chemist.chemist_id) < 15) THEN 1 ELSE 0 END as less_than_15,
 								case when (count(chemist.chemist_id) = 15) THEN 1 ELSE 0 END as equal_15,
 								case when (count(chemist.chemist_id) > 15) THEN 1 ELSE 0 END as greater_15,
-
-								chemist.*, mr.users_name as asm_name
+								chemist.*, mr.users_name as asm_name, mr.users_type
 								from manpower mr
 								LEFT JOIN chemist on mr.users_id = chemist.users_id
 								$where
@@ -198,7 +197,9 @@ class Mdl_user extends MY_Model {
 								JOIN manpower asm on asm.users_id = temp.mr_parent_id
 								JOIN zone on zone.zone_id = asm.users_zone_id
 								where zone.zone_id = $zone_id
-								group by asm.users_id");
+								AND temp.users_type = 'MR'
+								group by asm.users_id";
+		$q = $this->db->query($sql);
 		$collection = $q->result_array();
 		return $collection;
 	}
