@@ -100,7 +100,28 @@ class Mdl_speciality_wise_summary_report extends MY_Model {
         (
             SELECT COUNT(DISTINCT DATE(chemist.insert_dt))
             FROM chemist
-            WHERE chemist.users_id = ch.users_id
+            WHERE chemist.users_id = ch.users_id ";
+        if(is_array($rfilters) && count($rfilters) ) {
+            $field_filters = $this->get_filters_from($rfilters);
+            
+            foreach($rfilters as $key=> $value) {
+                $value = trim($value);
+                if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+
+                if($key == 'from_date' && !empty($value)) {
+                    $sql .= " AND DATE(chemist.insert_dt) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+                    $sql .= " AND DATE(chemist.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+            }
+        }
+        $sql .= "
         ) AS no_of_days
         FROM chemist ch
         LEFT JOIN manpower mr ON mr.users_id = ch.users_id
