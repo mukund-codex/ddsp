@@ -2,7 +2,7 @@
 <?php if($module_title == 'asm_lists'){ ?>
     <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box-4">
                 <div class="icon">
                     <i class="material-icons col-blue">devices</i>
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box-4">
                 <div class="icon">
                     <i class="material-icons col-teal">equalizer</i>
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box-4">
                 <div class="icon">
                     <i class="material-icons col-teal">equalizer</i>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box-4">
                 <div class="icon">
                     <i class="material-icons col-teal">equalizer</i>
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box-4">
                 <div class="icon">
                     <i class="material-icons col-teal">equalizer</i>
