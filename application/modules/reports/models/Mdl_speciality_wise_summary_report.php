@@ -165,7 +165,7 @@ class Mdl_speciality_wise_summary_report extends MY_Model {
         FROM (
         SELECT mr.users_id AS mr_id, mr.users_name AS mr_name, mr.users_parent_id AS mr_parent, MAX(at.insert_dt) max_date, MIN(at.insert_dt) min_date
         FROM manpower mr
-        JOIN access_token at ON at.user_id = mr.users_id
+        LEFT JOIN access_token at ON at.user_id = mr.users_id
         GROUP BY mr.users_id)temp
         LEFT JOIN manpower asm ON asm.users_id = temp.mr_parent
         LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id

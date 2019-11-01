@@ -176,7 +176,7 @@ class Mdl_mr_summary_report extends MY_Model {
         mr.users_parent_id AS mr_parent, MAX(att.insert_dt) max_date, 
         MIN(att.insert_dt) min_date
         FROM manpower mr
-        JOIN access_token att ON att.user_id = mr.users_id
+        LEFT JOIN access_token att ON att.user_id = mr.users_id
         GROUP BY mr.users_id)temp
         LEFT JOIN manpower asm ON asm.users_id = temp.mr_parent
         LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
