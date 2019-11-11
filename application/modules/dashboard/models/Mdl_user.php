@@ -39,7 +39,7 @@ class Mdl_user extends MY_Model {
     
     function chemist_graph_count($from_date = false, $to_date = false) {
 		
-		$where = " WHERE 1 = 1 ";
+		$where = " AND 1=1 ";
 		if($from_date) {
 			$where .= " AND date(c.insert_dt) >='".$from_date."'";
 		}
@@ -50,11 +50,14 @@ class Mdl_user extends MY_Model {
         $sql = "SELECT
             'Greater than 15' AS 'key', SUM(IF(chemist_count > 15, 1, 0)) AS 'value'
         FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
+            SELECT COUNT(m.users_id) AS chemist_count
+			FROM manpower m
+			LEFT JOIN chemist c ON c.users_id = m.users_id $where 
+			AND DATE(c.insert_dt) <='2019-10-23'
+			WHERE 1 = 1
+				AND m.users_type = 'MR'
+			GROUP BY m.users_id
+			HAVING COUNT(c.chemist_id) > 15
         ) temp
 
         UNION
@@ -62,11 +65,14 @@ class Mdl_user extends MY_Model {
         SELECT
             'Exactly 15' AS 'key', SUM(IF(chemist_count = 15, 1, 0)) AS 'value'
         FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
+            SELECT COUNT(m.users_id) AS chemist_count
+			FROM manpower m
+			LEFT JOIN chemist c ON c.users_id = m.users_id $where 
+			AND DATE(c.insert_dt) <='2019-10-23'
+			WHERE 1 = 1
+				AND m.users_type = 'MR'
+			GROUP BY m.users_id
+			HAVING COUNT(c.chemist_id) = 15
         ) temp
 
         UNION 
@@ -74,13 +80,16 @@ class Mdl_user extends MY_Model {
         SELECT
             'Less than 15' AS 'key', SUM(IF(chemist_count < 15, 1, 0)) AS 'value'
         FROM (
-            SELECT
-                c.users_id AS mr, COUNT(c.chemist_id) AS chemist_count
-            FROM chemist c
-			$where
-            GROUP BY c.users_id
+            SELECT COUNT(m.users_id) AS chemist_count
+			FROM manpower m
+			LEFT JOIN chemist c ON c.users_id = m.users_id $where 
+			AND DATE(c.insert_dt) <='2019-10-23'
+			WHERE 1 = 1
+				AND m.users_type = 'MR'
+			GROUP BY m.users_id
+			HAVING COUNT(c.chemist_id) < 15
         ) temp";
-
+		
         return $this->db->query($sql)->result_array();
     }
 

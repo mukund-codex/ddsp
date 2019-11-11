@@ -109,7 +109,28 @@ class Mdl_mr_summary_report extends MY_Model {
             SELECT COUNT(DISTINCT DATE(chemist.insert_dt))  
             FROM
             chemist 
-            WHERE chemist.users_id = ch.users_id
+            WHERE chemist.users_id = ch.users_id ";
+        if(is_array($rfilters) && count($rfilters) ) {
+            $field_filters = $this->get_filters_from($rfilters);
+            
+            foreach($rfilters as $key=> $value) {
+                $value = trim($value);
+                if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+
+                if($key == 'from_date' && !empty($value)) {
+                    $sql .= " AND DATE(chemist.insert_dt) >= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+
+                if($key == 'to_date' && !empty($value)) {
+                    $sql .= " AND DATE(chemist.insert_dt) <= '".date('Y-m-d', strtotime($value))."' ";
+                    continue;
+                }
+            }
+        }
+        $sql .= "
         ) as no_of_days
         FROM chemist ch
         LEFT JOIN manpower mr ON mr.users_id = ch.users_id
@@ -155,7 +176,7 @@ class Mdl_mr_summary_report extends MY_Model {
         mr.users_parent_id AS mr_parent, MAX(att.insert_dt) max_date, 
         MIN(att.insert_dt) min_date
         FROM manpower mr
-        JOIN access_token att ON att.user_id = mr.users_id
+        LEFT JOIN access_token att ON att.user_id = mr.users_id
         GROUP BY mr.users_id)temp
         LEFT JOIN manpower asm ON asm.users_id = temp.mr_parent
         LEFT JOIN manpower zsm ON zsm.users_id = asm.users_parent_id
@@ -202,7 +223,7 @@ class Mdl_mr_summary_report extends MY_Model {
         }
         
         $q = $this->db->query($sql);
-        //echo $sql;exit;
+        // echo $sql;exit;
         $collection = (! $count) ? $q->result_array() : $q->num_rows();
 
         return $collection;
