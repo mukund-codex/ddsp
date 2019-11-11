@@ -210,12 +210,12 @@ class Module extends Api_Controller {
         $doctorData = [];
         
         $ccount['title'] = 'Chemist';
-        $ccount['count'] = ($data) ? $data[0]['chemist_count'] : 0;
+        $ccount['count'] = ($data) ? $data[0]['chemist_count'] : "0";
         $ccount['image'] = base_url('assets/images/dashboardImages/chemist.png');
         
 
         $dcount['title'] = 'Doctor';
-        $dcount['count'] = ($data) ? $data[0]['doctor_count'] : 0;            
+        $dcount['count'] = ($data) ? $data[0]['doctor_count'] : "0";            
         $dcount['image'] = base_url('assets/images/dashboardImages/doctor.png');
         
         array_push($countdata, $ccount, $dcount);
